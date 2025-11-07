@@ -1,0 +1,27 @@
+{{ header }}
+<div id="information-information" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img
+      src="/catalog/view/theme/default/images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+  {{ column_left }}
+
+  <div id="content" class="">
+    {{ content_top }}
+    <h1>{{ heading_title }}</h1>
+
+    {{ description }}
+
+    <script>$('#content .about-header .title').append($('#content h1'));</script>
+
+    {{ content_bottom }}
+  </div>
+  {{ column_right }}
+</div>
+{{ footer }}

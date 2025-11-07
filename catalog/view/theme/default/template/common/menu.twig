@@ -1,0 +1,25 @@
+{% if categories %}
+	<div class="header__catalog-content">
+		<div class="header__catalog-title">{{ text_catalog_02_n }}</div>
+		<div class="header__catalog-nav bl_scroll">
+			<ul>
+        {% for category in categories %}
+          <li>
+					  <a href="{{ category.href }}">
+						  <span>{{ category.name }}</span>
+              {% if category.children %}<img src="images/angl-right.svg">{% endif %}
+            </a>
+            {% if category.children %}
+              <ul class="sub-menu" style="display: none;">
+                {% for children in category.children %}
+                  <li><a href="{{ children.href }}">{{ children.name }}</a></li>
+                {% endfor %}
+              </ul>
+            {% endif %}
+				  </li>
+        {% endfor %}
+			</ul>
+		</div>
+    <div class="menu-information">Если чего-то нет на сайте, <strong>свяжитесь с нами, найдем!</strong></div>
+	</div>
+{% endif %}

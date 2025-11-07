@@ -1,0 +1,44 @@
+<div class="modal fade" id="usereditmodal" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+        <h4 class="modal-title">{{ text_save_subscriber }}</h4>
+      </div>
+      <div class="modal-body form-horizontal">
+        <div class="form-group">
+          <label class="col-sm-2 control-label">{{ entry_name }}</label>
+          <div class="col-sm-10" style="padding-top: 9px;"><b>{{ name }}</b></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">{{ entry_email }}</label>
+          <div class="col-sm-10" style="padding-top: 9px;"><b>{{ email }}</b></div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">{{ entry_account_type }}</label>
+          <div class="col-sm-10">
+            <select name="account_type" class="form-control">
+              <option {{ account_type == '1' ? 'selected="selected"' : '' }} value="1">{{ text_register }}</option>
+              <option {{ account_type == '0' ? 'selected="selected"' : '' }} value="0">{{ text_guest }}</option>
+            </select>
+          </div>
+        </div>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">{{ entry_status }}</label>
+          <div class="col-sm-10">
+            <select name="newsletter_status" class="form-control">
+              <option {{ newsletter_status == '0' ? 'selected="selected"' : '' }} value="0">{{ text_unverify }}</option>
+              <option {{ newsletter_status == '1' ? 'selected="selected"' : '' }} value="1">{{ text_verified }}</option>
+              <option {{ newsletter_status == '2' ? 'selected="selected"' : '' }} value="2">{{ text_unsubscriber }}</option>
+              <option {{ newsletter_status == '3' ? 'selected="selected"' : '' }} value="3">{{ text_decline }}</option>
+            </select>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-primary" onclick="SendEmail.SaveManualSubscriber(this);" id="save-usereditmodal" data-id="{{ newsletter_id }}">{{ button_save }}</button>
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_close }}</button>
+      </div>
+    </div>      
+  </div>
+</div>

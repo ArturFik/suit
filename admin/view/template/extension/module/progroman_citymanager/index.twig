@@ -1,0 +1,260 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary" id="submit-forms">
+          <i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default">
+          <i class="fa fa-reply"></i></a>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+          <li>
+            <a href="{{ breadcrumb.href }}">{{ breadcrumb['text'] }}</a>
+          </li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    <div class="prmn-cmngr-settings">
+        <div id="warning" class="alert alert-danger hidden"><i class="fa fa-exclamation-circle"></i>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <span></span>
+        </div>
+        <div id="success" class="alert alert-success hidden"><i class="fa fa-exclamation-circle"></i>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <span></span>
+        </div>
+        <div id="message" class="alert alert-info{{ message is empty ? ' hidden' : '' }}"><i class="fa fa-exclamation-circle"></i>
+          <button type="button" class="close" data-dismiss="alert">&times;</button>
+          <span>{{ message }}</span>
+        </div>
+
+        <ul id="tabs" class="nav nav-tabs">
+          <li>
+            <a href="#tab-general" data-toggle="tab">{{ tab_general }}</a>
+          </li>
+          <li>
+            <a href="#tab-redirects" data-toggle="tab" data-url="{{ url_redirects }}">{{ tab_redirects }}</a>
+          </li>
+          <li>
+            <a href="#tab-popups" data-toggle="tab" data-url="{{ url_popups }}">{{ tab_popup }}</a>
+          </li>
+          <li>
+            <a href="#tab-messages" data-toggle="tab" data-url="{{ url_messages }}">{{ tab_messages }}</a>
+          </li>
+          <li>
+            <a href="#tab-currencies" data-toggle="tab" data-url="{{ url_currencies }}">{{ tab_currencies }}</a>
+          </li>
+          <li>
+            <a href="#tab-customer-group" data-toggle="tab" data-url="{{ url_customer_group }}">{{ tab_groups }}</a>
+          </li>
+          <li>
+            <a href="#tab-bases" data-toggle="tab" data-url="{{ url_bases }}">{{ tab_bases }}</a>
+          </li>
+          <li>
+            <a href="#tab-support" data-toggle="tab" data-url="{{ url_support }}">
+              {% if valid_license %}
+                {{ tab_support }}
+              {% else %}
+                <span class="text-danger">{{ tab_support }}</span>
+              {% endif %}
+            </a>
+          </li>
+        </ul>
+        <div class="tab-content">
+          <div class="tab-pane" id="tab-general">{{ general }}</div>
+          <div class="tab-pane" id="tab-redirects">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-popups">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-messages">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-currencies">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-customer-group">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-support">{{ text_loading }}...</div>
+          <div class="tab-pane" id="tab-bases">{{ text_loading }}...</div>
+        </div>
+    </div>
+  </div>
+</div>
+<div class="modal" tabindex="-1" role="dialog" id="prmn-alert">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+        <h4>{{ heading_title }}</h4>
+      </div>
+      <div class="modal-body"></div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_close }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+    function saveTab(index) {
+        var tabs = $('.tab-pane');
+
+        if (index >= tabs.length) {
+            $('#success').removeClass('hidden').find('span').text('{{ text_success }}');
+            $('#submit-forms').removeAttr('disabled');
+            return;
+        }
+
+        var tab = tabs.eq(index);
+        var form = tab.find('form.main-form');
+        if (form.length) {
+            window[form.data('submit')](function(result) {
+                if (result) {
+                    saveTab(index + 1);
+                } else {
+                    $('#submit-forms').removeAttr('disabled');
+                }
+            });
+        } else {
+            saveTab(index + 1);
+        }
+    }
+
+    function prmnRunAction(action) {
+        $.ajax({
+            url: '{{ url_base_action }}',
+            type: 'get',
+            dataType: 'json',
+            data: {action: action},
+            success: function(json) {
+                if (json.success) {
+                    if (json['next_step']) {
+                        if (json['btn_text']) {
+                            $('#prmn-alert').modal('show').find('.modal-body').text(json['btn_text'] + '...');
+                        }
+
+                        if (action.indexOf('step=') > 0) {
+                            action = action.replace(/step=[a-z-]+/, 'step=' + json['next_step']);
+                        } else {
+                            action += ',step=' + json['next_step'];
+                        }
+
+                        if (json['iteration'] !== undefined) {
+                            if (action.indexOf('iteration=') > 0) {
+                                action = action.replace(/iteration=\d+/, 'iteration=' + json['iteration']);
+                            } else {
+                                action += ',iteration=' + json['iteration'];
+                            }
+                        }
+
+                        prmnRunAction(action);
+                    } else {
+                        $('#prmn-alert').modal('show').find('.modal-body').html('<p class="text-success">' + json.text + '</p>');
+                        $('#tab-bases').load('{{ url_bases }}');
+                    }
+                } else {
+                    $('#prmn-alert').modal('show').find('.modal-body').html('<p class="text-danger">' + json.error + '</p>');
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                $('#prmn-alert').modal('show').find('.modal-body').html(thrownError + "<br>" + xhr.statusText + "<br>" + xhr.responseText);
+            }
+        });
+    }
+
+    var xhr;
+    $(function() {
+        $('#tabs').find('a[data-toggle="tab"]').on('shown.bs.tab', function(e) {
+            var tab = $($(this).attr('href'));
+            if (!tab.find('div').length) {
+                tab.load($(this).data('url'), function() {
+                    tab.find('[data-toggle="tooltip"]').tooltip({container: 'body', html: true});
+                });
+            }
+        });
+
+        {% if not valid_license %}
+        $('#tabs a[href="#tab-support"]').tab('show');
+        {% elseif not is_loaded_fias %}
+        $('#tabs a[href="#tab-bases"]').tab('show');
+        {% else %}
+        $('#tabs a:first').tab('show');
+        {% endif %}
+
+        $('#submit-forms').click(function() {
+            $('#warning, #success').addClass('hidden').find('span').text('');
+            $(this).attr('disabled', 'disabled');
+
+            // Валидация форм
+            var validate = true;
+            $('.tab-pane').each(function(i, el) {
+                var form = $(this).find('form.main-form');
+                if (form.data('validate') && !(window[form.data('validate')]())) {
+                    validate = false;
+                    return false;
+                }
+            });
+
+            if (!validate) {
+                return false;
+            }
+
+            // Сохраняем данные
+            saveTab(0);
+        });
+
+        $('form').submit(function(e) {
+            e.preventDefault();
+        });
+
+        $(document).on('focus', '.row-fias-name', function() {
+            if (!$(this).data('autocomplete')) {
+                var el = $(this);
+                el.prmnAutocomplete({
+                    'source': '{{ url_search }}&short=' + (el.data('short') ? 1 : 0),
+                    'select': function(item) {
+                        el.val(item.name);
+                        el.siblings('.row-fias-id').val(item.value);
+                    }
+                });
+                el.data('autocomplete', true);
+                el.siblings('ul.dropdown-menu').css({'maxHeight': 300, 'overflowY': 'auto', 'overflowX': 'hidden'});
+            }
+        });
+
+        $('#tab-bases').on('click', '.base-action', function() {
+            var btn = $(this);
+            btn.attr('disabled', 'disabled');
+            $('#prmn-alert').modal('show').find('.modal-body').text(btn.data('text'));
+            prmnRunAction(btn.data('action'));
+        });
+        {% if check_update %}
+        $.ajax({
+            url: '{{ url_check_update }}',
+            type: 'get',
+            dataType: 'json',
+            success: function(json) {
+                if (json.success) {
+                    if (json.message) {
+                        $('#message').removeClass('hidden').find('span').html(json.message);
+                    }
+                } else if (json.error) {
+                    $('#warning').removeClass('hidden').find('span').append(json.error);
+                }
+            },
+            error: function(xhr, ajaxOptions, thrownError) {
+                alert(thrownError + "<br>" + xhr.statusText + "<br>" + xhr.responseText);
+            }
+        });
+        {% endif %}
+
+        $('#message').find('button').click(function() {
+            $.ajax({
+                url: '{{ url_remove_data_message }}',
+                type: 'get',
+                dataType: 'json',
+                error: function(xhr, ajaxOptions, thrownError) {
+                    alert(thrownError + "<br>" + xhr.statusText + "<br>" + xhr.responseText);
+                }
+            });
+        });
+    });
+//--></script>
+{{ footer }}

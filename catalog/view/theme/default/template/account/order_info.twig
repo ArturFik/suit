@@ -1,0 +1,398 @@
+{{ header }}
+<div id="account-order" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+
+
+  {{ column_left }}
+
+  <div id="content" class="lk">
+
+    <div class="title">
+      <h1>{{ heading_title }}</h1>
+    </div>
+
+    <div class="lk__content">
+      <div class="prd-tab">
+        <div class="prd-tab__bl">
+
+          {{ content_top }}
+
+          <div class="prd-tab__content">
+            <div class="prd-tab__item">
+
+              <div class="table-block">
+                <table class="table-block__table table-order-info-01">
+                  <thead>
+                    <tr>
+                      <td class="text-left" colspan="2">{{ text_order_detail }}</td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-left" style="width: 50%;">
+                        <div class="td-block__content">
+                          {% if invoice_no %} <span class="fw600">{{ text_invoice_no }}:</span> {{ invoice_no }}<br />{%
+                          endif %}
+                          <span class="fw600">{{ text_order_id }}:</span> #{{ order_id }}<br />
+                          <span class="fw600">{{ text_date_added }}:</span> {{ date_added }}
+                        </div>
+                      </td>
+                      <td class="text-left" style="width: 50%;">
+                        <div class="td-block__content">
+                          {% if payment_method %} <span class="fw600">{{ text_payment_method }}:</span> {{
+                          payment_method }}<br />{% endif %}
+                          {% if shipping_method %} <span class="fw600">{{ text_shipping_method }}:</span> {{
+                          shipping_method }} {% endif %}
+                        </div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="table-block">
+                <table class="table-block__table table-order-info-02">
+                  <tbody>
+                    <tr>
+                      <td class="text-left">
+                        <div class="td-block__content"><span class="fw600">{{ text_payment_address }}</span><br>{{
+                          payment_address }}</div>
+                      </td>
+                      {% if shipping_address %}<td class="text-left">
+                        <div class="td-block__content"><span class="fw600">{{ text_shipping_address }}</span><br>{{
+                          shipping_address }}</div>
+                      </td>{% endif %}
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+
+              <div class="table-block">
+                <table class="table-block__table table-order-info-03">
+                  <thead>
+                    <tr>
+                      <td class="text-left table-block__table_name"><div class="td-block__content"><span class="fw600">{{ column_name }}</span></div></td>
+                      <td class="text-center table-block__table_quantity"><div class="td-block__content"><span class="fw600">{{ column_quantity
+                      }}</span></div></td>
+                      <td class="text-center table-block__table_price"><div class="td-block__content"><span class="fw600">{{ column_price }}</span></div></td>
+                      <td class="text-center table-block__table_total"><div class="td-block__content"><span class="fw600">{{ column_total }}</span></div></td>
+                      {% if products %}
+                      <td class="table-block__table_action" style="width: 100px;"><div class="td-block__content">&nbsp;</div></td>
+                      {% endif %}
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% for product in products %}
+                    <tr>
+                      <td class="text-left table-block__table_name"><div class="td-block__content">{{ product.name }}
+                        {% for option in product.option %} <br />
+                        &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}</div></td>
+                      <td class="text-center table-block__table_quantity"><div class="td-block__content">{{ product.quantity }}</div></td>
+                      <td class="text-center table-block__table_price"><div class="td-block__content">{{ product.price }}</div></td>
+                      <td class="text-center table-block__table_total"><div class="td-block__content">{{ product.total }}</div></td>
+                      <td class="text-center table-block__table_action" style="white-space: nowrap;">
+                        <div class="td-block__content td-block__content_buttons">
+                          {% if product.reorder %}
+                          <a href="{{ product.reorder }}" data-toggle="tooltip" title="{{ button_reorder }}"
+                            class="btn btn-blue btn-reorder">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="21" height="21" viewBox="0 0 18 18"
+                              fill="none">
+                              <path
+                                d="M8.48321 0.711552C7.59728 0.859207 6.80978 1.27757 6.21423 1.93218C5.52517 2.6803 5.21509 3.54655 5.21017 4.70319V5.21014H3.64993C2.18321 5.21014 2.07493 5.21507 1.92728 5.30858C1.83868 5.36272 1.75501 5.45624 1.74024 5.5153C1.72548 5.57929 1.72056 7.71046 1.72548 10.2551L1.74024 14.8816L1.87806 15.2212C2.14876 15.9005 2.6311 16.432 3.26603 16.7519C3.91079 17.0768 3.79267 17.0719 9.00001 17.0719C14.2024 17.0719 14.0843 17.0768 14.734 16.7519C15.3591 16.4419 15.8513 15.9005 16.122 15.2212L16.2598 14.8816L16.2745 10.2551C16.2795 7.71046 16.2745 5.57929 16.2598 5.5153C16.245 5.45624 16.1613 5.36272 16.0727 5.30858C15.9251 5.21507 15.8168 5.21014 14.355 5.21014H12.7899V4.73765C12.7899 4.15686 12.7209 3.68436 12.5634 3.22663C12.1697 2.06999 11.1607 1.13483 9.95977 0.80999C9.65954 0.726316 8.75392 0.672176 8.48321 0.711552ZM9.71368 1.78944C10.4372 1.9814 11.1558 2.57202 11.4757 3.24139C11.6972 3.71882 11.7563 4.00921 11.7563 4.66874V5.21014H9.00001H6.24376V4.66874C6.24376 4.00921 6.30282 3.71882 6.52431 3.24139C6.83931 2.58186 7.5579 1.98632 8.26665 1.79436C8.62103 1.69593 9.34946 1.69593 9.71368 1.78944ZM5.21017 6.90819C5.21017 7.79905 5.29384 7.9664 5.73681 7.9664C5.94845 7.9664 6.12071 7.84335 6.19946 7.63663C6.22407 7.57265 6.24376 7.22811 6.24376 6.87866V6.24374H9.00001H11.7563V6.87866C11.7563 7.22319 11.7809 7.57757 11.8104 7.66124C11.8744 7.85319 12.0466 7.9664 12.2731 7.9664C12.7013 7.9664 12.7899 7.78921 12.7899 6.90819V6.24374H14.0449H15.3V10.3486C15.3 14.3205 15.2951 14.4633 15.2016 14.7635C15.0244 15.3246 14.6356 15.7331 14.0892 15.9398C13.8234 16.0383 13.725 16.0383 9.00001 16.0383C4.24548 16.0383 4.17657 16.0383 3.90587 15.9349C3.36446 15.7331 2.94118 15.2754 2.77876 14.7143C2.70985 14.478 2.70001 13.9465 2.70001 10.3437V6.24374H3.95509H5.21017V6.90819Z"
+                                fill="#fff" />
+                            </svg>
+                          </a>
+                          {% endif %}
+                          <a href="{{ product.return }}" data-toggle="tooltip" title="{{ button_return }}"
+                            class="btn btn-red btn-reply">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="#f40000" width="21px" height="21px"
+                              viewBox="0 0 24 24">
+                              <path
+                                d="M10.53 5.03a.75.75 0 10-1.06-1.06l-6.25 6.25a.75.75 0 000 1.06l6.25 6.25a.75.75 0 101.06-1.06L5.56 11.5H17a3.248 3.248 0 013.25 3.248v4.502a.75.75 0 001.5 0v-4.502A4.748 4.748 0 0017 10H5.56l4.97-4.97z" />
+                            </svg>
+                          </a>
+                        </div>
+                      </td>
+                    </tr>
+                    {% endfor %}
+                    {% for voucher in vouchers %}
+                    <tr>
+                      <td class="text-left"><div class="td-block__content">{{ voucher.description }}</div></td>
+                      <td class="text-left"><div class="td-block__content"></div></td>
+                      <td class="text-right"><div class="td-block__content">1</div></td>
+                      <td class="text-right"><div class="td-block__content">{{ voucher.amount }}</div></td>
+                      <td class="text-right"><div class="td-block__content">{{ voucher.amount }}</div></td>
+                      {% if products %}
+                      <td><div class="td-block__content"></div></td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tbody>
+
+                  <tfoot>
+
+                    {% for total in totals %}
+                    <tr>
+                      <td></td>
+                      <td colspan="3" class="text-right pr20 {% if not loop.last %}pb20{% endif %}">
+                        <div class="td-block__content blnone"><span class="fw600">{{ total.title }}</span></div>
+                      </td>
+                      <td class="text-right {% if not loop.last %}pb20{% endif %}">
+                        <div class="td-block__content">{{ total.text }}</div>
+                      </td>
+                      {% if products %}
+                      <td></td>
+                      {% endif %}
+                    </tr>
+                    {% endfor %}
+                  </tfoot>
+
+                </table>
+              </div>
+
+              {% if comment %}
+              <div class="table-block">
+                <table class="table-block__table table-order-info-04">
+                  <thead>
+                    <tr>
+                      <td class="text-left">
+                        <div class="td-block__content"><span class="fw600">{{ text_comment }}</span></div>
+                      </td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td class="text-left">
+                        <div class="td-block__content">{{ comment }}</div>
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+
+              {% if histories %}
+              <div class="table-block">
+                <table class="table-block__table table-order-info-05">
+                  <thead>
+                    <tr>
+                      <td class="text-left"><div class="td-block__content"><span class="fw600">{{ column_date_added }}</span></div></td>
+                      <td class="text-left"><div class="td-block__content"><span class="fw600">{{ column_status }}</span></div></td>
+                      <td class="text-left"><div class="td-block__content"><span class="fw600">{{ column_comment }}</span></div></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+
+                    {% if histories %}
+                    {% for history in histories %}
+                    <tr>
+                      <td class="text-left"><div class="td-block__content">{{ history.date_added }}</div></td>
+                      <td class="text-left"><div class="td-block__content">{{ history.status }}</div></td>
+                      <td class="text-left"><div class="td-block__content">{% if history.comment %}{{ history.comment }}{% else %}&nbsp;{% endif %}</div></td>
+                    </tr>
+                    {% endfor %}
+                    {% else %}
+                    <tr>
+                      <td colspan="3" class="text-center">{{ text_no_results }}</td>
+                    </tr>
+                    {% endif %}
+                  </tbody>
+                </table>
+              </div>
+              {% endif %}
+
+              <div class="order-info-buttons buttons clearfix">
+                <div class="pull-left"><a href="{{ continue }}" class="btn btn-blue">{{ button_continue }}</a></div>
+              </div>
+
+
+            </div>
+          </div>
+          {{ content_bottom }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  {# <div id="content" class="">
+    <h2>{{ heading_title }}</h2>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left" colspan="2">{{ text_order_detail }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-left" style="width: 50%;">{% if invoice_no %} <b>{{ text_invoice_no }}</b> {{ invoice_no
+            }}<br />
+            {% endif %} <b>{{ text_order_id }}</b> #{{ order_id }}<br />
+            <b>{{ text_date_added }}</b> {{ date_added }}
+          </td>
+          <td class="text-left" style="width: 50%;">{% if payment_method %} <b>{{ text_payment_method }}</b> {{
+            payment_method }}<br />
+            {% endif %}
+            {% if shipping_method %} <b>{{ text_shipping_method }}</b> {{ shipping_method }} {% endif %}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left" style="width: 50%; vertical-align: top;">{{ text_payment_address }}</td>
+          {% if shipping_address %}
+          <td class="text-left" style="width: 50%; vertical-align: top;">{{ text_shipping_address }}</td>
+          {% endif %}
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-left">{{ payment_address }}</td>
+          {% if shipping_address %}
+          <td class="text-left">{{ shipping_address }}</td>
+          {% endif %}
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <td class="text-left">{{ column_name }}</td>
+            <td class="text-left">{{ column_model }}</td>
+            <td class="text-right">{{ column_quantity }}</td>
+            <td class="text-right">{{ column_price }}</td>
+            <td class="text-right">{{ column_total }}</td>
+            {% if products %}
+            <td style="width: 20px;"></td>
+            {% endif %}
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for product in products %}
+          <tr>
+            <td class="text-left">{{ product.name }}
+              {% for option in product.option %} <br />
+              &nbsp;<small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}</td>
+            <td class="text-left">{{ product.model }}</td>
+            <td class="text-right">{{ product.quantity }}</td>
+            <td class="text-right">{{ product.price }}</td>
+            <td class="text-right">{{ product.total }}</td>
+            <td class="text-right" style="white-space: nowrap;">{% if product.reorder %} <a href="{{ product.reorder }}"
+                data-toggle="tooltip" title="{{ button_reorder }}" class="btn btn-primary"><i
+                  class="fa fa-shopping-cart"></i></a> {% endif %} <a href="{{ product.return }}" data-toggle="tooltip"
+                title="{{ button_return }}" class="btn btn-danger"><i class="fa fa-reply"></i></a></td>
+          </tr>
+          {% endfor %}
+          {% for voucher in vouchers %}
+          <tr>
+            <td class="text-left">{{ voucher.description }}</td>
+            <td class="text-left"></td>
+            <td class="text-right">1</td>
+            <td class="text-right">{{ voucher.amount }}</td>
+            <td class="text-right">{{ voucher.amount }}</td>
+            {% if products %}
+            <td></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tbody>
+
+        <tfoot>
+
+          {% for total in totals %}
+          <tr>
+            <td colspan="3"></td>
+            <td class="text-right"><b>{{ total.title }}</b></td>
+            <td class="text-right">{{ total.text }}</td>
+            {% if products %}
+            <td></td>
+            {% endif %}
+          </tr>
+          {% endfor %}
+        </tfoot>
+
+      </table>
+    </div>
+    {% if comment %}
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left">{{ text_comment }}</td>
+        </tr>
+      </thead>
+      <tbody>
+        <tr>
+          <td class="text-left">{{ comment }}</td>
+        </tr>
+      </tbody>
+    </table>
+    {% endif %}
+    {% if histories %}
+    <h3>{{ text_history }}</h3>
+    <table class="table table-bordered table-hover">
+      <thead>
+        <tr>
+          <td class="text-left">{{ column_date_added }}</td>
+          <td class="text-left">{{ column_status }}</td>
+          <td class="text-left">{{ column_comment }}</td>
+        </tr>
+      </thead>
+      <tbody>
+
+        {% if histories %}
+        {% for history in histories %}
+        <tr>
+          <td class="text-left">{{ history.date_added }}</td>
+          <td class="text-left">{{ history.status }}</td>
+          <td class="text-left">{{ history.comment }}</td>
+        </tr>
+        {% endfor %}
+        {% else %}
+        <tr>
+          <td colspan="3" class="text-center">{{ text_no_results }}</td>
+        </tr>
+        {% endif %}
+      </tbody>
+
+    </table>
+    {% endif %}
+    <div class="buttons clearfix">
+      <div class="pull-right"><a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a></div>
+    </div>
+    {{ content_bottom }}
+  </div> #}
+
+
+
+
+
+
+
+  {{ column_right }}
+</div>
+{{ footer }}

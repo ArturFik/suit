@@ -1,0 +1,77 @@
+<div class="prmn-cmngr-settings__block">
+  {% if valid_license is empty %}
+    <p>
+      <a class="btn btn-primary btn-lg" id="get-secret-key" data-loading-text="{{ text_loading }}...">{{ button_secret_key }}</a>
+    </p>
+    <p>{{ error_license }}</p>
+  {% else %}
+    <div class="row">
+      <div class="col-sm-6">
+        <p class="alert alert-success">
+          {{ text_license_success }}
+        </p>
+      </div>
+      <div class="col-sm-2">
+        <a class="btn btn-default" id="clear-secret-key" data-loading-text="{{ text_loading }}...">{{ button_reset }}</a>
+      </div>
+    </div>
+  {% endif %}
+</div>
+<p>{{ text_support }}</p>
+<p class="prmn-cmngr-settings__block">
+  <a href="https://liveopencart.ru/progroman" class="btn btn-default" target="_blank">
+    <img src="view/image/icon-liveopencart-16x16.ico"/>
+    liveopencart.ru
+  </a>
+  <a href="https://prodelo.biz/progroman" class="btn btn-default" target="_blank">
+    <img src="view/image/icon-prodelo-16x16.png"/>
+    prodelo.biz
+  </a>
+  <a href="https://opencart.club/profile/136-progroman/" class="btn btn-default" target="_blank">
+    <img src="view/image/icon-opencartclub-16x16.png"/>
+    opencart.club
+  </a>
+  <a href="https://opencartforum.com/profile/28285-progroman/" class="btn btn-default" target="_blank">
+    <img src="view/image/icon-opencartforum-16x16.ico"/>
+    opencartforum.com
+  </a>
+  <a href="https://t.me/progroman_ru" class="btn btn-default" target="_blank">
+    <i class="fa fa-telegram"></i>
+    t.me/progroman_ru
+  </a>
+  <a href="mailto:mr.progroman@yandex.ru" class="btn btn-default" target="_blank">
+    <i class="fa fa-envelope-o"></i> mr.progroman@yandex.ru
+  </a>
+</p>
+
+<script type="text/javascript">
+    $(function() {
+        $('#get-secret-key').click(function () {
+            var btn = $(this).button('loading');
+            $.get('{{ url_get_secret }}', function(json) {
+                alert(json.message);
+                if (json.success) {
+                    $('#field-secret-key').val(json.key);
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+                btn.button('reset');
+            }, 'json')
+        });
+
+        $('#clear-secret-key').click(function() {
+            var btn = $(this).button('loading');
+            $.get('{{ url_clear_secret }}', function(json) {
+                alert(json.message);
+                if (json.success) {
+                    $('#field-secret-key').val('');
+                    setTimeout(function () {
+                        location.reload();
+                    }, 1000);
+                }
+                btn.button('reset');
+            }, 'json')
+        });
+    })
+</script>

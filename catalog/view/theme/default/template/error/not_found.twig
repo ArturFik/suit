@@ -1,0 +1,43 @@
+{{ header }}
+<div id="error-not-found" class="container">
+	<div class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			{% if loop.last %}
+				<span>{{ breadcrumb.text }}</span>
+			{% else %}
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+			{% endif %}
+		{% endfor %}
+	</div>
+
+
+	{{ column_left }}
+	<div id="content" class="main-error">
+		{{ content_top }}
+
+		{# <h1>{{ heading_title }}</h1>
+		<p>{{ text_error }}</p>
+		<div class="buttons clearfix">
+			<div class="pull-right">
+				<a href="{{ continue }}" class="btn btn-primary">{{ button_continue }}</a>
+			</div>
+		</div> #}
+
+		<div class="page-error">
+		<img src="/catalog/view/theme/default/images/404.png">
+		<div class="title">
+			<h1>{{ heading_title }}</h1>
+			<small>{{ text_error }}</small>
+		</div>
+		<a class="btn btn-blue" href="{{ continue }}">{{ button_continue }}</a>
+		</div>
+
+
+
+		{{ content_bottom }}
+	</div>
+	{{ column_right }}
+
+
+</div>
+{{ footer }}

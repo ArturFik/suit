@@ -1,0 +1,840 @@
+{{ header }}
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <button type="submit" form="form-html" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+        <h1>{{ heading_title }}</h1>
+        <ul class="breadcrumb">
+          {% for breadcrumb in breadcrumbs %}
+          <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+          {% endfor %}
+        </ul>
+    </div>
+  </div>
+  <div class="container-fluid ocp-module">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-exclamation-circle"></i> {{ success }}
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+      </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-html" class="form-horizontal">
+          <ul class="nav nav-tabs" id="setting_tabs">
+            <li class="active"><a href="#tab-main" data-toggle="tab"><i class="fa fa-cog"></i> {{ tab_main }}</a></li>
+            <li><a href="#tab-btns" data-toggle="tab"><i class="fa fa-cog"></i> {{ tab_btns }}</a></li>
+            <li><a href="#tab-localisation" data-toggle="tab"><i class="fa fa-language"></i> {{ tab_localisation }}</a></li>
+            <li><a href="#tab-links" data-toggle="tab"><i class="fa fa-link"></i> {{ tab_links }}</a></li>
+            <li><a href="#tab-fields_list" data-toggle="tab"><i class="fa fa-navicon"></i> {{ tab_fields_list }}</a></li>
+            <li><a href="#tab-design" data-toggle="tab"><i class="fa fa-image"></i> {{ tab_design }}</a></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-main">
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_status }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.status  ==  1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[status]" value="1" autocomplete="off"{{ settings.status  ==  1 ? ' checked="checked"' :  '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.status  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_oneclick_settings[status]" value="0" autocomplete="off"{{ settings.status  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_show_in_cat }}">{{ entry_show_in_cat }}</span></label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_in_cat  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_in_cat]" value="1" autocomplete="off"{{ settings.show_in_cat  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_in_cat  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_in_cat]" value="0" autocomplete="off"{{ settings.show_in_cat  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group required">
+                <label class="col-sm-3 control-label">{{ entry_list_selector }}</label>
+                <div class="col-sm-9">
+                    <input type="text" name="ocp_oneclick_settings[list_selector]" class="form-control" value="{{ settings.list_selector }}" placeholder="cart.add" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_show_in_prod }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_in_prod  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_in_prod]" value="1" autocomplete="off"{{ settings.show_in_prod  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_in_prod  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_in_prod]" value="0" autocomplete="off"{{ settings.show_in_prod  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_show_description }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_description  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_description]" value="1" autocomplete="off"{{ settings.show_description  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_description  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_description]" value="0" autocomplete="off"{{ settings.show_description  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_show_images }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_images  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_images]" value="1" autocomplete="off"{{ settings.show_images  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_images  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_images]" value="0" autocomplete="off"{{ settings.show_images  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_show_options }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_options  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_options]" value="1" autocomplete="off"{{ settings.show_options  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_options  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_options]" value="0" autocomplete="off"{{ settings.show_options  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_show_qty }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.show_qty  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_qty]" value="1" autocomplete="off"{{ settings.show_qty  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.show_qty  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[show_qty]" value="0" autocomplete="off"{{ settings.show_qty  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_stock_checkout }}</label>
+                <div class="col-sm-9">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ settings.stock_checkout  == 1 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[stock_checkout]" value="1" autocomplete="off"{{ settings.stock_checkout  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                    </label>
+                    <label class="btn btn-danger btn-default {{ settings.stock_checkout  == 0 ? 'active' : '' }}">
+                      <input type="radio" name="ocp_oneclick_settings[stock_checkout]" value="0" autocomplete="off"{{ settings.stock_checkout  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                    </label>
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-3 control-label">{{ entry_telephone_mask }}</label>
+                <div class="col-sm-9">
+                    <input name="ocp_oneclick_settings[telephone_mask]" class="form-control" value="{{ settings.telephone_mask }}" />
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-3 control-label">{{ entry_agree }}</label>
+                <div class="col-sm-9">
+                    <select name="ocp_oneclick_settings[agree]" class="form-control">
+                        <option value="">{{ text_not_required }}</option>
+                        {% for info in informations %}
+                        <option value="{{ info.information_id }}"{{ settings.agree == info.information_id ? ' selected="selected"' : '' }}>{{ info.name }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+              </div>
+              <div class="form-group">
+                  <label class="col-sm-3 control-label">{{ entry_agree_type }}</label>
+                <div class="col-sm-9">
+                    <select name="ocp_oneclick_settings[agree_type]" class="form-control">
+                        <option value="0"{{ settings.agree_type == 0 ? ' selected="selected"' : '' }}>{{ text_agree_text }}</option>
+                        <option value="1"{{ settings.agree_type == 1 ? ' selected="selected"' : '' }}>{{ text_agree_checkbox }}</option>
+                    </select>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-btns">
+                  <ul class="nav nav-tabs" id="btns_tabs">
+                      <li class="active"><a href="#tab-btn-list" data-toggle="tab">{{ tab_btn_list }}</a></li>
+                      <li><a href="#tab-btn-product" data-toggle="tab">{{ tab_btn_product }}</a></li>
+                  </ul>
+                  <div class="tab-content">
+                    <div class="tab-pane active" id="tab-btn-list">
+
+                        <div class="row">
+                            <div class="col-sm-2">
+                                <ul class="nav nav-pills nav-stacked" id="list_btns">
+                                    {% for list_btn in list_btns %}
+                                    <li{% if loop.index == 1 %} class="active"{% endif %}><a href="#tab-btn{{ loop.index }}" data-toggle="tab" aria-expanded="true"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-btn{{ loop.index }}\']').parent().remove(); $('#tab-btn{{ loop.index }}').remove(); $('#list_btns a:first').tab('show');"></i> {{ list_btn.list_btn_name?list_btn.list_btn_name:loop.index }}</a></li>
+                                    {% endfor %}
+
+                                </ul>
+                                <br />
+                                <button type="button" onclick="addListBtn();" data-toggle="tooltip" title="" class="btn" data-original-title="Добавить"><i class="fa fa-plus-circle"></i> Добавить кнопку</button>
+                            </div>
+                            <div class="col-sm-10">
+                                <div class="tab-content">
+                                {% for list_btn in list_btns %}
+                                <div class="tab-pane{% if loop.index==1 %} active{% endif %}" id="tab-btn{{ loop.index }}">
+                                  <div class="form-group">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_name }}">{{ entry_list_btn_name }}</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="ocp_oneclick_list_btns[{{ loop.index }}][list_btn_name]" class="form-control" value="{{ list_btn.list_btn_name }}" />
+                                    </div>
+                                  </div>
+                                  <div class="form-group required">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_product_block }}">{{ entry_list_product_block }}</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="ocp_oneclick_list_btns[{{ loop.index }}][list_product_block]" class="form-control" value="{{ list_btn.list_product_block }}" placeholder=".class" />
+                                    </div>
+                                  </div>
+                                  <div class="form-group required">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_element }}">{{ entry_list_element }}</span></label>
+                                    <div class="col-sm-8">
+                                      <input type="text" name="ocp_oneclick_list_btns[{{ loop.index }}][list_element]" class="form-control" value="{{ list_btn.list_element }}" placeholder=".class" />
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_position }}">{{ entry_list_position }}</span></label>
+                                    <div class="col-sm-8">
+                                        <select name="ocp_oneclick_list_btns[{{ loop.index }}][list_position]" class="form-control">
+                                            <option value="1"{{ list_btn.list_position  == 1 ? ' selected="selected"' : '' }}>{{ text_before_element }}</option>
+                                            <option value="2"{{ list_btn.list_position  == 2 ? ' selected="selected"' : '' }}>{{ text_after_element }}</option>
+                                        </select>
+                                    </div>
+                                  </div>
+                                  <div class="form-group required">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_class }}">{{ entry_list_btn_block_class }}</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="ocp_oneclick_list_btns[{{ loop.index }}][list_btn_block_class]" class="form-control" value="{{ list_btn.list_btn_block_class }}" placeholder="btn-ocpoc-wrap" />
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_css }}">{{ entry_list_btn_block_css }}</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea name="ocp_oneclick_list_btns[{{ loop.index }}][list_btn_block_css]" class="form-control">{{ list_btn.list_btn_block_css }}</textarea>
+                                    </div>
+                                  </div>
+                                  <div class="form-group required">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_class }}">{{ entry_list_btn_class }}</span></label>
+                                    <div class="col-sm-8">
+                                        <input type="text" name="ocp_oneclick_list_btns[{{ loop.index }}][list_btn_class]" class="form-control" value="{{ list_btn.list_btn_class }}" placeholder="btn-ocpoc" />
+                                    </div>
+                                  </div>
+                                  <div class="form-group">
+                                      <label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_css }}">{{ entry_list_btn_css }}</span></label>
+                                    <div class="col-sm-8">
+                                        <textarea name="ocp_oneclick_list_btns[{{ loop.index }}][list_btn_css]" class="form-control">{{ list_btn.list_btn_css }}</textarea>
+                                    </div>
+                                  </div>
+                            </div>
+                            {% endfor %}
+                            </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="tab-pane" id="tab-btn-product">
+                      <div class="form-group required">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_product_element }}">{{ entry_product_element }}</span></label>
+                        <div class="col-sm-9">
+                          <input type="text" name="ocp_oneclick_settings[product_element]" class="form-control" value="{{ settings.product_element }}" placeholder=".class" />
+                          {% if error_product_element %}
+                            <div class="text-danger">{{ error_product_element }}</div>
+                          {% endif %}
+                        </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_product_position }}">{{ entry_product_position }}</span></label>
+                        <div class="col-sm-9">
+                            <select name="ocp_oneclick_settings[product_position]" class="form-control">
+                                <option value="1"{{ settings.product_position  == 1 ? ' selected="selected"' : '' }} >{{ text_before_element }}</option>
+                                <option value="2"{{ settings.product_position  == 2 ? ' selected="selected"' : '' }}>{{ text_after_element }}</option>
+                            </select>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_class }}">{{ entry_product_btn_block_class }}</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" name="ocp_oneclick_settings[product_btn_block_class]" class="form-control" value="{{ settings.product_btn_block_class }}" placeholder="ocpoc-product-btn" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_css }}">{{ entry_product_btn_block_css }}</span></label>
+                        <div class="col-sm-9">
+                            <textarea name="ocp_oneclick_settings[product_btn_block_css]" class="form-control">{{ settings.product_btn_block_css }}</textarea>
+                        </div>
+                      </div>
+                      <div class="form-group required">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_class }}">{{ entry_product_btn_class }}</span></label>
+                        <div class="col-sm-9">
+                            <input type="text" name="ocp_oneclick_settings[product_btn_class]" class="form-control" value="{{ settings.product_btn_class }}" placeholder="btn btn-primary btn-block btn-lg prod-btn-ocpoc" />
+                        </div>
+                      </div>
+                      <div class="form-group">
+                          <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_css }}">{{ entry_product_btn_css }}</span></label>
+                        <div class="col-sm-9">
+                            <textarea name="ocp_oneclick_settings[product_btn_css]" class="form-control">{{ settings.product_btn_css }}</textarea>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+            </div>
+            <div class="tab-pane" id="tab-localisation">
+                <ul class="nav nav-tabs" id="localisation_tabs">
+                    {% for language in languages %}
+                      <li>
+                        <a href="#tab-localisation-language{{ language.language_id }}" data-toggle="tab"><img src="{{ language.image }}" title="{{ language.name }}" /> {{ language.name }}</a>
+                      </li>
+                    {% endfor %}
+                  </ul>
+                <div class="tab-content">
+                    {% for language in languages %}
+                    <div class="tab-pane" id="tab-localisation-language{{ language.language_id }}">
+                        <div class="form-group required">
+                            <label class="col-sm-3 control-label">{{ entry_module_heading }}</label>
+                            <div class="col-sm-9">
+                                <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][heading]" value="{{ localisation[language.code]['heading']   ? localisation[language.code]['heading'] : '' }}" class="form-control" />
+                            </div>
+                        </div>
+
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_oc_button_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][oc_button_text]" value="{{   localisation[language.code]['oc_button_text']   ? localisation[language.code]['oc_button_text'] : '' }}" class="form-control" />
+                              {% if error_oc_button_text[language.code] %}
+                                <div class="text-danger">{{ error_oc_button_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_order_button_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][order_button_text]" value="{{   localisation[language.code]['order_button_text']   ? localisation[language.code]['order_button_text'] : '' }}" class="form-control" />
+                              {% if error_order_button_text[language.code] %}
+                                <div class="text-danger">{{ error_order_button_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_order_button_text_loading }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][order_button_text_loading]" value="{{   localisation[language.code]['order_button_text_loading']   ? localisation[language.code]['order_button_text_loading'] : '' }}" class="form-control" />
+                              {% if error_order_button_text_loading[language.code] %}
+                                <div class="text-danger">{{ error_order_button_text_loading[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_close_button_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][close_button_text]" value="{{   localisation[language.code]['close_button_text']   ? localisation[language.code]['close_button_text'] : '' }}" class="form-control" />
+                              {% if error_close_button_text[language.code] %}
+                                <div class="text-danger">{{ error_close_button_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_description_show_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][description_show_text]" value="{{   localisation[language.code]['description_show_text']   ? localisation[language.code]['description_show_text'] : '' }}" class="form-control" />
+                              {% if error_description_show_text[language.code] %}
+                                <div class="text-danger">{{ error_description_show_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_no_in_stock_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][no_in_stock_text]" value="{{   localisation[language.code]['no_in_stock_text']   ? localisation[language.code]['no_in_stock_text'] : '' }}" class="form-control" />
+                              {% if error_no_in_stock_text[language.code] %}
+                                <div class="text-danger">{{ error_no_in_stock_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_description_hide_text }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][description_hide_text]" value="{{   localisation[language.code]['description_hide_text']   ? localisation[language.code]['description_hide_text'] : '' }}" class="form-control" />
+                              {% if error_description_hide_text[language.code] %}
+                                <div class="text-danger">{{ error_description_hide_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_price_title }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][price_title]" value="{{   localisation[language.code]['price_title']   ? localisation[language.code]['price_title'] : '' }}" class="form-control" />
+                              {% if error_price_title[language.code] %}
+                                <div class="text-danger">{{ error_price_title[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_qty_title }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][qty_title]" value="{{   localisation[language.code]['qty_title']   ? localisation[language.code]['qty_title'] : '' }}" class="form-control" />
+                              {% if error_qty_title[language.code] %}
+                                <div class="text-danger">{{ error_qty_title[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_total_title }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][total_title]" value="{{   localisation[language.code]['total_title']   ? localisation[language.code]['total_title'] : '' }}" class="form-control" />
+                              {% if error_total_title[language.code] %}
+                                <div class="text-danger">{{ error_total_title[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_options_title }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][options_title]" value="{{   localisation[language.code]['options_title'] ? localisation[language.code]['options_title'] : '' }}" class="form-control" />
+                              {% if error_options_title[language.code] %}
+                                <div class="text-danger">{{ error_options_title[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_form_title }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][form_title]" value="{{   localisation[language.code]['form_title'] ? localisation[language.code]['form_title'] : '' }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_agree_text }}">{{ entry_agree_text }}</span></label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][agree_text]" value="{{   localisation[language.code]['agree_text']   ? localisation[language.code]['agree_text'] : '' }}" class="form-control" />
+                              {% if error_agree_text[language.code] %}
+                                <div class="text-danger">{{ error_agree_text[language.code] }}</div>
+                              {% endif %}
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label">{{ entry_agree_text_btn }}</label>
+                        <div class="col-sm-9">
+                              <input type="text" name="ocp_oneclick_localisation[{{ language.code }}][agree_text_btn]" value="{{   localisation[language.code]['agree_text_btn']   ? localisation[language.code]['agree_text_btn'] : '' }}" class="form-control" />
+                        </div>
+                    </div>
+                    <div class="form-group required">
+                        <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_success_text }}">{{ entry_success_text }}</span></label>
+                        <div class="col-sm-9">
+                            <textarea name="ocp_oneclick_localisation[{{ language.code }}][success_text]" class="form-control">{{   localisation[language.code]['success_text']   ? localisation[language.code]['success_text'] : '' }}</textarea>
+                            {% if error_success_text[language.code] %}
+                              <div class="text-danger">{{ error_success_text[language.code] }}</div>
+                            {% endif %}
+                        </div>
+                    </div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            <div class="tab-pane" id="tab-design">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_window_design }}</label>
+                    <div class="col-sm-9">
+                        <select name="ocp_oneclick_settings[window_design]" class="form-control">
+                            <option value="0"{{ settings.window_design == 0 ? ' selected' : '' }}>{{ text_vertical }}</option>
+                            <option value="1"{{ settings.window_design == 1 ? ' selected' : '' }}>{{ text_horizontal }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_btn_in_footer }}</label>
+                    <div class="col-sm-9">
+                        <select name="ocp_oneclick_settings[btn_in_footer]" class="form-control">
+                            <option value="0"{{ settings.btn_in_footer == 0 ? ' selected' : '' }}>{{ text_btn_in_footer }}</option>
+                            <option value="1"{{ settings.btn_in_footer == 1 ? ' selected' : '' }}>{{ text_btn_under_fields }}</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_wrapper_bg }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[wrapper_bg]" class="form-control minicolors" value="{{ settings.wrapper_bg }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_wrapper_opacity }}">{{ entry_wrapper_opacity }}</span></label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[wrapper_opacity]" class="form-control input-small" value="{{ settings.wrapper_opacity }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_head_footer_bg }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[head_footer_bg]" class="form-control minicolors" value="{{ settings.head_footer_bg }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_form_bg }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[form_bg]" class="form-control minicolors" value="{{ settings.form_bg }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_checkout_button_bg }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[checkout_button_bg]" class="form-control minicolors" value="{{ settings.checkout_button_bg }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_checkout_button_bg_hover }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[checkout_button_bg_hover]" class="form-control minicolors" value="{{ settings.checkout_button_bg_hover }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_checkout_button_color }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[checkout_button_color]" class="form-control minicolors" value="{{ settings.checkout_button_color }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_close_button_bg }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[close_button_bg]" class="form-control minicolors" value="{{ settings.close_button_bg }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_close_button_bg_hover }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[close_button_bg_hover]" class="form-control minicolors" value="{{ settings.close_button_bg_hover }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_close_button_color }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[close_button_color]" class="form-control minicolors" value="{{ settings.close_button_color }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_heading_font_color }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[heading_font_color]" class="form-control minicolors" value="{{ settings.heading_font_color }}" />
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_body_font_color }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[body_font_color]" class="form-control minicolors" value="{{ settings.body_font_color }}" />
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label">{{ entry_main_image_size }}</label>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-5">
+                            <input type="text" name="ocp_oneclick_settings[main_image_width]" class="form-control" value="{{ settings.main_image_width }}" placeholder="{{ entry_width }}" />
+                            {% if error_main_image_width %}
+                                <div class="text-danger">{{ error_main_image_width }}</div>
+                              {% endif %}
+                            </div>
+                            <div class="col-sm-2"><div class="text-center" style="line-height: 35px;">X</div></div>
+                            <div class="col-sm-5">
+                            <input type="text" name="ocp_oneclick_settings[main_image_height]" class="form-control" value="{{ settings.main_image_height }}" placeholder="{{ entry_height }}" />
+                            {% if error_main_image_height %}
+                                <div class="text-danger">{{ error_main_image_height }}</div>
+                              {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label">{{ entry_count_sub_images }}</label>
+                    <div class="col-sm-9">
+                      <input type="text" name="ocp_oneclick_settings[count_sub_images]" class="form-control" value="{{ settings.count_sub_images }}" />
+                      {% if error_count_sub_images %}
+                        <div class="text-danger">{{ error_count_sub_images }}</div>
+                      {% endif %}
+                    </div>
+                </div>
+                <div class="form-group required">
+                    <label class="col-sm-3 control-label">{{ entry_sub_images_size }}</label>
+                    <div class="col-sm-9">
+                        <div class="row">
+                            <div class="col-sm-5">
+                            <input type="text" name="ocp_oneclick_settings[sub_images_width]" class="form-control" value="{{ settings.sub_images_width }}" placeholder="{{ entry_width }}" />
+                            {% if error_sub_images_width %}
+                                <div class="text-danger">{{ error_sub_images_width }}</div>
+                            {% endif %}
+                            </div>
+                            <div class="col-sm-2"><div class="text-center" style="line-height: 35px;">X</div></div>
+                            <div class="col-sm-5">
+                            <input type="text" name="ocp_oneclick_settings[sub_images_height]" class="form-control" value="{{ settings.sub_images_height }}" placeholder="{{ entry_height }}" />
+                            {% if error_sub_images_height %}
+                                <div class="text-danger">{{ error_sub_images_height }}</div>
+                            {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="tab-pane" id="tab-links">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_order_status }}</label>
+                <div class="col-sm-10">
+                  <select name="ocp_oneclick_settings[order_status_id]" class="form-control">
+                    {% for order_status in order_statuses %}
+                      {% if settings.order_status_id   and  order_status.status_id  ==  settings.order_status_id%}
+                        <option value="{{ order_status.status_id }}" selected="selected">{{ order_status.name }}</option>
+                       {% else %}
+                        <option value="{{ order_status.status_id }}">{{ order_status.name }}</option>
+                        {% endif %}
+                    {% endfor %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_customer_groups }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for customer_group in customer_groups %}
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="ocp_oneclick_settings[customer_groups][{{ loop.index }}]" value="{{ customer_group.customer_group_id }}" {{ settings.customer_groups  and  customer_group.customer_group_id in settings.customer_groups|keys ? 'checked' : ''}} /> {{ customer_group.name }}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <a onclick="$(this).parent().find('input[type=\'checkbox\']').attr('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find('input[type=\'checkbox\']').attr('checked', false);">{{ text_unselect_all }}</a>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_stores }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    <div class="checkbox">
+                      <label>
+                        {% if settings.stores  and  0 in settings.stores|keys %}
+                        <input type="checkbox" name="ocp_oneclick_settings[stores][]" value="0" checked="checked" />
+                        {{ text_default}}
+                        {% else %}
+                        <input type="checkbox" name="ocp_oneclick_settings[stores][]" value="0" />
+                        {{ text_default }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% if settings.stores%}
+                    {% for store in stores %}
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="ocp_oneclick_settings[stores][]" value="{{ store.store_id }}" {{ store.store_id in settings.stores|keys ? 'checked' : ''}} /> {{ store.name }}
+                      </label>
+                    </div>
+                    {% endfor %}
+                    {% endif %}
+
+                  </div>
+                  <a onclick="$(this).parent().find('input[type=\'checkbox\']').attr('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find('input[type=\'checkbox\']').attr('checked', false);">{{ text_unselect_all }}</a>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_options }}</label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for option in product_options %}
+                    <div class="checkbox">
+                      <label>
+                        <input type="checkbox" name="ocp_oneclick_settings[product_options_allowed][{{ loop.index }}]" value="{{ option.option_id }}" {% if settings.product_options_allowed  and  option.option_id in settings.product_options_allowed|keys %}checked{% endif %} /> {{ option.name }}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                  <a onclick="$(this).parent().find('input[type=\'checkbox\']').attr('checked', true);">{{ text_select_all }}</a> / <a onclick="$(this).parent().find('input[type=\'checkbox\']).attr('checked', false);">{{ text_unselect_all }}</a>
+                </div>
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-fields_list">
+                <div class="form-group">
+                    <label class="col-sm-3 control-label">{{ entry_show_field_title }}</label>
+                    <div class="col-sm-9">
+                      <div class="btn-group" data-toggle="buttons">
+                        <label class="btn btn-default {{ settings.show_field_title  == 1 ? 'active' : '' }}">
+                          <input type="radio" name="ocp_oneclick_settings[show_field_title]" value="1" autocomplete="off"{{ settings.show_field_title  == 1 ? ' checked="checked"' : '' }} />{{ text_yes }}
+                        </label>
+                        <label class="btn btn-danger btn-default {{ settings.show_field_title  == 0 ? 'active' : '' }}">
+                          <input type="radio" name="ocp_oneclick_settings[show_field_title]" value="0" autocomplete="off"{{ settings.show_field_title  == 0 ? ' checked="checked"' : '' }} />{{ text_no }}
+                        </label>
+                      </div>
+                    </div>
+                  </div>
+                <table class="table table-hover">
+                    <thead>
+                        <tr>
+                            <th>{{ column_field }}</th>
+                            <th>{{ column_status }}</th>
+                            <th>{{ column_required }}</th>
+                            <th>{{ column_heading }}</th>
+                            <th>{{ column_placeholder }}</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for key, field in fields_list %}
+                        <tr>
+                            <td><b>{{ field.title }}</b></td>
+                            <td>
+                                <div class="btn-group" data-toggle="buttons">
+                                <label class="btn btn-default{% if fields[key]['status'] == 1 %} active{% endif %}">
+                                  <input type="radio" name="ocp_oneclick_fields[{{ key }}][status]" value="1" autocomplete="off"{% if fields[key]['status'] == 1%} checked="checked"{% endif %} />{{ text_yes }}
+                                </label>
+                                <label class="btn btn-danger btn-default{% if fields[key]['status'] == 0 %} active{% endif %}">
+                                  <input type="radio" name="ocp_oneclick_fields[{{ key }}][status]" value="0" autocomplete="off"{% if fields[key]['status'] == 0 %} checked="checked"{% endif %} />{{ text_no }}
+                                </label>
+                              </div>
+                            </td>
+                            <td>
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn btn-default{% if fields[key]['required'] == 1%} active{% endif %}">
+                                      <input type="radio" name="ocp_oneclick_fields[{{ key }}][required]" value="1" autocomplete="off"{% if fields[key]['required']  == 1%} checked="checked"{% endif %} />{{ text_yes }}
+                                    </label>
+                                    <label class="btn btn-danger btn-default{% if fields[key]['required'] is defined and  fields[key]['required'] == 0%} active{% endif %}">
+                                      <input type="radio" name="ocp_oneclick_fields[{{ key }}][required]" value="0" autocomplete="off"{% if fields[key]['required'] == 0%} checked="checked"{% endif %} />{{ text_no }}
+                                    </label>
+                                  </div>
+                            </td>
+                            <td>
+                              <ul class="nav nav-tabs" id="{{ key }}_title">
+                                {% for language in languages %}
+                                  <li>
+                                    <a href="#tab-{{ key }}-title{{ language.language_id }}" data-toggle="tab"><img src="{{ language.image }}" title="{{ language.name }}" /> {{ language.name }}</a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                              <div class="tab-content">
+                              {% for language in languages %}
+                                <div class="tab-pane" id="tab-{{ key }}-title{{ language.language_id }}">
+                                    <input type="text" name="ocp_oneclick_fields[{{ language.code }}][{{ key }}_title]" class="form-control" value="{{ fields[language.code][key ~ '_title']?fields[language.code][key ~ '_title'] : ''}}" />
+                                </div>
+                              {% endfor %}
+                              </div>
+                            </td>
+                            <td>
+                              <ul class="nav nav-tabs" id="{{ key }}_placeholder">
+                                {% for language in languages %}
+                                  <li>
+                                    <a href="#tab-{{ key }}-placeholder{{ language.language_id }}" data-toggle="tab"><img src="{{ language.image }}" title="{{ language.name }}" /> {{ language.name }}</a>
+                                  </li>
+                                {% endfor %}
+                              </ul>
+                              <div class="tab-content">
+                              {% for language in languages %}
+                                <div class="tab-pane" id="tab-{{ key }}-placeholder{{ language.language_id }}">
+                                    <input type="text" name="ocp_oneclick_fields[{{ language.code }}][{{ key }}_placeholder]" class="form-control" value="{{ fields[language.code][key ~ '_placeholder']?fields[language.code][key ~ '_placeholder']: '' }}" />
+                                </div>
+                              {% endfor %}
+                              </div>
+                            </td>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+<script type="text/javascript"><!--
+$('#localisation_tabs a:first').tab('show');
+$('#btns_tabs a:first').tab('show');
+{% for key, field in fields_list %}
+$('#{{ key }}_title a:first').tab('show');
+$('#{{ key }}_placeholder a:first').tab('show');
+{% endfor %}
+$('input.minicolors').minicolors();
+var row = {{ row }};
+function addListBtn(){
+    $('#list_btns').append('<li><a href="#tab-btn'+row+'" data-toggle="tab" aria-expanded="true"><i class="fa fa-minus-circle" onclick="$(\'a[href=\\\'#tab-btn'+row+'\\\']\').parent().remove(); $(\'#tab-btn'+row+'\').remove(); $(\'#list_btns a:first\').tab(\'show\');"></i> '+row+'</a></li>');
+    var html = '<div class="tab-pane" id="tab-btn'+row+'">';
+        html += '<div class="form-group">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_name }}">{{ entry_list_btn_name }}</span></label>';
+            html += '<div class="col-sm-8">';
+            html += '<input type="text" name="ocp_oneclick_list_btns['+row+'][list_btn_name]" class="form-control" value="" />';
+            html += '</div>';
+        html += '</div>';
+          html += '<div class="form-group required">';
+              html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_product_block }}">{{ entry_list_product_block }}</span></label>';
+            html += '<div class="col-sm-8">';
+                html += '<input type="text" name="ocp_oneclick_list_btns['+row+'][list_product_block]" class="form-control" value="" placeholder=".class" />';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group required">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_element }}">{{ entry_list_element }}</span></label>';
+            html += '<div class="col-sm-8">';
+              html += '<input type="text" name="ocp_oneclick_list_btns['+row+'][list_element]" class="form-control" value="" placeholder=".class" />';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_position }}">{{ entry_list_position }}</span></label>';
+            html += '<div class="col-sm-8">';
+                html += '<select name="ocp_oneclick_list_btns['+row+'][list_position]" class="form-control">';
+                    html += '<option value="1">{{ text_before_element }}</option>';
+                    html += '<option value="2">{{ text_after_element }}</option>';
+                html += '</select>';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group required">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_class }}">{{ entry_list_btn_block_class }}</span></label>';
+            html += '<div class="col-sm-8">';
+               html += '<input type="text" name="ocp_oneclick_list_btns['+row+'][list_btn_block_class]" class="form-control" value="" placeholder="btn-ocpoc-wrap" />';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_block_css }}">{{ entry_list_btn_block_css }}</span></label>';
+            html += '<div class="col-sm-8">';
+                html += '<textarea name="ocp_oneclick_list_btns['+row+'][list_btn_block_css]" class="form-control"></textarea>';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group required">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_class }}">{{ entry_list_btn_class }}</span></label>';
+            html += '<div class="col-sm-8">';
+                html += '<input type="text" name="ocp_oneclick_list_btns['+row+'][list_btn_class]" class="form-control" value="" placeholder="btn-ocpoc" />';
+            html += '</div>';
+          html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-4 control-label"><span data-toggle="tooltip" data-placement="right" title="{{ tip_list_btn_css }}">{{ entry_list_btn_css }}</span></label>';
+            html += '<div class="col-sm-8">';
+                html += '<textarea name="ocp_oneclick_list_btns['+row+'][list_btn_css]" class="form-control"></textarea>';
+            html += '</div>';
+        html += '</div>';
+    html += '</div>';
+    $('#tab-btn-list .tab-content').append(html);
+    $('#tab-btn-list a[href=\'#tab-btn'+row+'\']').tab('show');
+    row++;
+}
+$('.nav.nav-tabs a:first').tab('show');
+//--></script>
+{{ footer }}

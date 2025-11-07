@@ -1,0 +1,90 @@
+<modification>
+    <code>eu_cookie_law</code>
+	<name>EU Cookie Law OPC3</name>
+	<version>1.0</version>
+	<link>http://www.opencart-bg.com</link>
+    <author>sales@opencart-bg.com</author>
+    <file path="catalog/view/theme/*/template/common/footer.twig">
+		<operation error="skip">
+			<search><![CDATA[</body>]]></search>
+			<add position="before"><![CDATA[
+            <style>
+            #cookie-space {
+                display:none;
+                height: 51px;
+            }    
+            #cookie-consent {
+                width: 100%;
+                position: fixed;
+                left: 0px;
+                z-index: 999;
+                background: none repeat scroll 0% 0% rgba(240, 204, 204, 0.82);
+                border-bottom: 1px solid rgba(195, 195, 195, 0.73);
+                display: none;
+                padding: 10px 0px;
+                top: 0px;
+            }
+            #cookie-consent #accept {
+                float: right;
+                margin-top: 1px;
+                margin-left: 10px;
+                background: none repeat scroll 0% 0% rgba(97, 97, 97, 0.65);
+                padding: 5px 10px;
+                border: medium none;
+                color: #FFF;
+                cursor: pointer;
+            }
+            #cookie-inner {
+                display: block;
+                max-width: 1280px;
+                margin-left: auto;
+                margin-right: auto;
+                padding: 0px 0px;
+                min-width: 300px;
+            }      
+            </style>
+            <script type="text/javascript">
+                $(document).ready(function() {
+                var myCookie = document.cookie.replace(/(?:(?:^|.*;\s*)accepted\s*\=\s*([^;]*).*$)|^.*$/, "$1");
+                    if (myCookie != "yes") {
+                        $('#cookie-consent').show();
+                        $('#cookie-space').show();
+                        $('#accept').click(function() {
+                            document.cookie = "accepted=yes; expires=Thu, 18 Dec 2025 12:00:00 GMT; path=/";
+                            $('#cookie-space').hide();
+                            $('#cookie-consent').hide();
+                        });
+                    }
+                });        
+            </script>
+            <div id="cookie-space"></div>                
+            <div id="cookie-consent">
+                <div id="cookie-inner">
+                    <div id="cookie-text"><button id="accept">{{ text_cookie_close }} </button>{{ text_cookie }}</div>   
+                </div>
+             </div>
+            ]]></add>
+		</operation>
+	</file>
+	<file path="catalog/language/en-gb/common/footer.php">
+		<operation>
+			<search><![CDATA[$_['text_information']]]></search>
+			<add position="before"><![CDATA[
+                    $_['text_cookie_close']      = 'Close';
+                    $_['text_cookie']            = 'We use cookies to offer you the best experience on our site. By continuing to browse the site, You are agree to use cookies.<br />For obtain more informations please <a href="http://www.aboutcookies.org">Click here</a>';
+            ]]></add>
+		</operation>
+	</file>
+	<file path="catalog/controller/common/footer.php">
+		<operation>
+			<search><![CDATA[$data['powered'] = sprintf($this->language->get('text_powered'), $this->config->get('config_name'), date('Y', time()));]]></search>
+			<add position="before"><![CDATA[
+                    $data['text_cookie_close'] = $this->language->get('text_cookie_close');
+		                $data['text_cookie'] = $this->language->get('text_cookie');
+           ]]></add>
+        </operation>
+    </file>
+</modification>	
+
+
+

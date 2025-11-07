@@ -1,0 +1,11 @@
+<div class="simplecheckout-block" id="simplecheckout_comment">
+    {% if display_header %}
+      <div class="checkout-heading panel-heading">
+        <div class="order__param-img"><img style="width: 21px; height: 21px;" src="/catalog/view/theme/default/images/comment-chat.svg"></div>
+        {{ label }}
+      </div>
+    {% endif %}
+    <div class="simplecheckout-block-content">
+      <textarea class="input" name="comment" id="comment" placeholder="{{ placeholder }}" data-reload-payment-form="true">{{ comment }}</textarea>
+    </div>
+</div>

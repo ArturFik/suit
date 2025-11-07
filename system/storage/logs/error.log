@@ -1,0 +1,86 @@
+2025-03-11 18:10:34 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'localhost' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:10:47 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmaxn'@'localhost' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:12:22 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmaxn'@'78.24.222.248' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:12:34 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'78.24.222.248' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:12:42 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'localhost' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:12:49 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'172.17.0.1' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:14:41 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'localhost' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:14:54 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'172.17.0.1' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:15:03 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'78.24.222.248' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-11 18:16:22 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'ibmax'@'78.24.222.248' (using password: YES) in /var/www/www-root/data/www/ibmax.pro-up.ru/system/library/db/mysqli.php on line 7
+2025-03-12 12:40:10 - PHP Notice:  Undefined index: top in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/admin/controller/catalog/information.php on line 363
+2025-03-12 12:41:16 - PHP Notice:  Undefined index: top in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/admin/controller/catalog/information.php on line 363
+2025-03-12 15:43:04 - PHP Notice:  Undefined index: blog_id in /var/www/www-root/data/www/ibmax.pro-up.ru/catalog/controller/blog/blog.php on line 362
+2025-03-17 2:48:46 - PHP Notice:  Trying to access array offset on value of type null in /var/www/www-root/data/www/ibmax.pro-up.ru/catalog/controller/blog/home.php on line 148
+2025-03-17 2:48:46 - PHP Notice:  Trying to access array offset on value of type null in /var/www/www-root/data/www/ibmax.pro-up.ru/catalog/controller/blog/home.php on line 153
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: name in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 53
+2025-03-17 18:38:46 - PHP Notice:  Undefined index: category_id in /var/www/www-root/data/www/ibmax.pro-up.ru/system/storage/modification/catalog/controller/common/footer.php on line 54
+2025-10-30 15:07:34 - PHP Warning:  mysqli::__construct(): (HY000/2002): Подключение не установлено, т.к. конечный компьютер отверг запрос на подключение.
+ in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:10:05 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:10:06 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:10:07 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:10:08 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:11:34 - PHP Warning:  mysqli::__construct(): (HY000/1045): Access denied for user 'root'@'localhost' (using password: YES) in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:13:21 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:14:32 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:14:38 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:16:01 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:16:04 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:18:04 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 15:20:09 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 17:07:45 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 17:07:49 - PHP Warning:  mysqli::__construct(): (HY000/1049): Unknown database 'ibmax_local' in D:\ip\suit\system\library\db\mysqli.php on line 7
+2025-10-30 17:09:43 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-10-30 17:11:48 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-10-30 17:56:54 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:25:12 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:26:04 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:26:23 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:12 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:13 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:16 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:17 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:18 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:23 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:26 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:31 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:27:32 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 9:31:24 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:26:14 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:40:57 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:27 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:28 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:28 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:29 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:29 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:29 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:29 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:30 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:31 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:31 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:31 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:32 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:32 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:32 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:42:32 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:43:22 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:43:53 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:46:01 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:49:04 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 10:55:29 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302
+2025-11-05 11:44:10 - PHP Warning:  array_chunk(): Size parameter expected to be greater than 0 in D:\ip\suit\system\storage\vendor\twig\twig\src\Extension\CoreExtension.php on line 1302

@@ -1,0 +1,474 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>{{ form_name }}</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+<style type="text/css">
+{% if (style == 'html' or style == 'printer') %}
+body {font-family:Arial, Helvetica, sans-serif; font-size:12px !important;}
+@page  
+{ 
+    size: auto;
+    margin: 5mm 5mm 5mm 5mm;  
+} 
+html {
+    margin: 2px 2px;
+}
+{% endif %}
+body {
+    max-width: 800px;
+}
+h2 {
+    font-weight: bold;
+    font-size: 13px;
+}
+.s2 {
+    font-weight: normal;
+    font-size: 13px;
+}
+.su2 {
+    font-weight: normal;
+    font-size: 13px;
+    min-height: 13px;
+}
+h1 {
+    font-size: 18pt !important;
+    border-bottom: 2px solid black; /* Параметры линии под текстом */
+    padding-bottom: 5px; /* Расстояние от текста до линии */
+}
+p {
+    font-weight: normal;
+    font-size: 13px;
+}
+.center {
+    text-align: center;
+}
+table {
+    clear: both;
+    width: 100%;
+}
+table th{
+  border: 1px solid !important;
+}
+td {
+    border: 1px solid;
+}
+.seller-buyer {
+    margin-bottom: 6px;
+    width: auto !important;
+}
+.seller-buyer td {
+    border: 0px;
+    padding-right: 6px;
+}
+td p {
+    text-align: bottom;
+    margin: 2px 6px;
+}
+.textr p {
+    text-align: right;
+}
+.b0 {
+    border: 0px !important;
+}
+.smal {
+    font-size: 10px;
+}
+.collapse {
+        border-collapse: collapse;
+}
+.minitext {
+    font-size: 11px !important;
+}
+.qr img{
+      display: block;
+      margin: 0 auto; 
+      vertical-align: middle;
+}
+@media print  
+{
+    .foot{
+        page-break-inside: avoid;
+    }
+}
+.foot{
+        page-break-inside: avoid;
+    }
+{% if (style == 'pdf') %}
+html {
+
+}
+body {font-family: 'Arial' !important; font-size:11px !important;}
+
+.minitext {
+    font-size: 10px !important;
+}
+
+{% endif %}
+{% if (style == 'printer') %}
+
+{% endif %}
+</style>
+</head>
+ 
+<body {% if (style == 'printer') %}onload="doPrint()"{% endif %}>
+{{ etext }}
+{# --- Пример шапки начало ---
+<p style="font-size: 12px; text-align: center; margin-bottom: 4px;">
+Внимание! Оплата данного счета означает согласие с условиями поставки товара. Уведомление об оплате обязательно, в противном случае не гарантируется наличие товара на складе. Товар отпускается по факту прихода денег на р/с Поставщика, самовывозом, при наличии доверенности и паспорта.
+</p>
+<div>
+    <div style="width: 50%; display: inline-block;">
+        <img style="padding-top: 6px;" src="image/art.png"/>  
+    </div>
+    <div style="display: inline-block; vertical-align: top ;">
+        <h2>ООО "Безнал Груп"</h2>
+        <h2>100101, Россия, г. Москва, Фиделя Кастро 12, офис 341</h2>
+        <h2>+7 (499) 999-80-89 | info@nomail.ru</h2> 
+    </div>
+</div>
+--- Пример шапки конец --- #}
+<div {% if qr %}style="float: left; width: 83%;"{% endif %}>
+<table class="collapse">
+    <tr style="border-bottom: 0 !important;">
+        <td colspan="2" style="border-bottom: 0 !important; width: 50%;">
+            <p class="s2">{{ bankuser }}</p>
+        </td>
+        <td>
+            <p class="s2">{{ form_bik }}</p>
+        </td>
+        <td style="border-bottom: 0 !important;">
+            <p class="s2">{{ bik }}</p>
+        </td>
+    </tr>
+    <tr style="border-bottom: 0 !important; border-top: 0 !important; margin-bottom: 0 !important;">
+        <td colspan="2" style="border-bottom: 0 !important; border-top: 0 !important;">
+        </td>
+        <td style="border-bottom: 0 !important;">
+            <p class="s2" style="margin-bottom: 0 !important;">{{ form_ks }}</p>
+        </td>
+        <td style="border-bottom: 0 !important; border-top: 0 !important;">
+            <p class="s2" style="margin-bottom: 0 !important;">{{ ks }}</p>
+        </td>
+    </tr>
+    <tr style="border-top: 0 !important;">
+        <td colspan="2" style="border-top: 0 !important; padding:0 !important; margin:0 !important;">
+            <p class="minitext" style="margin-top:0 !important;">{{ form_bankuser }}</p>
+        </td>
+        <td style="border-right: 0 !important; border-top: 0 !important;"></td><td style="border-top: 0 !important;"></td>
+    </tr>
+    <tr>
+        <td>
+            <p class="s2">{{ form_inn }} {{ inn }}</p>
+        </td>
+        <td style="width: 25%">
+            <p class="s2">{% if kpp %}{{ form_kpp }} {{ kpp }}{% endif %}</p>
+        </td>
+        <td style="border-bottom: 0 !important;">
+            <p class="s2">{{ form_rs }}</p>
+        </td>
+        <td style="border-bottom: 0 !important;">
+            <p class="s2">{{ rs }}</p>
+        </td>
+    </tr>
+    <tr style="border-bottom: 0 !important;">
+        <td colspan="2"  style="border-bottom: 0 !important;">
+            <p class="s2">{{ bank }}</p>
+        </td>
+        <td style="border-right: 0 !important; border-top: 0 !important; border-bottom: 0 !important;"></td><td style="border-top: 0 !important; border-bottom: 0 !important;"></td>
+    </tr>
+    <tr style="border-top: 0 !important;">
+        <td colspan="2" style="border-top: 0 !important; padding:0 !important; margin:0 !important;">
+            <p class="minitext" style="margin-top:16px !important;">{{ form_bank }}</p>
+        </td>
+        <td style="border-right: 0 !important; border-top: 0 !important;"></td><td style="border-top: 0 !important;"></td>
+    </tr>
+</table>
+</div>
+{% if qr %}<div class="qr" style="float: left; min-width: 125px; width: 16%;">{{ qr }}</div>{% endif %}
+<div style="clear: both;"><h1 {% if qr %}style="padding-top: 10px;"{% endif %}>{{ invoi }}</h1></div>
+
+<table class="seller-buyer s2">
+    <tr>
+        <td>{{ form_seller }}</td>
+        <td><b>{{ seller }}</b></td>
+    </tr>
+    <tr>
+        <td>{{ form_buyer }}</td>
+        <td><b>{{ buyer }}</b></td>
+    </tr>
+</table>
+{% if product_table %}
+<table id="product-table-upgrade" border="0" cellpadding="2px" cellspacing="0" class="collapse">
+    <thead>
+        <tr>
+            <th class="center">
+                {{ form_products_item_number }}
+            </th>
+            <th class="center">
+                {{ form_products }}
+            </th>
+            <th class="center">
+                {{ form_products_counts }}
+            </th>
+            <th class="center">
+                {{ form_products_unit }}
+            </th>
+            <th class="center">
+                {{ form_products_price }}
+            </th>
+            <th class="center">
+                {{ form_products_amount }}
+            </th>
+        </tr>
+    </thead>
+      {% set i = 0 %}
+      {% for product in products %}
+      {% set i = i + 1 %}
+        <tr>
+            <td class="center">
+                <p class="center">
+                    {{ i }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ product['name'] }}
+                    {% if (product['option']) %}
+                        {% set oi = 0 %}
+                        {% set opti = '' %}
+                        {% for options in product['option'] %}
+                            {% set oi = oi + 1 %}
+                            {% if oi == 1 %}
+                                {% set opti = options %}
+                            {% else %}
+                                {% set opti = opti ~ ', ' ~ options %}
+                            {% endif %}
+                        {% endfor %}
+                        ({{ opti }})
+                    {% endif %}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['quantity'] }}
+                </p>
+            </td>
+            <td class="center">
+                <p>
+                    {{ form_unit }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['price'] }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['total'] }}
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+        <tr class="b0">
+            <td  rowspan="3" colspan="1" class="b0"></td>
+            <td colspan="4" class="textr b0">
+                <p>
+                    <b>{{ form_totalcheck }}</b>
+                </p>
+            </td>
+            <td class="textr b0">
+                <p>
+                    {{ totalcheck }}
+                </p>
+            </td>
+        </tr>
+        <tr class="b0">
+            <td  colspan="4" class="textr b0">
+                <p>
+                    <b>{{ form_nds }}</b>
+                </p>
+            </td>
+            <td class="textr b0">
+                <p>
+                    {{ nds }}
+                </p>
+            </td>
+        </tr>
+        <tr class="b0">
+            <td colspan="4" class="textr b0">
+                <p>
+                    <b>{{ form_totalpay }}</b>
+                </p>
+            </td>
+            <td class="textr b0">
+                <p>
+                    {{ totalpay }}
+                </p>
+            </td>
+        </tr>
+</table>
+{% else %}
+<table id="product-table-standard" border="0" cellpadding="2px" cellspacing="0" class="collapse">
+<thead>
+        <tr>
+            <th class="center">
+                {{ form_products_item_number }}
+            </th>
+            <th class="center">
+                {{ form_products }}
+            </th>
+            <th class="center">
+                {{ form_model }}
+            </th>
+            <th class="center">
+                {{ form_products_counts }}
+            </th>
+            <th class="center">
+                {{ form_products_price }}
+            </th>
+            <th class="center">
+                {{ form_products_amount }}
+            </th>
+        </tr>
+    </thead>
+      {% set i = 0 %}
+      {% for product in products %}
+      {% set i = i + 1 %}
+        <tr>
+            <td class="center">
+                <p class="center">
+                    {{ i }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ product['name'] }}
+                    {% for option in product.option %} <br />
+                    <small> - {{ option.name }}: {{ option.value }}</small> {% endfor %}
+                </p>
+            </td>
+            <td class="center">
+                <p class="center">
+                    {{ product['model'] }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['quantity'] }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['price'] }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ product['total'] }}
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+        {% for voucher in vouchers %}
+        <tr>
+            <td class="center">
+                <p>
+                    {{ i }}
+                </p>
+            </td>
+            <td>
+                <p>
+                    {{ voucher.description }}
+                </p>
+            </td>
+            <td class="center">
+                <p>
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    1
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ voucher.amount }}
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ voucher.amount }}
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+        {% for total in totals %}
+        <tr>
+            <td colspan="5" class="textr b0">
+                <p>
+                    <b>{{ total.title }}</b>
+                </p>
+            </td>
+            <td class="textr">
+                <p>
+                    {{ total.text }}
+                </p>
+            </td>
+        </tr>
+        {% endfor %}
+</table>
+{% endif %}
+<p>{{ form_allTextQBill }} {{ i }}, {{ form_allTextSumBill }} {{ totalcheckformat }}<br/><b>{{ numbers }}</b></p>
+{{ comment }}
+<div class="foot">
+{% if (form_footer == 'simple') %}
+<hr/>
+<div><img src="image/{{ footer_simple }}" style="height:200px;" /></div>
+{% elseif (form_footer == 'custom') %}
+{{ footer_custom }}
+{# --- Пример подвала начало ---
+<hr/>
+<table border="0"  style="width: 100% !important; margin-top: 16px;">
+    <tr>
+        <td class="b0" style="width: 10% !important;"><p><b>Руководитель:</b></p></td>
+        <td class="b0" style="width: 40% !important; border-bottom: 1px solid black !important; text-align:right !important;"><p style="border-bottom:1px;"><b>Васюков А.Е</b></p></td>
+        <td class="b0" style="width: 10% !important;"><p><b>Бухгалтер:</b></p></td>
+        <td class="b0" style="width: 40% !important; border-bottom: 1px solid black !important; text-align:right !important;"><p><b>Лочпатина Х.А</b></p></td>
+    </tr>
+     <tr>
+        <td class="b0" style="width: 10% !important;"></td>
+        <td class="b0" style="width: 40% !important; text-align:center;"><div style="position: relative; left:-20px; top: -60px;  margin-bottom: -60px; z-index: 4;"><img src="image/catalog/ppodpis1.png" style="height:100px;" /></div></td>
+        <td class="b0" style="width: 10% !important;"></td>
+        <td class="b0" style="width: 40% !important; text-align:center;"><div style="position: relative; left:-20px; top: -60px;  margin-bottom: -60px; height:100px; z-index: 4;"><img src="image/catalog/podpis2.png" style="height:100px;" /></div></td>
+    </tr>
+</table>
+<div style="position: relative; left:50px; top: -100px; margin-bottom: -100px; z-index: 5; height: 120px; "><img src="image/catalog/pngegg.png" style="height:200px;" /></div>
+--- Пример подвала конец --- #}
+{% else %}
+<hr/>
+<table border="0" style="{% if not buh_name or not ruk_name %}  width: 50% !important; {% else %} width: 100% !important;{% endif %} margin-top: 16px;">
+    <tr>
+        {% if ruk_name %}
+        <td class="b0" style="width: 10% !important;"><p><b>{{ ruk_name }}:</b></p></td>
+        <td class="b0" style="width: 40% !important; border-bottom: 1px solid black !important; text-align:right !important;"><p style="border-bottom:1px;"><b>{{ ruk_fio }}</b></p></td>
+        {% endif %}
+        {% if buh_name %}
+        <td class="b0" style="width: 10% !important;"><p><b>{{ buh_name }}:</b></p></td>
+        <td class="b0" style="width: 40% !important; border-bottom: 1px solid black !important; text-align:right !important;"><p><b>{{ buh_fio }}</b></p></td>
+        {% endif %}
+    </tr>
+</table>
+{% endif %}
+</div>
+{% if (style == 'printer') %} 
+<script>
+            function doPrint() {
+                setTimeout(function(){window.print();}, 300);
+                window.onfocus = function(){setTimeout(function(){window.close();}, 300);};
+            }
+</script>
+{% endif %}
+</body>
+</html>

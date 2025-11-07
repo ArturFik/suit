@@ -1,0 +1,69 @@
+<div class="form-horizontal panel panel-default layout-newsletter" id="layout-newsletter{{ module }}">
+  <div class="panel-heading">
+    {% if display_title %}
+    <h3 class="panel-title">{{ heading_title }}</h3>
+    {% endif %}
+  </div>
+
+  {% if display_icon %}
+  <div class="newsletter-icon text-center"><i class="fa {{ iconclass }}" aria-hidden="true"></i></div>
+  {% endif %}
+  <div class="panel-body ">
+    {% if text_description|trim %}
+    <p class="text-center">{{ text_description }}</p>
+    {% endif %}
+    <div class="notify"></div>
+    {% if display_name %}
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" name="name" value="" class="form-control" placeholder="{{ entry_name }}" />
+      </div>
+    </div>
+    {% endif %}
+    <div class="form-group">
+      <div class="col-sm-12">
+        <input type="text" name="email" value="" class="form-control" placeholder="{{ entry_email }}" />
+      </div>
+    </div>
+    <div class="buttons">
+      <button type="button" class="btn btn-success btn-block button"  id="btn_layout_subscribe{{ module }}">{{ button_subscribe }}</button>
+    </div>
+  </div>
+<script type="text/javascript"><!--
+$('#layout-newsletter{{ module }} #btn_layout_subscribe{{ module }}').click(function() {
+  $.ajax({
+    url: 'index.php?route=extension/module/cinewsletter/addSubscriber',
+    dataType: 'json',
+    data: $('#layout-newsletter{{ module }} input[name="name"], #layout-newsletter{{ module }} input[name="email"]'),
+    type: 'post',
+    beforeSend: function() {
+      $('#layout-newsletter{{ module }} #btn_layout_subscribe{{ module }}').button('loading');
+    },
+    complete: function() {
+      $('#layout-newsletter{{ module }} #btn_layout_subscribe{{ module }}').button('reset');
+    },
+    success: function(json) {
+      $('#layout-newsletter{{ module }} .text-danger, #layout-newsletter{{ module }} .alert').remove();
+      $('#layout-newsletter{{ module }} .form-group').removeClass('has-error');
+
+      if(json['error_name']) {
+        $('#layout-newsletter{{ module }} input[name="name"]').after('<div class="text-danger">'+ json['error_name'] +'</div>');
+
+        $('.text-danger').parent().parent().addClass('has-error');
+      }
+
+      if(json['error_email']) {
+        $('#layout-newsletter{{ module }} input[name="email"]').after('<div class="text-danger">'+ json['error_email'] +'</div>');
+
+        $('.text-danger').parent().parent().addClass('has-error');
+      }
+
+      if(json['success']) {
+        $('#layout-newsletter{{ module }} input[name="name"], #layout-newsletter{{ module }} input[name="email"]').val('');
+        $('#layout-newsletter{{ module }} .notify').html('<div class="alert alert-success"><i class="fa fa-check-circle"></i> '+ json['success'] +'<button type="button" class="close" data-dismiss="alert"> &times; </button></div>');
+      }
+    }
+  });
+});
+//--></script>
+</div>

@@ -1,0 +1,162 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title">{{ text_form }}</h3>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}"  method="post" enctype="multipart/form-data" id="form-email" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_template }}">{{ entry_template }}</span></label>
+            <div class="col-sm-10">
+              <select name="citemplate_id" class="form-control">
+                <option value="">{{ text_select }}</option>
+                {% for citemplate in citemplates %}
+                  {% if citemplate.citemplate_id == citemplate_id %} 
+                      {% set sele = 'selected="selected"' %}
+                  {% else %}
+                      {% set sele = '' %}
+                  {% endif %} 
+                <option {{ sele }} value="{{ citemplate.citemplate_id }}">{{ citemplate.title }}</option>
+                {% endfor %}
+              </select>
+              {% if error_citemplate %}
+              <div class="text-danger">{{ error_citemplate }}</div>
+              {% endif %} 
+            </div>
+          </div>
+          <div class="form-group hide">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_shottype }}">{{ entry_shottype }}</span></label>
+            <div class="col-sm-10">
+              <select name="shottype" class="form-control">
+                <option {{ shottype == '1' ? 'selected="selected"' : '' }} value="1">{{ text_subscriber_list }}</option>
+                <option {{ shottype == '0' ? 'selected="selected"' : '' }} value="0">{{ text_subscriber_choose }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_newsletter_status }}">{{ entry_newsletter_status }}</span></label>
+            <div class="col-sm-10">
+              <select name="newsletter_status" class="form-control">
+                <option value="*">{{ text_all }}</option>
+                <option {{ newsletter_status == '0' ? 'selected="selected"' : '' }} value="0">{{ text_unverified }}</option>
+                <option {{ newsletter_status == '1' ? 'selected="selected"' : '' }} value="1">{{ text_verified }}</option>
+                <option {{ newsletter_status == '2' ? 'selected="selected"' : '' }} value="2">{{ text_unsubscriber }}</option>
+                <option {{ newsletter_status == '3' ? 'selected="selected"' : '' }} value="3">{{ text_decline }}</option>
+                <option {{ newsletter_status == 'custom' ? 'selected="selected"' : '' }} value="custom">{{ text_custom }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group custom_subscriber_group {{ newsletter_status == 'custom' ? '' : 'hide' }}">
+            <label class="col-sm-2 control-label">{{ entry_custom_subscriber }}</label>
+            <div class="col-sm-10">
+              <input type="text" name="custom_subscriber" value="" placeholder="{{ entry_custom_subscriber }}" id="input-custom" class="form-control" />
+              <div id="custom-subscriber" class="well well-sm" style="height: 150px; overflow: auto;">
+                {% for custom_subscriber in custom_subscribers %}
+                <div id="custom-subscriber{{ custom_subscriber.newsletter_id }}"><i class="fa fa-minus-circle"></i> {{ custom_subscriber.email }}
+                  <input type="hidden" name="custom_subscribers[]" value="{{ custom_subscriber.newsletter_id }}" />
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+          </div>
+          <div class="form-group account_type_group {{ newsletter_status == 'custom' ? 'hide' : '' }}">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_account_type }}">{{ entry_account_type }}</span></label>
+            <div class="col-sm-10">
+              <select name="account_type" class="form-control">
+                <option value="*">{{ text_all }}</option>
+                <option {{ account_type == '1' ? 'selected="selected"' : '' }} value="1">{{ text_register }}</option>
+                <option {{ account_type == '0' ? 'selected="selected"' : '' }} value="0">{{ text_guest }}</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-group store_group {{ newsletter_status == 'custom' ? 'hide' : '' }}">
+            <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_store }}">{{ entry_store }}</span></label>
+            <div class="col-sm-10">
+              <select name="store_id" class="form-control">
+                <option value="*">{{ text_all }}</option>
+                <option {{ store_id == '0' ? 'selected="selected"' : '' }} value="0">{{ text_default }}</option>
+                {% for store in stores %}
+                  {% if store.store_id == store_id %}
+                    {% set sele = 'selected="selected"' %}
+                  {% else %} 
+                    {% set sele = '' %}
+                  {% endif %} 
+                <option {{ sele }} value="{{ store.store_id }}">{{ store.name }}</option>
+                {% endfor %}
+              </select>
+            </div>
+          </div>
+          <div class="form-group">
+            <label class="col-sm-2 control-label"> &nbsp; </label>
+            <div class="col-sm-10">
+              <button type="submit" form="form-email" data-toggle="tooltip" title="{{ button_send }}" class="btn btn-primary">{{ button_send }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<script type="text/javascript"><!--
+$('select[name=\'newsletter_status\']').on('change', function() {
+  var newsletter_status = $(this).val();
+  if(newsletter_status == 'custom') {
+    $('.account_type_group, .store_group').addClass('hide');
+    $('.custom_subscriber_group').removeClass('hide');
+  } else {
+    $('.account_type_group, .store_group').removeClass('hide');
+    $('.custom_subscriber_group').addClass('hide');
+  }
+});
+
+$('input[name=\'custom_subscriber\']').autocomplete({
+  'source': function(request, response) {
+    $.ajax({
+      url: 'index.php?route=newsletter/subscriber/autocomplete&user_token={{ user_token }}&filter_email=' +  encodeURIComponent(request),
+      dataType: 'json',     
+      success: function(json) {
+        response($.map(json, function(item) {
+          return {
+            label: item['email'],
+            value: item['newsletter_id']
+          }
+        }));
+      }
+    });
+  },
+  'select': function(item) {
+    $('input[name=\'custom_subscriber\']').val('');
+
+    $('#custom-subscriber' + item['value']).remove();
+
+    $('#custom-subscriber').append('<div id="custom-subscriber' + item['value'] + '"><i class="fa fa-minus-circle"></i> ' + item['label'] + '<input type="hidden" name="custom_subscribers[]" value="' + item['value'] + '" /></div>');
+  } 
+});
+
+$('#custom-subscriber').delegate('.fa-minus-circle', 'click', function() {
+  $(this).parent().remove();
+});
+//--></script>
+</div>
+{{ footer }}

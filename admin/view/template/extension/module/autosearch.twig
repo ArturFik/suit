@@ -1,0 +1,902 @@
+{{ header }}
+<style type="text/css">
+.toggle,.toggle:after,.toggle:before{-webkit-transition:all .2s cubic-bezier(.445,.05,.55,.95)}.addpad{padding-top:0;padding-bottom:0}.toggleWrapper{position:absolute;top:50%;overflow:hidden}.toggleWrapper input{position:absolute;left:-99em}.toggle{cursor:pointer;display:inline-block;position:relative;width:120px;height:30px;background:#ccc;border-radius:5px;transition:all .2s cubic-bezier(.445,.05,.55,.95)}.toggle:after,.toggle:before{position:absolute;line-height:30px;font-size:14px;z-index:2;transition:all .2s cubic-bezier(.445,.05,.55,.95)}.toggle:before{content:"OFF";left:20px;color:#ccc}.toggle:after{content:"ON";right:20px;color:#fff}.toggle__handler{display:inline-block;position:relative;z-index:1;background:#fff;width:65px;height:24px;border-radius:3px;top:3px;left:3px;-webkit-transition:all .2s cubic-bezier(.445,.05,.55,.95);transition:all .2s cubic-bezier(.445,.05,.55,.95);-webkit-transform:translateX(0);transform:translateX(0)}input:checked+.toggle{background:#66B317}input:checked+.toggle:before{color:#fff}input:checked+.toggle:after{color:#66B317}input:checked+.toggle .toggle__handler{width:54px;-webkit-transform:translateX(60px);transform:translateX(60px);border-color:#fff}
+.adw+.form-group{border-top:1px solid #eee}.form-horizontal .nav>li>a{outline:0}.form-horizontal .nav-tabs>li.active>a{border-top:2px solid #39B3D7!important}
+.adw,.panel-body,.panel-footer,blockquote{font-size:13px}.info_table_line2::before,.info_table_line::after{content:"";border-bottom:1px dashed #d7dbe9;position:relative;top:.4rem}.panel-footer{background-color:#eef2f7!important;padding:20px;text-align:center}blockquote{margin-bottom:1px}.adw-colorpick{font-weight:700;text-align:center;text-transform:uppercase;text-shadow:0 0 6px #000;color:#fff}.alert-warning{color:#ab680a}.adw.alert-warning a{color:#9c6518}.adw.alert-warning a:hover{color:#7e5316}.info_table{width:100%;border-collapse:collapse;border-spacing:0;table-layout:fixed}.info_table_line::after{display:block;flex:1;margin:0 0 0 .5rem}.info_table_line{display:flex;align-items:center;font-weight:600}.info_table_line2{display:flex;align-items:center}.info_table_line2::before{flex:1;margin:0 .5rem 0 0}#dropcache{margin-bottom:10px}
+</style>
+{{ column_left }}
+<div id="content">
+  <div class="page-header">
+	<div class="container-fluid">
+		<div class="pull-right">
+		<span style="padding-right:20px;">
+		<a href="https://liveopencart.ru/alexdw" target="_blank" data-toggle="tooltip" title="Другие дополнения" class="btn btn-info"><i class="fa fa-download"></i></a></span>
+		<button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-primary"><i class="fa fa-save"></i></button>
+		<a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+	<h1>AutoSearch 3x 1.35</h1>
+	<ul class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+		<li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+		{% endfor %}
+	</ul>
+	</div>
+  </div>
+  <div class="container-fluid">
+	{% if error_warning %}
+	<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+		<button type="button" class="close" data-dismiss="alert">&times;</button>
+	</div>
+	{% endif %}
+	<div class="panel panel-default">
+		<div class="panel-heading">
+			<h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+		</div>
+		<div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+<div class="adw alert alert-warning">
+	<p>{{ help_settings }}</p>
+</div>
+
+	<ul class="nav nav-tabs">
+		<li class="active"><a href="#tab-general" data-toggle="tab">{{ text_settings }}</a></li>
+		<li><a href="#tab-design" data-toggle="tab">{{ text_design }}</a></li>
+		<li><a href="#tab-cache" data-toggle="tab">{{ entry_cache }}</a></li>
+		<li><a href="#tab-data" data-toggle="tab">{{ entry_code }}</a></li>
+		</ul>
+	<div class="tab-content">
+	<div class="tab-pane active" id="tab-general">
+
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_status }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+			{% if module_autosearch_status %}
+				<input type="checkbox" id="input-status" name="module_autosearch_status" value="1" checked="checked" />
+			{% else %}
+				<input type="checkbox" id="input-status" name="module_autosearch_status" value="1" />
+			{% endif %}
+			<label class="toggle" for="input-status"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+			<div class="panel-heading">{{ text_info }}</div>
+			<div class="panel-body">
+			<table class="info_table">
+				<tbody>
+				{% for key,info in infos %}
+				<tr>
+					<th><span class="info_table_line">{{ key }}:</span></th>
+					<td><span class="info_table_line2">{{ info }}</span></td>
+				</tr>
+				{% endfor %}
+				<tr>
+					<th><span class="info_table_line">{{ text_cache_size }}</span></th>
+					<td><span class="info_table_line2 cachesize">{{ cache_size }} MB</span></td>
+				</tr>
+				</tbody>
+			</table>
+			</div>
+			</div>
+		</div>
+</div>
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-symbol"><span data-toggle="tooltip" title="{{ help_symbol }}">{{ entry_symbol }}</label>
+			<div class="col-sm-3">
+				<input type="text" name="module_autosearch_symbol" value="{{ module_autosearch_symbol ?? '3' }}" id="input-symbol" class="form-control" />
+			</div>
+			<label class="col-sm-3 control-label" for="input-ignored"><span data-toggle="tooltip" title="{{ help_ignored }}">{{ entry_ignored }}</label>
+			<div class="col-sm-3">
+				<input type="text" name="module_autosearch_ignored" value="{{ module_autosearch_ignored }}" id="input-ignored" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-3 control-label" for="input-size"><span data-toggle="tooltip" title="{{ help_size }}">{{ entry_size }}</label>
+			<div class="col-sm-3"><div class="input-group"><span class="input-group-addon">px</span>
+				<input type="text" name="module_autosearch_size" value="{{ module_autosearch_size ?? '250' }}" id="input-size" class="form-control" />
+			</div></div>
+			<label class="col-sm-3 control-label" for="input-codepage"><span data-toggle="tooltip" title="{{ help_codepage }}">{{ entry_codepage }}</label>
+			<div class="col-sm-3">
+			<select name="module_autosearch_codepage" id="input-codepage" class="form-control">
+			{% if module_autosearch_codepage == 0 %}
+				<option value="0" selected="selected">{{ text_code_variant1 }}</option>
+				<option value="1">{{ text_code_variant2 }}</option>
+				<option value="2">{{ text_code_variant3 }}</option>
+			{% elseif module_autosearch_codepage == 1 %}
+				<option value="0">{{ text_code_variant1 }}</option>
+				<option value="1" selected="selected">{{ text_code_variant2 }}</option>
+				<option value="2">{{ text_code_variant3 }}</option>
+			{% elseif module_autosearch_codepage == 2 %}
+				<option value="0">{{ text_code_variant1 }}</option>
+				<option value="1">{{ text_code_variant2 }}</option>
+				<option value="2" selected="selected">{{ text_code_variant3 }}</option>
+			{% endif %}
+			</select>
+			</div>
+		</div>
+		<div style="margin-top: 20px;"></div>
+
+		<ul class="nav nav-tabs">
+			<li class="active"><a href="#tab-product" data-toggle="tab">{{ text_products }}</a></li>
+			<li><a href="#tab-category" data-toggle="tab">{{ text_categories }}</a></li>
+			<li><a href="#tab-brand" data-toggle="tab">{{ text_brands }}</a></li>
+		</ul>
+		<div class="tab-content">
+			<div class="tab-pane active" id="tab-product">
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-limit">{{ entry_limit }}</label>
+			<div class="col-sm-4">
+				<input type="text" name="module_autosearch_limit" value="{{ module_autosearch_limit ?? '5' }}" id="input-limit" class="form-control" />
+			</div>
+		</div>
+
+		<fieldset>
+		<legend>{{ text_search }}</legend>
+
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_model }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_model %}
+				<input type="checkbox" id="input-model" name="module_autosearch_model" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-model" name="module_autosearch_model" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-model"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_tag }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_tag %}
+				<input type="checkbox" id="input-tag" name="module_autosearch_tag" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-tag" name="module_autosearch_tag" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-tag"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">		
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_sku }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_sku %}
+				<input type="checkbox" id="input-sku" name="module_autosearch_sku" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-sku" name="module_autosearch_sku" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-sku"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_upc }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_upc %}
+				<input type="checkbox" id="input-upc" name="module_autosearch_upc" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-upc" name="module_autosearch_upc" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-upc"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">		
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_ean }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_ean %}
+				<input type="checkbox" id="input-ean" name="module_autosearch_ean" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-ean" name="module_autosearch_ean" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-ean"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_jan }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_jan %}
+				<input type="checkbox" id="input-jan" name="module_autosearch_jan" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-jan" name="module_autosearch_jan" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-jan"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_isbn }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_isbn %}
+				<input type="checkbox" id="input-isbn" name="module_autosearch_isbn" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-isbn" name="module_autosearch_isbn" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-isbn"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_mpn }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_mpn %}
+				<input type="checkbox" id="input-mpn" name="module_autosearch_mpn" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-mpn" name="module_autosearch_mpn" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-mpn"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_location }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_location %}
+				<input type="checkbox" id="input-location" name="module_autosearch_location" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-location" name="module_autosearch_location" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-location"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_attr }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_attr %}
+				<input type="checkbox" id="input-attr" name="module_autosearch_attr" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-attr" name="module_autosearch_attr" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-attr"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_description }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_description %}
+				<input type="checkbox" id="input-description" name="module_autosearch_description" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-description" name="module_autosearch_description" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-description"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_search }}</span>
+		</blockquote>
+		</div>
+</div>
+
+		</fieldset>
+		<fieldset>
+		<legend>{{ text_show }}</legend>
+
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_show }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_show %}
+				<input type="checkbox" id="input-show" name="module_autosearch_show" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-show" name="module_autosearch_show" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-show"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 control-label" for="input-asr_image">{{ entry_asr_image }}</label>
+			<div class="col-sm-8"><div class="input-group"><span class="input-group-addon">px</span>
+				<input type="text" name="module_autosearch_asr_image" value="{{ module_autosearch_asr_image ?? '45' }}" id="input-asr_image" class="form-control" />
+			</div></div>
+		</div>
+		</div>
+</div>
+<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_image_nc }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_image_nc %}
+				<input type="checkbox" id="input-image_nc" name="module_autosearch_image_nc" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-image_nc" name="module_autosearch_image_nc" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-image_nc"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_image_nc }}</span>
+		</blockquote>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_show_model }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_show_model %}
+				<input type="checkbox" id="input-show_model" name="module_autosearch_show_model" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-show_model" name="module_autosearch_show_model" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-show_model"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_show_quantity }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_show_quantity %}
+				<input type="checkbox" id="input-show_quantity" name="module_autosearch_show_quantity" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-show_quantity" name="module_autosearch_show_quantity" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-show_quantity"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_show_price }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_show_price %}
+				<input type="checkbox" id="input-show_price" name="module_autosearch_show_price" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-show_price" name="module_autosearch_show_price" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-show_price"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_viewall }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_viewall %}
+				<input type="checkbox" id="input-viewall" name="module_autosearch_viewall" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-viewall" name="module_autosearch_viewall" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-viewall"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-4 col-xs-4 control-label">{{ entry_available }}</label>
+			<div class="col-sm-8 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_available %}
+				<input type="checkbox" id="input-available" name="module_autosearch_available" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-available" name="module_autosearch_available" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-available"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-field">{{ entry_field }}</label>
+			<div class="col-sm-4">
+			<select name="module_autosearch_field" id="input-field" class="form-control">
+			{% for field in fields %}
+				{% if field == module_autosearch_field %}
+				<option value="{{ field }}" selected="selected">{{ field }}</option>
+				{% else %}
+				<option value="{{ field }}">{{ field }}</option>
+				{% endif %}
+			{% endfor %}
+			</select>
+			</div>
+			<label class="col-sm-2 control-label" for="input-sort">{{ entry_sort }}</label>
+			<div class="col-sm-4">
+			<select name="module_autosearch_sort" id="input-sort" class="form-control">
+				{% if module_autosearch_sort %}
+				<option value="1" selected="selected">{{ text_sort_name }}</option>
+				<option value="0">{{ text_sort_date }}</option>
+				{% else %}
+				<option value="1">{{ text_sort_name }}</option>
+				<option value="0" selected="selected">{{ text_sort_date }}</option>
+				{% endif %}
+			</select>
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label">{{ entry_proname }}</label>
+			<div class="col-sm-4">
+			{% for language in languages %}
+				<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+				<input type="text" name="module_autosearch_proname[title{{ language.language_id }}]" value="{{ module_autosearch_proname['title'~language.language_id] ? module_autosearch_proname['title'~language.language_id] : '' }}" placeholder="{{ entry_proname }}" class="form-control" />
+				</div>
+			{% endfor %}
+			</div>
+			<label class="col-sm-2 control-label">{{ entry_vallname }}</label>
+			<div class="col-sm-4">
+			{% for language in languages %}
+				<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+				<input type="text" name="module_autosearch_vallname[title{{ language.language_id }}]" value="{{ module_autosearch_vallname['title'~language.language_id] ? module_autosearch_vallname['title'~language.language_id] : '' }}" placeholder="{{ entry_vallname }}" class="form-control" />
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+		</fieldset>
+
+		</div>
+		<div class="tab-pane" id="tab-category">
+
+<div class="form-group addpad">		
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_cat }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_cat %}
+				<input type="checkbox" id="input-cat" name="module_autosearch_cat" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-cat" name="module_autosearch_cat" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-cat"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 control-label" for="input-catlimit">{{ entry_catlimit }}</label>
+			<div class="col-sm-6">
+				<input type="text" name="module_autosearch_catlimit" value="{{ module_autosearch_catlimit ?? '5' }}" id="input-catlimit" class="form-control" />
+			</div>
+		</div>
+		</div>
+</div>
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_description_cat }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+			{% if module_autosearch_description_cat %}
+				<input type="checkbox" id="input-description_cat" name="module_autosearch_description_cat" value="1" checked="checked" />
+			{% else %}
+				<input type="checkbox" id="input-description_cat" name="module_autosearch_description_cat" value="1" />
+			{% endif %}
+			<label class="toggle" for="input-description_cat"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_catname }}</label>
+			<div class="col-sm-3">
+			{% for language in languages %}
+				<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+				<input type="text" name="module_autosearch_catname[title{{ language.language_id }}]" value="{{ module_autosearch_catname['title'~language.language_id] ? module_autosearch_catname['title'~language.language_id] : '' }}" placeholder="{{ entry_catname }}" class="form-control" />
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+
+		</div>
+		<div class="tab-pane" id="tab-brand">
+
+<div class="form-group addpad">		
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_man }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_man %}
+				<input type="checkbox" id="input-man" name="module_autosearch_man" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-man" name="module_autosearch_man" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-man"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 control-label" for="input-manlimit">{{ entry_manlimit }}</label>
+			<div class="col-sm-6">
+				<input type="text" name="module_autosearch_manlimit" value="{{ module_autosearch_manlimit ?? '5' }}" id="input-manlimit" class="form-control" />
+			</div>
+		</div>
+		</div>
+</div>
+
+{% if mdesc %}
+<div class="form-group addpad">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_description_man }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+			{% if module_autosearch_description_man %}
+				<input type="checkbox" id="input-description_man" name="module_autosearch_description_man" value="1" checked="checked" />
+			{% else %}
+				<input type="checkbox" id="input-description_man" name="module_autosearch_description_man" value="1" />
+			{% endif %}
+			<label class="toggle" for="input-description_man"><span class="toggle__handler"></span></label>
+			</div>
+			</div>
+		</div>
+		</div>
+</div>
+{% endif %}
+
+		<div class="form-group">
+			<label class="col-sm-3 control-label">{{ entry_manname }}</label>
+			<div class="col-sm-3">
+			{% for language in languages %}
+				<div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+				<input type="text" name="module_autosearch_manname[title{{ language.language_id }}]" value="{{ module_autosearch_manname['title'~language.language_id] ? module_autosearch_manname['title'~language.language_id] : '' }}" placeholder="{{ entry_manname }}" class="form-control" />
+				</div>
+			{% endfor %}
+			</div>
+		</div>
+
+		</div>
+		</div>
+
+		</div>
+		<div class="tab-pane" id="tab-design">
+
+	<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_design }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_design %}
+				<input type="checkbox" id="input-design" name="module_autosearch_design" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-design" name="module_autosearch_design" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-design"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_design }}</span>
+		</blockquote>
+		</div>
+	</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-clr_name">{{ entry_clr_name }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_name" maxlength="6" value="{{ module_autosearch_clr_name ?? '064a63' }}" id="input-clr_name" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+			<label class="col-sm-2 control-label" for="input-clr_asr">{{ entry_clr_asr }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_asr" maxlength="6" value="{{ module_autosearch_clr_asr ?? '4C9ED9' }}" id="input-clr_asr" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-clr_model">{{ entry_clr_model }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_model" maxlength="6" value="{{ module_autosearch_clr_model ?? '8c8c8c' }}" id="input-clr_model" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+			<label class="col-sm-2 control-label" for="input-clr_stock">{{ entry_clr_stock }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_stock" maxlength="6" value="{{ module_autosearch_clr_stock ?? '999999' }}" id="input-clr_stock" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-clr_price">{{ entry_clr_price }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_price" maxlength="6" value="{{ module_autosearch_clr_price ?? 'ffffff' }}" id="input-clr_price" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+			<label class="col-sm-2 control-label" for="input-clr_priceb">{{ entry_clr_priceb }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_priceb" maxlength="6" value="{{ module_autosearch_clr_priceb ?? '4C9ED9' }}" id="input-clr_priceb" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-clr_special">{{ entry_clr_special }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_special" maxlength="6" value="{{ module_autosearch_clr_special ?? 'ffffff' }}" id="input-clr_special" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+			<label class="col-sm-2 control-label" for="input-clr_specialb">{{ entry_clr_specialb }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_specialb" maxlength="6" value="{{ module_autosearch_clr_specialb ?? 'F46172' }}" id="input-clr_specialb" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-clr_viewall">{{ entry_clr_viewall }}</label>
+			<div class="col-sm-4"><div class="input-group"><span class="input-group-addon">Hex #</span>
+				<input type="text" name="module_autosearch_clr_viewall" maxlength="6" value="{{ module_autosearch_clr_viewall ?? '4C9ED9' }}" id="input-clr_viewall" autocomplete="off" onkeyup="return che(this);" class="form-control adw-colorpick" />
+			</div></div>
+		</div>
+
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-custom_css">{{ entry_custom_css }}</label>
+			<div class="col-sm-10">
+				<textarea name="module_autosearch_custom_css" rows="5" placeholder="{{ entry_custom_css }}" class="form-control">{{ module_autosearch_custom_css }}</textarea>
+<div class="alert alert-info">
+	<p>{{ help_custom_css }}</p>
+</div>
+			</div>
+		</div>
+
+		</div>
+		<div class="tab-pane" id="tab-cache">
+
+	<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_cache }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_cache %}
+				<input type="checkbox" id="input-cache" name="module_autosearch_cache" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-cache" name="module_autosearch_cache" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-cache"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_cache }}</span>
+		</blockquote>
+		</div>
+	</div>
+
+	<div class="form-group">
+		<div class="col-sm-6">
+		<div class="form-group">
+			<label class="col-sm-6 col-xs-4 control-label">{{ entry_widget }}</label>
+			<div class="col-sm-6 col-xs-2">
+			<div class="toggleWrapper">
+				{% if module_autosearch_widget %}
+				<input type="checkbox" id="input-widget" name="module_autosearch_widget" value="1" checked="checked" />
+				{% else %}
+				<input type="checkbox" id="input-widget" name="module_autosearch_widget" value="1" />
+				{% endif %}
+			<label class="toggle" for="input-widget"><span class="toggle__handler"></span>
+			</label>
+			</div>
+			</div>
+		</div>
+		</div>
+		<div class="col-sm-6">
+		<blockquote>
+			<span style="color:#888;">{{ help_widget }}</span>
+		</blockquote>
+		</div>
+	</div>
+
+	<div class="adw alert alert-danger">
+		<p>{{ warning_cache }}</p>
+	</div>
+
+<div class="form-group">
+		<div class="col-sm-6">
+			<div class="panel panel-default">
+			<div class="panel-heading">{{ cache_stat }}</div>
+			<div class="panel-body">
+			<table class="info_table stats">
+				<tbody>
+				{% for stat in stats %}
+				<tr>
+					<th><span class="info_table_line">{{ stat.keywords }}</span></th>
+					<td><span class="info_table_line2">{{ stat.freq }}</span></td>
+				</tr>
+				{% endfor %}
+				</tbody>
+			</table>
+			</div>
+			</div>
+		</div>
+
+        <div class="col-sm-6">
+		<div class="row">
+            <div class="col-sm-12">
+				<button class="btn btn-primary" id="dropcache" >{{ dropcache }}</button>
+			</div>
+			<div class="col-sm-12" id="eout"></div>
+		</div>
+		</div>
+</div>
+		</div>
+		<div class="tab-pane" id="tab-data">
+		<div class="form-group">
+			<label class="col-sm-2 control-label" for="input-limit">{{ entry_code }}</label>
+			<div class="col-sm-10">
+				<input type="text" name="module_autosearch_code" value="{{ module_autosearch_code }}" placeholder="{{ entry_code }}" id="input-code" class="form-control" />
+			</div>
+		</div>
+		<div class="form-group">
+			<label class="col-sm-12" >{{ text_server }} {{ server }} - {{ is }}</label>
+			<label class="col-sm-12" >{{ text_host }} {{ host }} - {{ ih }}</label>
+		</div>
+		</div>
+
+		</div>
+		</form>
+	</div>
+<div class="panel-footer">{{ _ }}</div>
+	</div>
+  </div>
+<link rel="stylesheet" href="view/javascript/adw/autosearch/colorpicker/css/colorpicker.css" type="text/css" />
+<script type="text/javascript" src="view/javascript/adw/autosearch/colorpicker/js/colorpicker.js"></script>
+{% if codemirror %}
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+<script type="text/javascript" src="view/javascript/adw/autosearch/codemirror/css.js"></script>
+<script type="text/javascript"><!--
+var codemirror = CodeMirror.fromTextArea(document.querySelector('[name=\'module_autosearch_custom_css\']'), {
+	mode: 'css',
+	height: '400px',
+	lineNumbers: true,
+	autofocus: false,
+	theme: 'monokai'
+});
+$('.nav-tabs a').on('shown.bs.tab', function() {
+	codemirror.refresh();
+});
+//--></script>
+{% endif %}
+<script type="text/javascript"><!--
+function che(input) {
+	var value = input.value;
+    var rep = /[^a-fA-F0-9]/g;
+    if (rep.test(value)) {
+	value = value.replace(rep, '');
+	input.value = value;
+	}
+}
+function PrefInt(num, len) {
+	if (num.length <1 ) {len ++;}
+	return (Array(len).join('0') + num).slice(-6);
+}
+$(document).ready(function() {
+	$('.adw-colorpick').each(function(idx) {
+		$(this).ColorPickerSetColor(this.value);
+		$(this).css('backgroundColor', '#' + PrefInt(this.value, 6) );
+	});
+});
+
+$('.adw-colorpick').ColorPicker({
+	onSubmit: function(hsb, hex, rgb, el) {
+		$(el).val(hex);
+		$(el).css('backgroundColor', '#' + hex);
+		$(el).ColorPickerHide();
+	},
+	onBeforeShow: function () {
+		$(this).ColorPickerSetColor(this.value);
+	}
+})
+
+$('.adw-colorpick').bind('keyup', function(){
+	$(this).ColorPickerSetColor(this.value);
+	$(this).css('backgroundColor', '#' + PrefInt(this.value, 6) );
+});
+
+$('#dropcache').on('click', function(e) {
+	e.preventDefault();
+	$('.eout').remove();
+	$.ajax({
+		url : 'index.php?route=extension/module/autosearch/dropcache&user_token=' + getURLVar('user_token'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#dropcache').prop('disabled', true);
+			$('.eout').remove();
+		},
+		complete: function() {
+			$('#dropcache').prop('disabled', false);
+		},
+		success : function (json) {
+			$('.eout').remove();
+			if (json['error']) {
+				html = '<div class="alert alert-warning eout">' + json['error']['warning'] + '</div>';
+				$('#eout').append(html).hide().fadeIn(150);
+			}
+			if (json['success']) {
+				$('.stats').remove();
+				$('.cachesize').text('0.00 MB');
+				html = '<div class="alert alert-success eout">' + json['success'] + '</div>';
+				$('#eout').append(html).hide().fadeIn(150);
+			}
+		},
+		error: function(xhr, ajaxOptions, thrownError) {
+			alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+		}
+	});
+});
+//--></script>
+</div>
+{{ footer }}

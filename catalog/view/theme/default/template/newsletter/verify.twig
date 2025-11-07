@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<!--[if IE]><![endif]-->
+<!--[if IE 8 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie8"><![endif]-->
+<!--[if IE 9 ]><html dir="{{ direction }}" lang="{{ lang }}" class="ie9"><![endif]-->
+<!--[if (gt IE 9)|!(IE)]><!-->
+<html dir="{{ direction }}" lang="{{ lang }}">
+<!--<![endif]-->
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta http-equiv="X-UA-Compatible" content="IE=edge">
+<title>{{ heading_verify }}</title>
+<script src="catalog/view/javascript/jquery/jquery-2.1.1.min.js" type="text/javascript"></script>
+<script src="catalog/view/javascript/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+<link href="catalog\view\theme\default\stylesheet\cinewsletter.css" rel="stylesheet" media="screen" />
+</head>
+<body class="cod-newsletter">
+<div class="mail-wrap" id="verify-wrap">
+  <div class="container">
+    <div class="row">
+      <div id="content">
+      	{% if logo and display_logo %}
+        <div id="logo">
+            <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
+        </div>
+        <br/>
+        {% endif %}
+        <div class="dynamic-matter">
+          {% if display_title %}
+          <h2>{{ heading_verify }}</h2>
+          {% endif %}
+          
+          {% if display_description %}
+          {{ text_message }}
+          {% endif %}
+          
+          {{ text_not_found }}
+          
+          {% if permission_status %}
+          <button type="button" class="button" id="button-confirm">{{ confirm_button }}</button>
+          {% if display_decline %}
+          <button type="button" class="button" id="button-decline">{{ decline_button }}</button>
+          {% endif %}
+          {% endif %}
+        </div>
+      </div>
+    </div>
+  </div>
+  <script type="text/javascript"><!--
+  $('#verify-wrap #button-confirm').click(function() {
+    $.ajax({
+      url: 'index.php?route=newsletter/cinewsletter/addVerify&key={{ key }}',
+      dataType: 'json',
+      type: 'post',
+      beforeSend: function() {
+        $('#verify-wrap #button-confirm').button('loading');
+      },
+      complete: function() {
+        $('#verify-wrap #button-confirm').button('reset');
+      },
+      success: function(json) {
+        if(json['success']) {
+          $('#verify-wrap .dynamic-matter').html(json['success']);
+        }
+      }
+    });
+  });
+
+  $('#verify-wrap #button-decline').click(function() {
+    $.ajax({
+      url: 'index.php?route=newsletter/cinewsletter/addDecline&key={{ key }}',
+      dataType: 'json',
+      type: 'post',
+      beforeSend: function() {
+        $('#verify-wrap #button-decline').button('loading');
+      },
+      complete: function() {
+        $('#verify-wrap #button-decline').button('reset');
+      },
+      success: function(json) {
+        if(json['success']) {
+          $('#verify-wrap .dynamic-matter').html(json['success']);
+        }
+      }
+    });
+  });
+  //--></script>
+</div>
+</body>
+</html>

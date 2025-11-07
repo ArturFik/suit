@@ -1,0 +1,120 @@
+{{ header }}
+<div id="account-account" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}</div>
+  {% endif %}
+
+  {{ column_left }}
+
+  <div id="content" class="lk">
+
+    {# <div class="title">
+      <h1>Здравствуйте, Иван</h1>
+    </div>
+    <div class="lk__content">
+      <div class="prd-tab">
+        <div class="prd-tab__bl">
+          <div class="bl-h-scroll">
+            <div class="prd-tab__header">
+              <div class="prd-tab__header-item">Контактная информация</div>
+              <div class="prd-tab__header-item">Изменить свой пароль</div>
+              <div class="prd-tab__header-item">Мои адреса</div>
+              <div class="prd-tab__header-item">Мои закладки</div>
+              <div class="prd-tab__header-item">История заказов</div>
+              <div class="prd-tab__header-item">Новостная рассылка</div><a class="lk__logout" href="#">Выйти</a>
+            </div>
+          </div>
+          <div class="prd-tab__content">
+            <div class="prd-tab__item">
+              <div class="form">
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Ваше имя">
+                </div>
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Ваш телефон">
+                </div>
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Ваш email">
+                </div>
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Ваш город">
+                </div>
+              </div>
+            </div>
+            <div class="prd-tab__item">
+              <div class="form">
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Введите новый пароль">
+                </div>
+                <div class="form__row">
+                  <input class="input" type="text" placeholder="Повтарите новый пароль">
+                </div>
+              </div>
+            </div>
+            <div class="prd-tab__item"></div>
+            <div class="prd-tab__item"></div>
+            <div class="prd-tab__item"></div>
+            <div class="prd-tab__item"></div>
+          </div>
+        </div>
+      </div>
+    </div> #}
+
+
+    {{ content_top }}
+
+
+
+    <h2>{{ text_my_account }}</h2>
+    <ul class="list-unstyled">
+      <li><a href="{{ edit }}">{{ text_edit }}</a></li>
+      <li><a href="{{ password }}">{{ text_password }}</a></li>
+      <li><a href="{{ address }}">{{ text_address }}</a></li>
+      <li><a href="{{ wishlist }}">{{ text_wishlist }}</a></li>
+    </ul>
+    {% if credit_cards %}
+    <h2>{{ text_credit_card }}</h2>
+    <ul class="list-unstyled">
+      {% for credit_card in credit_cards %}
+      <li><a href="{{ credit_card.href }}">{{ credit_card.name }}</a></li>
+      {% endfor %}
+    </ul>
+    {% endif %}
+    <h2>{{ text_my_orders }}</h2>
+    <ul class="list-unstyled">
+      <li><a href="{{ order }}">{{ text_order }}</a></li>
+      <li><a href="{{ download }}">{{ text_download }}</a></li>
+      {% if reward %}
+      <li><a href="{{ reward }}">{{ text_reward }}</a></li>
+      {% endif %}
+      <li><a href="{{ return }}">{{ text_return }}</a></li>
+      <li><a href="{{ transaction }}">{{ text_transaction }}</a></li>
+      <li><a href="{{ recurring }}">{{ text_recurring }}</a></li>
+    </ul>
+    <h2>{{ text_my_affiliate }}</h2>
+    <ul class="list-unstyled">
+      {% if not tracking %}
+      <li><a href="{{ affiliate }}">{{ text_affiliate_add }}</a></li>
+      {% else %}
+      <li><a href="{{ affiliate }}">{{ text_affiliate_edit }}</a></li>
+      <li><a href="{{ tracking }}">{{ text_tracking }}</a></li>
+      {% endif %}
+    </ul>
+    <h2>{{ text_my_newsletter }}</h2>
+    <ul class="list-unstyled">
+      <li><a href="{{ newsletter }}">{{ text_newsletter }}</a></li>
+    </ul>
+    {{ content_bottom }}
+  </div>
+  {{ column_right }}
+</div>
+{{ footer }}

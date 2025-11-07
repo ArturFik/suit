@@ -1,0 +1,371 @@
+<button type="button" class="toggler header__calc" id="feedbackButton{{ module_id }}" data-toggle="modal" data-target="#feedbackModal{{ module_id }}">
+	<img src="/catalog/view/theme/default/images/i-calc.svg"><span>{{ button_name }}</span>
+</button>
+
+<div class="modal fade" id="feedbackModal{{ module_id }}" tabindex="-1" role="dialog" aria-labelledby="feedbackModalLabel{{ module_id }}">
+	<div class="modal-dialog-01" role="document">
+		<div class="modal__content">
+			<button type="button" class="close modal__close" data-dismiss="modal" aria-label="Close"><img src="/catalog/view/theme/default/images/close.svg"></button>
+			<h3 class="modal-title" id="feedbackModalLabel{{ module_id }}">{{ module_name }}</h3>
+			<div class="modal__body">
+				<form role="form" class="modal__form" data-toggle="validator" enctype="multipart/form-data" id="form-formcreator{{ module_id }}">
+					{% if fields %}
+						{% set k = 0 %}
+						{% set field_row = 0 %}
+						{% for field in fields %}
+							{% set field_row = field_row + 1 %}
+							{% if field.type == 'input'  and  field.field_status %}
+								{% if field.required %}
+									{% if field.name == 'file' %}
+										<div class="form-group required">
+											<input type="text" class="input" name="form_input[{{ field_row }}][{{ field.name}}]" id="formInput{{ module_id }}-{{ field_row }}" data-minlength="3" required="" placeholder="{{ field.name }}" value="file">
+											<button type="button" class="input button-file" id="button-file{{ module_id }}-{{ field_row }}" class="input">
+												<span>{{ text_input_file }}</span><span class="result-button-file"></span>
+											</button>
+											<input type="file" class="input-file" onchange="infoFileUpload();" name="form_input_file" id="formInputFile{{ module_id }}-{{ field_row }}" value="">
+											<input type="hidden" name="form_input_file_hidden" value="" />
+											<div class="help-block with-errors"></div>
+											<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="input">
+											<script type="text/javascript">
+												$("#button-file{{ module_id }}-{{ field_row }}").on("click", function(){
+													$(this).closest(".form-group").find("input[type='file']").trigger("click");
+												});
+												function infoFileUpload(){
+													var fileInput = $("#formInputFile{{ module_id }}-{{ field_row }}")[0];
+													var file = fileInput.files[0];
+													
+													if (!file) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Файл не выбран');
+														return;
+													}
+													
+													// Проверяем размер файла (максимум 10MB)
+													if (file.size > 10 * 1024 * 1024) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Файл слишком большой (максимум 10MB)');
+														$("#formInputFile{{ module_id }}-{{ field_row }}").val('');
+														return;
+													}
+													
+													// Проверяем тип файла
+													var allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+																	  'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+																	  'text/csv', 'text/plain'];
+													if (allowedTypes.indexOf(file.type) === -1) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Неподдерживаемый тип файла');
+														$("#formInputFile{{ module_id }}-{{ field_row }}").val('');
+														return;
+													}
+													
+													// Показываем информацию о файле
+													$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Выбран: ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)');
+													$("#formInputFile{{ module_id }}-{{ field_row }}").removeClass('hasError');
+												}
+											</script>
+										</div>
+									{% else %}
+										<div class="form-group required">
+											<input type="text" class="input" name="form_input[{{ field_row }}][{{ field.name}}]" id="formInput{{ module_id }}-{{ field_row }}" data-minlength="3" required="" placeholder="{{ field.name }}">
+											<div class="help-block with-errors"></div>
+											<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="input">
+										</div>
+									{% endif %}									
+								{% else %}
+									{% if field.name == 'file' %}										
+										<div class="form-group">
+											<input type="text" class="input hidden" name="form_input[{{ field_row }}][{{ field.name}}]" id="formInput{{ module_id }}-{{ field_row }}" data-minlength="3" required="" placeholder="{{ field.name }}" value="file">
+											<button type="button" class="input button-file" id="button-file{{ module_id }}-{{ field_row }}" class="input">
+												<span>{{ text_input_file }}</span><span class="result-button-file"></span>
+											</button>
+											<input type="file" class="input-file hidden" onchange="infoFileUpload();" name="form_input_file" id="formInputFile{{ module_id }}-{{ field_row }}" value="">
+											<input type="hidden" name="form_input_file_hidden" value="" />
+											<div class="help-block with-errors"></div>
+											<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="input">
+											<script type="text/javascript">
+												$("#button-file{{ module_id }}-{{ field_row }}").on("click", function(){
+													$(this).closest(".form-group").find("input[type='file']").trigger("click");
+												});
+												function infoFileUpload(){
+													var fileInput = $("#formInputFile{{ module_id }}-{{ field_row }}")[0];
+													var file = fileInput.files[0];
+													
+													if (!file) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Файл не выбран');
+														return;
+													}
+													
+													// Проверяем размер файла (максимум 10MB)
+													if (file.size > 10 * 1024 * 1024) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Файл слишком большой (максимум 10MB)');
+														$("#formInputFile{{ module_id }}-{{ field_row }}").val('');
+														return;
+													}
+													
+													// Проверяем тип файла
+													var allowedTypes = ['application/pdf', 'application/vnd.openxmlformats-officedocument.wordprocessingml.document', 
+																	  'application/vnd.ms-excel', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
+																	  'text/csv', 'text/plain'];
+													if (allowedTypes.indexOf(file.type) === -1) {
+														$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Неподдерживаемый тип файла');
+														$("#formInputFile{{ module_id }}-{{ field_row }}").val('');
+														return;
+													}
+													
+													// Показываем информацию о файле
+													$('#button-file{{ module_id }}-{{ field_row }} .result-button-file').html('Выбран: ' + file.name + ' (' + Math.round(file.size / 1024) + ' KB)');
+													$("#formInputFile{{ module_id }}-{{ field_row }}").removeClass('hasError');
+												}
+											</script>
+										</div>
+									{% else %}
+										<div class="form-group">
+											<input type="text" class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" id="formInput{{ module_id }}-{{ field_row }}" placeholder="{{ field.name }}">
+										</div>
+									{% endif %}
+								{% endif %}
+							{% elseif  field.type == 'textarea'  and  field.field_status %}
+								{% if field.required %}
+									<div class="form-group required">
+										<label class="control-label" for="formInputText{{ module_id }}-{{ field_row }}">{{ field.name }}</label>
+										<textarea class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" id="formInputText{{ module_id }}-{{ field_row }}" rows="3" data-minlength="5" required="" placeholder="{{ field.name }}"></textarea>
+										<div class="help-block with-errors"></div>
+										<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="textarea">
+									</div>
+								{% else %}
+									<div class="form-group">
+										<label for="formInputText{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<textarea class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" id="formInputText{{ module_id }}-{{ field_row }}" rows="3" placeholder="{{ field.name }}"></textarea>
+									</div>
+								{% endif %}
+							{% elseif  field.type == 'select'  and  field.field_status %}
+								{% if field.required %}
+									<div class="form-group required">
+										<label for="formInputSelect{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<select class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" id="formInputSelect{{ module_id }}-{{ field_row }}">
+											{% set field_count = field.option|length - 1 %}
+											{% for i in 0..field_count %}
+												<option>{{ field['option'][i]}}</option>
+											{% endfor %}
+										</select>
+									</div>
+								{% else %}
+									<div class="form-group">
+										<label for="formInputSelect{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<select class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" id="formInputSelect{{ module_id }}-{{ field_row }}">
+											{% set field_count = field.option|length - 1 %}
+											{% for i in 0..field_count %}
+												<option>{{ field['option'][i]}}</option>
+											{% endfor %}
+										</select>
+									</div>
+								{% endif %}
+							{% elseif  field.type == 'radio'  and  field.field_status %}
+								{% if field.required %}
+									<div class="form__row required">
+										<div class="modal__radio">
+											<div class="label">{{ text_connection_radio }}</div>
+											<div class="modal__radio-content">
+												{% set field_count = field.option|length - 1 %}
+												{% for i in 0..field_count %}
+													<div class="radio">
+                                                        <input class="radio__input" required="" type="radio" name="form_input[{{ field_row }}][{{ field.name }}]" value="{{ field['option'][i]}}" id="{{ module_id }}-{{ field_row }}-{{ i }}">
+														<label class="radio__label" for="{{ module_id }}-{{ field_row }}-{{ i }}">
+                                                        {% if field['option'][i] == 'telegram' %}
+                                                            <img src="/catalog/view/theme/default/images/i-tg.svg">
+                                                        {% else %}
+                                                            <img src="/catalog/view/theme/default/images/i-whatsapp.svg">
+                                                        {% endif %}
+                                                        </label>
+													</div>
+												{% endfor %}
+											</div>
+											<button class="toggler btn btn-blue send-form-visible-button" type="submit">{{ text_button_submit_form_raschet_n }}</button>
+										</div>
+										<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="radio">
+									</div>
+								{% else %}
+									<div class="form-group">
+										<label for="formInputRadio{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<div class="radio" id="formInputRadio{{ module_id }}-{{ field_row }}">
+											{% set field_count = field.option|length - 1 %}
+											{% for i in 0..field_count %}
+												<div>
+													<label><input type="radio" name="form_input[{{ field_row }}][{{ field.name }}]" value="{{ field['option'][i]}}">{{ field['option'][i]}}</label>
+												</div>
+											{% endfor %}
+										</div>
+									</div>
+								{% endif %}
+							{% elseif  field.type == 'checkbox'  and  field.field_status %}
+								{% if field.required %}
+									<div class="form-group required">
+										<div class="checkbox" id="formInputCheckbox{{ module_id }}-{{ field_row }}">
+											{% set field_count = field.option|length - 1 %}
+											{% for i in 0..field_count %}
+												<div>
+													<label {% if field.name == 'approval' %}class="approval-label"{% endif %}	>
+														<input type="checkbox" name="form_input[{{ field_row }}][{{ field.name }}][{{ i }}]" value="{{ field['option'][i]}}">
+														{% if field.name == 'approval' %}
+															<p class="approval-block">{{ text_approval_radio }}</p>
+														{% else %}
+															{{ field['option'][i]}}
+														{% endif %}														
+													</label>
+												</div>
+											{% endfor %}
+										</div>
+										<div class="help-block with-errors"></div>
+										<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="checkbox">
+									</div>
+								{% else %}
+									<div class="form-group">
+										<label for="formInputCheckbox{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<div class="checkbox" id="formInputCheckbox{{ module_id }}-{{ field_row }}">
+											{% set field_count = field.option|length - 1 %}
+											{% for i in 0..field_count %}
+												<div>
+													<label><input type="checkbox" name="form_input[{{ field_row }}][{{ field.name }}][{{ i }}]" value="{{ field['option'][i]}}">{{ field['option'][i]}}</label>
+												</div>
+											{% endfor %}
+										</div>
+									</div>
+								{% endif %}
+							{% elseif  field.type == 'date'  and  field.field_status %}
+								{% set k = k + 1 %}
+								{% if k == 1 %}
+									<script type="text/javascript" src="catalog/view/javascript/bootstrap/js/bootstrap-datepicker.js"></script>
+									<script type="text/javascript" src="catalog/view/javascript/bootstrap/js/bootstrap-datepicker.ru.js"></script>
+									<link rel="stylesheet" href="catalog/view/javascript/bootstrap/css/bootstrap-datepicker.css"/>
+								{% endif %}
+								{% if field.required %}
+									<div class="form-group required">
+										<label class="control-label" for="formInputDate{{ module_id }}-{{ field_row }}">{{ field.name }}</label>
+										<input type="text" class="form-control" name="form_input[{{ field_row }}][{{ field.name}}]" id="formInputDate{{ module_id }}-{{ field_row }}" data-minlength="3" required="" placeholder="{{ field.name }}">
+										<div class="help-block with-errors"></div>
+										<input type="hidden" class="form-control" name="form_input[{{ field_row }}][required]" value="input">
+									</div>
+								{% else %}
+									<div class="form-group">
+										<label for="formInputDate{{ module_id }}-{{ field_row }}" class="control-label">{{ field.name }}</label>
+										<input type="text" id="formInputDate{{ module_id }}-{{ field_row }}" class="form-control" name="form_input[{{ field_row }}][{{ field.name }}]" placeholder="{{ field.name }}">
+									</div>
+								{% endif %}
+								<script type="text/javascript">
+									$(function () {
+                                        $('#formInputDate{{ module_id }}-{{ field_row }}').datepicker({language: 'ru'});
+                                    });
+								</script>
+							{% endif %}
+						{% endfor %}
+					{% endif %}
+					<div class="hidden-inputs">
+						<input type="hidden" name="link_page" value="http://{{ domain }}"/>
+						<input type="hidden" name="module_name" value="{{ module_name }}"/>
+						<input type="hidden" name="module_id" value="{{ module_id }}"/>
+						<input type="hidden" name="form_success" value="{{ form_success }}"/>
+					</div>
+				</form>
+			</div>
+		</div>
+	</div>
+</div>
+
+<div class="modal" id="request-pay-msg">
+    <div class="modal__content">
+      <div class="modal__close"><img src="/catalog/view/theme/default/images/close.svg">
+      </div>
+      <div class="modal__body">
+        <div class="modal__row">
+          <div class="modal__form">
+            <h3>{{ title_success_form_42_n }}</h3>
+            <div class="form">
+              <div class="modal__desc">{{ sub_title_success_form_42_n }}</div>
+              <div class="modal__row _center">
+                <button class="btn btn-blue j-close modal__close_button" type="button">{{ button_close_success_form_42_n }}</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+$('#form-formcreator{{ module_id }}').on('submit', function (e) {
+    e.preventDefault();
+    var that = $(e.target);
+    
+    // Показываем индикатор загрузки
+    var loadingHtml = '<div class="loading-indicator" style="text-align: center; padding: 20px;">' +
+                     '<div class="spinner-border text-primary" role="status">' +
+                     '<span class="sr-only">Обработка...</span>' +
+                     '</div>' +
+                     '<p>Обрабатываем ваш файл...</p>' +
+                     '</div>';
+    
+    $('#feedbackModal{{ module_id }} .modal-body').prepend(loadingHtml);
+    
+    // Подготавливаем данные формы с файлом
+    var formData = new FormData(this);
+    
+    $.ajax({
+        url: 'index.php?route=extension/module/formcreator/send',
+        type: 'post',
+        data: formData,
+        processData: false,
+        contentType: false,
+        dataType: 'json',
+        success: function (data) {
+            // Убираем индикатор загрузки
+            $('.loading-indicator').remove();
+            
+            if (data['error']) {
+                $('#feedbackModal{{ module_id }} .text-danger').remove();
+                var error = $('<div class="alert alert-danger">' + data['error'] + '</div>');
+                $('#feedbackModal{{ module_id }} .modal-body').prepend(error);
+                return;
+            }
+            
+            // Убираем старые сообщения об ошибках
+            $('#feedbackModal{{ module_id }} .text-danger, #feedbackModal{{ module_id }} .alert-danger').remove();
+            
+            // Показываем успешное сообщение
+            if (data['telegram_link']) {
+                var successHtml = '<div class="alert alert-success">' +
+                                 '<h4>Файл успешно обработан!</h4>' +
+                                 '<p>Ваш расчет готов. Получите его в Telegram:</p>' +
+                                 '<a href="' + data['telegram_link'] + '" class="btn btn-primary" target="_blank">' +
+                                 'Получить расчет в Telegram' +
+                                 '</a>' +
+                                 '</div>';
+                $('#feedbackModal{{ module_id }} .modal-body').prepend(successHtml);
+            }
+            
+            alertForm({ form: that, msg: data['success'] });
+            
+            // Очищаем форму
+            that[0].reset();
+            $('.result-button-file').html('');
+        },
+        error: function(xhr, status, error) {
+            // Убираем индикатор загрузки
+            $('.loading-indicator').remove();
+            
+            // Показываем ошибку
+            $('#feedbackModal{{ module_id }} .text-danger, #feedbackModal{{ module_id }} .alert-danger').remove();
+            var errorHtml = '<div class="alert alert-danger">' +
+                           'Произошла ошибка при обработке запроса. Попробуйте еще раз.' +
+                           '</div>';
+            $('#feedbackModal{{ module_id }} .modal-body').prepend(errorHtml);
+        }
+    });
+});
+
+function alertForm(alert) {
+    $('#feedbackModal{{ module_id }}').modal('hide');
+    $('#request-pay-msg').modal('show');
+}
+
+$('#request-pay-msg .modal__close, #request-pay-msg .modal__close_button').on('click', function(){
+    $('#request-pay-msg').modal('hide');
+});
+</script>

@@ -1,0 +1,71 @@
+{{ header }}
+<div id="common-success" class="container">
+	<div class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			{% if loop.last %}
+				<span>{{ breadcrumb.text }}</span>
+			{% else %}
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	{{ column_left }}
+
+	<div id="content" class="order">
+		{{ content_top }}
+        {% if order_info %}
+		<div class="title">
+			<h1>{{ order_info.heading_title }}</h1>
+		</div>
+		<div class="order__content">
+			<div class="order__formated">
+                {% if order_info.payment_method %}
+				<div class="order__formated-item">
+					<div class="order__param-img"><img src="images/order-pay.svg">
+					</div>
+					<div class="order__param-text">
+						<small>{{ title_payment_method_n }}</small>
+						<span>{{ order_info.payment_method }}</span>
+					</div>
+				</div>
+                {% endif %}
+                {% if order_info.shipping_method %}
+				<div class="order__formated-item">
+					<div class="order__param-img"><img src="images/order-shipping.svg">
+					</div>
+					<div class="order__param-text">
+						<small>{{ title_shipping_method_n }}</small>
+						<span>{{ order_info.shipping_method }}</span>
+					</div>
+				</div>
+                {% endif %}
+                {% if order_info.shipping_address %}
+				<div class="order__formated-item">
+					<div class="order__param-img"><img src="images/order-location.svg">
+					</div>
+					<div class="order__param-text">
+						<small>{{ title_shipping_address_n }}</small>
+						<span>{{ order_info.shipping_address }}</span>
+					</div>
+				</div>
+                {% endif %}
+                <div class="order__formated-item">
+                    <div class="buttons"><a href="{{ continue }}" class="btn btn-blue">{{ button_continue }}</a></div>
+                </div>
+			</div>
+		</div>
+        {% else %}
+		{{ text_message }}
+		<div class="buttons">
+			<div class="pull-right">
+				<a href="{{ continue }}" class="btn btn-blue">{{ button_continue }}</a>
+			</div>
+		</div>
+        {% endif %}
+		{{ content_bottom }}</div>
+	{{ column_right }}
+</div>
+
+
+{{ footer }}

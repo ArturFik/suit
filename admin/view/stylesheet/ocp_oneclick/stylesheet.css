@@ -1,0 +1,31 @@
+.ocp-module .btn-default.active.focus, .ocp-module .btn-default.active:focus, .ocp-module .btn-default.active:hover, .ocp-module .btn-default:active.focus, .ocp-module .btn-default:active:focus, .ocp-module .btn-default:active:hover{
+    color: #fff;
+    background-color: #398439;
+    border-color: #255625;
+}
+.ocp-module .btn-default.active, .ocp-module .btn-default:active {
+    background-color: #75a74d;
+    border-color: #5c843d;
+    color: #fff;
+}
+.ocp-module .btn-default.btn-danger {
+    color: #555555;
+    background-color: #ffffff;
+    border-color: #cccccc;
+}
+.ocp-module .btn-default.btn-danger.active.focus, .ocp-module .btn-default.btn-danger.active:focus, .ocp-module .btn-default.btn-danger.active:hover, .ocp-module .btn-default.btn-danger:active.focus, .ocp-module .btn-default.btn-danger:active:focus, .ocp-module .btn-default.btn-danger:active:hover{
+    color: #ffffff;
+    background-color: #f23b3b;
+    border-color: #ea1010;
+}
+.ocp-module .btn-default.btn-danger.active, .ocp-module .btn-default.btn-danger:active {
+    color: #ffffff;
+    background-color: #f56b6b;
+    border-color: #f24545;
+}
+#tab-fields .table .nav-tabs {
+    margin-bottom: 5px;
+}
+.input-small {
+    width: 104px;
+}

@@ -1,0 +1,48 @@
+{{ header }}
+<div id="account-newsletter" class="container">
+	<div class="breadcrumb">
+		{% for breadcrumb in breadcrumbs %}
+			{% if loop.last %}
+				<span>{{ breadcrumb.text }}</span>
+			{% else %}
+				<a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+			{% endif %}
+		{% endfor %}
+	</div>
+
+	{{ column_left }}
+
+	<div id="content" class="lk">
+
+		<div class="title">
+			<h1>{{ heading_title }}</h1>
+		</div>
+
+		<div class="lk__content">
+			<div class="prd-tab">
+				<div class="prd-tab__bl">
+
+					{{ content_top }}
+
+					<div class="prd-tab__content">
+						<div class="prd-tab__item">
+
+							{{ text_message }}
+							<div class="buttons mt30">
+								<div class="pull-left">
+									<a href="{{ continue }}" class="btn btn-blue">{{ button_continue }}</a>
+								</div>
+							</div>
+
+						</div>
+					</div>
+					{{ content_bottom }}
+				</div>
+			</div>
+		</div>
+
+	</div>
+
+	{{ column_right }}
+</div>
+{{ footer }}

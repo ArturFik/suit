@@ -1,0 +1,34 @@
+<div class="modal fade prmn-cmngr-cities" id="prmn-cmngr-cities" tabindex="-1" role="dialog" data-show="true">
+  <div class="modal-dialog-01">
+    <div class="modal__content">
+      <button type="button" class="prmn-cmngr-cities__close modal__close" data-dismiss="modal">
+        <img src="/catalog/view/theme/default/images/close.svg">
+      </button>
+      <div class="modal__body modal__form">
+        
+        <h3 class="prmn-cmngr-cities__title">{{ text_your_city }}: {{ city }}</h3>
+
+        <div class="prmn-cmngr-cities__search-block modal__row">
+          <div class="form__row">
+            <input class="prmn-cmngr-cities__search form-control input" type="text" placeholder="{{ text_search }}">
+          </div>
+        </div>
+
+        <div class="prmn-cmngr-cities__row row clearfix">
+          {% for column in columns %}
+            <div class="col-xs-6 col-sm-6 col-12">
+              {% for city in column %}
+                <div class="prmn-cmngr-cities__city">
+                  <a class="prmn-cmngr-cities__city-name" data-id="{{ city.fias_id }}"
+                  {{ city.url is not empty ? 'href="' ~ city.url ~ '"' : '' }}>
+                    {{ city.name }}
+                  </a>
+                </div>
+              {% endfor %}
+            </div>
+          {% endfor %}
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

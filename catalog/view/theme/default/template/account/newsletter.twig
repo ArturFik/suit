@@ -1,0 +1,111 @@
+{{ header }}
+<div id="account-newsletter" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {{ column_left }}
+
+  <div id="content" class="lk">
+
+    <div class="title">
+      <h1>{{ heading_title }}</h1>
+    </div>
+
+    <div class="lk__content">
+      <div class="prd-tab">
+        <div class="prd-tab__bl">
+
+          {{ content_top }}
+
+          <div class="prd-tab__content">
+            <div class="prd-tab__item">
+
+              <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+                <div class="newsletter-group">
+                  <label class="control-label">{{ entry_newsletter }}</label>
+
+                  <div class="radio-custom-group">
+                    {% if newsletter %}
+                    <div class="radio-custom">
+                      <input type="radio" id="newsletter_yes" name="newsletter" value="1" checked="checked" />
+                      <label class="radio-label" for="newsletter_yes">{{ text_yes }}</label>
+                    </div>
+                    <div class="radio-custom">
+                      <input type="radio" id="newsletter_no" name="newsletter" value="0" />
+                      <label class="radio-label" for="newsletter_no">{{ text_no }}</label>
+                    </div>
+                    {% else %}
+                    <div class="radio-custom">
+                      <input type="radio" id="newsletter_yes" name="newsletter" value="1" />
+                      <label class="radio-label" for="newsletter_yes">{{ text_yes }}</label>
+                    </div>
+                    <div class="radio-custom">
+                      <input type="radio" id="newsletter_no" name="newsletter" value="0" checked="checked" />
+                      <label class="radio-label" for="newsletter_no">{{ text_no }}</label>
+                    </div>
+                    {% endif %}
+                  </div>
+
+                </div>
+                <div class="buttons clearfix">
+                  {# <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div> #}
+                  <div class="pull-left">
+                    <input type="submit" value="{{ button_continue }}" class="btn btn-blue" />
+                  </div>
+                </div>
+              </form>
+
+            </div>
+          </div>
+          {{ content_bottom }}
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+
+  <!-- <div id="content" class="">{{ content_top }}
+    <h1>{{ heading_title }}</h1>
+    <form action="{{ action }}" method="post" enctype="multipart/form-data" class="form-horizontal">
+      <fieldset>
+        <div class="form-group">
+          <label class="col-sm-2 control-label">{{ entry_newsletter }}</label>
+          <div class="col-sm-10">
+            {% if newsletter %}
+            <label class="radio-inline">
+              <input type="radio" name="newsletter" value="1" checked="checked" />
+              {{ text_yes }} </label>
+            <label class="radio-inline">
+              <input type="radio" name="newsletter" value="0" />
+              {{ text_no }}</label>
+            {% else %}
+            <label class="radio-inline">
+              <input type="radio" name="newsletter" value="1" />
+              {{ text_yes }} </label>
+            <label class="radio-inline">
+              <input type="radio" name="newsletter" value="0" checked="checked" />
+              {{ text_no }}</label>
+            {% endif %}
+          </div>
+        </div>
+      </fieldset>
+      <div class="buttons clearfix">
+        <div class="pull-left"><a href="{{ back }}" class="btn btn-default">{{ button_back }}</a></div>
+        <div class="pull-right">
+          <input type="submit" value="{{ button_continue }}" class="btn btn-primary" />
+        </div>
+      </div>
+    </form>
+    {{ content_bottom }}
+  </div> -->
+  {{ column_right }}
+</div>
+{{ footer }}

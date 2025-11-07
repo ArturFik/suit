@@ -1,0 +1,15 @@
+<div style="font-family: arial; clear:both; width: 100%; text-align: center;">
+  {% for product in products %}
+  <div style="display: inline-block; width: 48%; margin-left:10px; margin-bottom:10px; text-align: center; border: 1px solid #ddd;">
+    <div>
+      <div><a href="{{ product.href }}"><img style="width: 100%;" src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}"/></a></div>
+      <div>
+        <h4><a href="{{ product.href }}" style="text-decoration: none; color: #000;">{{ product.name }}</a></h4>
+        {% if display_price %}
+        <h4 style="text-decoration: none; color: #000;">{{ product.price }}</h4>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+  {% endfor %}
+</div>

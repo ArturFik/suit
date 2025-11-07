@@ -1,0 +1,32 @@
+<fieldset>
+  <legend>{{ text_href_go }}</legend>
+  <div id="art-transaction"><a href="{{ link }}" target="_blank">{{ link }}</a></div>
+</fieldset>
+{% if link_show is defined %}
+<hr>
+<fieldset>
+  <legend>{{ text_href_show }}</legend>
+  <div><a href="{{ link_show }}" target="_blank">{{ link_show }}</a></div>
+</fieldset>
+{% endif %}
+{% if link_download is defined %}
+<hr>
+<fieldset>
+  <legend>{{ text_href_download }}</legend>
+  <div><a href="{{ link_download }}" target="_blank">{{ link_download }}</a></div>
+</fieldset>
+{% endif %}
+{% if link_print is defined %}
+<hr>
+<fieldset>
+  <legend>{{ text_href_print }}</legend>
+  <div><a href="{{ link_print }}" target="_blank">{{ link_print }}</a></div>
+</fieldset>
+{% endif %}
+<script>
+$(document).ready(function(){
+	{% for script in art_script %}
+		$('a[href*="sale/order/edit"]').before('<a target="_blank" class="btn btn-info art_button" href="{{ script.href }}" >{{ script.title }}</a> '); 
+	{% endfor %}
+});
+</script>

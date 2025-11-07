@@ -1,0 +1,122 @@
+<div class="footer__top" id="footer-newsletter">
+  <div class="container">
+    <div class="footer__top-content">
+      <div class="footer__top-left">
+        <img src="images/i-mail.svg">
+        <span>{{ heading_title }}</span>
+      </div>
+      <div class="footer__top-right">
+        <input type="text" name="email" value="" class="input" placeholder="{{ entry_email }}" />
+        <button class="btn btn-white" type="button" id="btn_footer_subscribe">{{ button_subscribe }}</button>
+      </div>
+      <div class="footer__top-footer__bottom">
+      <div class="notify error-notify"></div>
+      <div class="notify success-notify"></div>
+    </div>
+    </div>
+  </div>
+</div>
+
+
+{# <div class="main_newsletter">
+  <div id="container" class="container j-container">
+    <div class="footer-newsletter padding_section" id="footer-newsletter">
+
+      <div class="row">
+        <div class="col-sm-6 text-left">
+          {% if display_title %}
+          <h3>{{ heading_title }}</h3>
+          {% endif %}
+
+          {% if text_description|trim %}
+          <p class="text-left">{{ text_description }}</p>
+          {% endif %}
+
+          {% if social_links %}
+          <div class="social_icons">
+            {% for social_link in social_links %}
+            <a href="{{ social_link['link'] }}" target="_blank" title="{{ social_link['title'] }}">
+              <i class="fa {{ social_link['icon'] }}"></i>
+            </a>
+            {% endfor %}
+          </div>
+          {% endif %}
+        </div>
+        <div class="col-sm-6">
+          <div class="row inputs">
+            {% if display_name %}
+            <div class="col-sm-5 name-field">
+              <input type="text" name="name" value="" class="form-control" placeholder="{{ entry_name }}" />
+            </div>
+            {% endif %}
+
+            {% if display_name %}
+            {% set right_class = 'col-sm-7' %}
+            {% else %}
+            {% set right_class = 'col-sm-12' %}
+            {% endif %}
+
+            <div class="{{ right_class }} email-field">
+              <div class="input-group">
+                <input type="text" name="email" value="" class="form-control" placeholder="{{ entry_email }}" />
+                <span class="input-group-btn">
+                  <button type="button" class="btn btn-primary button" id="btn_footer_subscribe">{{ button_subscribe }}</button>
+                </span>
+              </div>
+              <div class="notify error-notify"></div>
+            </div>
+          </div>
+          <div class="notify success-notify"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <style>
+    .footer-newsletter {
+      {% if bgcolor %}
+        background: {{ bgcolor }};
+      {% endif %}
+      {% if fontcolor %}
+        color: {{ fontcolor }};
+      {% endif %}
+    }
+  </style>
+</div> #}
+
+  <script type="text/javascript">
+    $('#footer-newsletter #btn_footer_subscribe').click(function() {
+      $.ajax({
+        url: 'index.php?route=newsletter/footer/addSubscriber',
+        dataType: 'json',
+        data: $('#footer-newsletter input[name="name"], #footer-newsletter input[name="email"]'),
+        type: 'post',
+        /*beforeSend: function() {
+          $('#footer-newsletter #btn_footer_subscribe').button('loading');
+        },
+        complete: function() {
+          $('#footer-newsletter #btn_footer_subscribe').button('reset');
+        },*/
+        success: function(json) {
+          console.log(json);
+          $('#footer-newsletter .text-danger, #footer-newsletter .text-success, #footer-newsletter .alert').remove();
+
+          if (json['error']) {
+            if (json['error']['name']) {
+              $('#footer-newsletter input[name="name"]').after('<div class="text-danger txt-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['name'] + '<button type="button" class="close" onclick="$(\'.txt-danger\').remove();"> &times; </button></div>');
+            }
+
+            if (json['error']['warning']) {
+              $('#footer-newsletter .error-notify').html('<div class="text-danger txt-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + '<button type="button" class="close" onclick="$(\'.txt-danger\').remove();"> &times; </button></div>');
+            }
+          }
+
+          if (json['success']) {
+            $('#footer-newsletter input[name="name"], #footer-newsletter input[name="email"]').val('');
+
+            $('#footer-newsletter .success-notify').html('<div class="text-success txt-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '<button type="button" class="close" onclick="$(\'.txt-success\').remove();"> &times; </button></div>');
+          }
+        }
+      });
+    });
+  </script>

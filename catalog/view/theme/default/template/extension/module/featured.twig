@@ -1,0 +1,115 @@
+<div class="prod">
+	<div class="prod__content">
+		<div class="title">
+			<h2>{{ title_module }}</h2>
+			<a class="hidden" href="">{{ link_category_featured }}</a>
+		</div>
+		<div class="prod__list">
+      	{% for product in products %}
+			<div class="prod__item" itemscope itemtype="https://schema.org/Product">
+				<div class="prod__item-top">
+					<a onclick="compare.add('{{ product.product_id }}'); return false;" href="#"><img src="images/i-graph.svg"></a>
+					<a onclick="wishlist.add('{{ product.product_id }}'); return false;" href="#"><img src="images/i-bookmark.svg"></a>
+				</div>
+				<div class="prod__item-img">
+					<a href="{{ product.href }}"><img src="{{ product.thumb }}"></a>
+				</div>
+				<div class="prod__item-bottom">
+					<div class="prod__item-title">
+						<a href="{{ product.href }}"><b itemprop="name">{{ product.name }}</b></a>
+						<span class="hidden" itemprop="description"></span>
+					</div>
+					<div class="prod__item-footer">
+						<div class="prod__item-price">
+              				{% if not product.special %}
+								<span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+								  {{ text_from_n }} <span itemprop="price">{{ product.price_orig }}</span> {{ symbol_right }}
+								  <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+							  </span>
+							{% else %}
+								<span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+								  {{ text_from_n }} <span itemprop="price">{{ product.special_orig }}</span>{{ symbol_right }}
+								  <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+							  </span>
+							{% endif %}
+						</div>
+						<div class="item-add-to-cart">
+							<div class="item-add-to-cart__input-block">
+								<div class="item-add-to-cart__input-block_minus">-</div>
+								<input class="item-add-to-cart__input-block_input" data-product-id="{{ product.product_id }}" value="1" />
+								<div class="item-add-to-cart__input-block_plus">+</div>
+							</div>
+							<a onclick="cart.add('{{ product.product_id }}'); return false;" class="prod__item-link" href="#" itemprop="url">
+								<img src="images/i-bag.svg"><span>{{ button_cart_n }}</span>
+							</a>
+						</div>
+						
+					</div>
+				</div>
+			</div>
+      {% endfor %}
+		</div>
+	</div>
+</div>
+
+
+{# <h3>{{ heading_title }}</h3>
+<div class="row">
+	{% for product in products %}
+		<div class="product-layout col-lg-3 col-md-3 col-sm-6 col-xs-12">
+			<div class="product-thumb transition">
+				<div class="image">
+					<a href="{{ product.href }}"><img src="{{ product.thumb }}" alt="{{ product.name }}" title="{{ product.name }}" class="img-responsive"/></a>
+				</div>
+				<div class="caption">
+					<h4>
+						<a href="{{ product.href }}">{{ product.name }}</a>
+					</h4>
+					<p>{{ product.description }}</p>
+					{% if product.rating %}
+						<div class="rating">
+							{% for i in 5 %}
+								{% if product.rating < i %}
+									<span class="fa fa-stack">
+										<i class="fa fa-star-o fa-stack-2x"></i>
+									</span>
+								{% else %}
+									<span class="fa fa-stack">
+										<i class="fa fa-star fa-stack-2x"></i>
+										<i class="fa fa-star-o fa-stack-2x"></i>
+									</span>
+								{% endif %}
+							{% endfor %}
+						</div>
+					{% endif %}
+					{% if product.price %}
+						<p class="price">
+							{% if not product.special %}
+								{{ product.price }}
+							{% else %}
+								<span class="price-new">{{ product.special }}</span>
+								<span class="price-old">{{ product.price }}</span>
+							{% endif %}
+							{% if product.tax %}
+								<span class="price-tax">{{ text_tax }}
+									{{ product.tax }}</span>
+							{% endif %}
+						</p>
+					{% endif %}
+				</div>
+				<div class="button-group">
+					<button type="button" onclick="cart.add('{{ product.product_id }}');">
+						<i class="fa fa-shopping-cart"></i>
+						<span class="hidden-xs hidden-sm hidden-md">{{ button_cart }}</span>
+					</button>
+					<button type="button" data-toggle="tooltip" title="{{ button_wishlist }}" onclick="wishlist.add('{{ product.product_id }}');">
+						<i class="fa fa-heart"></i>
+					</button>
+					<button type="button" data-toggle="tooltip" title="{{ button_compare }}" onclick="compare.add('{{ product.product_id }}');">
+						<i class="fa fa-exchange"></i>
+					</button>
+				</div>
+			</div>
+		</div>
+	{% endfor %}
+</div> #}

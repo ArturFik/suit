@@ -1,0 +1,126 @@
+{{ header }}
+<div class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img
+      src="/catalog/view/theme/default/images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+
+  {{ column_left }}
+
+  <div id="content" class="articles">
+    {{ content_top }}
+
+    <div class="title"><h1>{{ heading_title }}</h1></div>
+
+    <div class="articles__content">
+
+    {% if blog_category_description %}
+    <div class="articles__top">
+      <div class="articles__description">
+        {{ blog_category_description }}
+      </div>
+    </div>      
+    {% endif %}
+
+      {% if categories %}
+      <div class="articles__left">
+        <div class="articles__filter">
+          {% for category in categories %}
+          <div class="articles__filter-item"><a href="{{ category.href }}"><span>{{ category.name }}</span>{# <small>12</small> #}</a></div>
+          {% endfor %}
+        </div>
+      </div>
+      {% endif %}
+
+      <div class="articles__right">
+
+        {# <div class="prd-hashtag__list">
+          <div class="prd-hashtag__item">#Цемент</div>
+          <div class="prd-hashtag__item">#Гипсокартон</div>
+          <div class="prd-hashtag__item">#Акции</div>
+          <div class="prd-hashtag__item">#бытовые</div>
+          <div class="prd-hashtag__item">#Ремонт</div>
+          <div class="prd-hashtag__item">#Обслуживание</div>
+        </div> #}
+
+        <div class="articles__right-content">
+          {% if blogs %}
+          {% for blog in blogs %}
+          <a href="{{ blog.href }}" class="article-list__item">
+            <div class="article-list__img"><img src="{{ blog.image }}"></div>
+            <div class="article-list__title">{{ blog.title }}</div>
+            <div class="article-list__text">{{ blog.short_description }}</div>
+          </a>
+          {% endfor %}
+          {% else %}
+          {{ text_no_results }}
+          {% endif %}
+        </div>
+
+        {{ pagination }}
+
+      </div>
+    </div>
+
+
+    {# <div class="blog">
+      <h1>{{ heading_title }}</h1>
+
+      {% if blog_category_description %}
+      <div class="main_description">
+        {{ blog_category_description }}
+      </div>
+      {% endif %}
+
+      {% if blogs %}
+      <div class="blog_grid_holder column-{{ list_columns }}">
+
+        {% for blog in blogs %}
+        <div class="blog_item">
+
+          <div class="summary">
+            <h2 class="blog_title"><a href="{{ blog.href }}">{{ blog.title }}</a></h2>
+            <div class="blog_stats">
+              {% if author_status %} <span><i class="fa fa-user"></i><b class="text">{{ text_posted_by }}</b> <b
+                  class="hl">{{ blog.author }}</b></span>{% endif %}
+              {% if date_added_status %} <span><i class="fa fa-clock-o"></i><b class="text">{{ text_posted_on }}</b> <b
+                  class="hl">{{ blog.date_added_full }}</b></span>{% endif %}
+              {% if page_view_status %} <span><i class="fa fa-eye"></i><b class="text">{{ text_read }}</b> <b
+                  class="hl">{{ blog.count_read }}</b></span>{% endif %}
+              {% if comments_count_status %} <span><i class="fa fa-comments"></i><b class="text">{{ text_comments }}</b>
+                <b class="hl">{{ blog.comment_total }}</b></span>{% endif %}
+            </div>
+            {% if blog.image%}
+            <div class="image">
+              <a href="{{ blog.href }}"><img src="{{ blog.image }}" alt="{{ blog.title }}"
+                  title="{{ blog.title }}" /></a>
+            </div>
+            {% endif %}
+            <p>{{ blog.short_description }}</p>
+            <p><a href="{{ blog.href }}">{{ text_read_more }} <i class="fa fa-long-arrow-right"></i></a></p>
+          </div>
+        </div>
+        {% endfor %}
+
+      </div>
+
+      <div class="row">
+        <div class="col-sm-6 text-left">{{ results }}</div>
+        <div class="col-sm-6 text-right">{{ pagination }}</div>
+      </div>
+      {% else %}
+      {{ text_no_results }}
+      {% endif %}
+    </div> #}
+
+    {{ content_bottom }}
+  </div>
+  {{ column_right }}
+</div>
+{{ footer }}

@@ -1,0 +1,284 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ importfile }}" data-toggle="tooltip" title="{{ button_importfile }}" class="btn btn-success"><i class="fa fa-file-excel-o"></i> {{ button_importfile }}</a>
+        <a href="{{ importsubscribers }}" data-toggle="tooltip" title="{{ button_importsubscribers }}" class="btn btn-primary"><i class="fa fa-upload"></i> {{ button_importsubscribers }}</a>
+        <a href="{{ exportlist }}" data-toggle="tooltip" title="{{ button_exportlist }}" class="btn btn-primary"><i class="fa fa-download"></i> {{ button_exportlist }}</a> 
+        <button type="button" data-toggle="tooltip" title="{{ button_delete }}" class="btn btn-danger" onclick="confirm('{{ text_confirm }}') ? $('#form-citemplate').submit() : false;"><i class="fa fa-trash-o"></i></button>
+      </div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ text_list }}</h3>
+      </div>
+      <div class="panel-body">
+        <div class="well well-sm">
+          <div class="row">
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-name">{{ entry_name }}</label>
+                <input type="text" name="filter_name" value="{{ filter_name }}" placeholder="{{ entry_name }}" id="input-name" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-account">{{ entry_account }}</label>
+                <select name="filter_account" id="input-account" class="form-control">
+                  <option value="*"></option>
+                  {% if filter_account == '1' %}
+                  <option value="1" selected="selected">{{ text_register }}</option>
+                  {% else %}
+                  <option value="1">{{ text_register }}</option>
+                  {% endif %}
+                  {% if filter_account == '0' %}
+                  <option value="0" selected="selected">{{ text_guest }}</option>
+                  {% else %}
+                  <option value="0">{{ text_guest }}</option>
+                  {% endif %}
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-store">{{ entry_store }}</label>
+                <select name="filter_store" id="input-store" class="form-control">
+                  <option value="*"></option>
+                  <option value="0" {{ filter_store == '0' ? 'selected="selected"' : '' }}>{{ text_default }}</option>
+                  {% for store in stores %}
+                  {% if store.store_id == filter_store %}
+                  <option value="{{ store.store_id }}" selected="selected">{{ store.name }}</option>
+                  {% else %}
+                  <option value="{{ store.store_id }}">{{ store.name }}</option>
+                  {% endif %}
+                  {% endfor %}
+                </select>
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-email">{{ entry_email }}</label>
+                <input type="text" name="filter_email" value="{{ filter_email }}" placeholder="{{ entry_email }}" id="input-email" class="form-control" />
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-ip">{{ entry_ip }}</label>
+                <input type="text" name="filter_ip" value="{{ filter_ip }}" placeholder="{{ entry_ip }}" id="input-ip" class="form-control" />
+              </div>
+            </div>
+            <div class="col-sm-4">
+              <div class="form-group">
+                <label class="control-label" for="input-status">{{ entry_status }}</label>
+                <select name="filter_status" id="input-status" class="form-control">
+                  <option value="*"></option>
+                  <option value="0" {{ filter_status == '0' ? 'selected="selected"' : '' }}>{{ text_unverify }}</option>
+                  <option value="1" {{ filter_status == '1' ? 'selected="selected"' : '' }}>{{ text_verified }}</option>
+                  <option value="2" {{ filter_status == '2' ? 'selected="selected"' : '' }}>{{ text_unsubscriber }}</option>
+                </select>
+              </div>
+              <div class="form-group">
+                <label class="control-label" for="input-date-added">{{ entry_date_added }}</label>
+                <div class="input-group date">
+                  <input type="text" name="filter_date_added" value="{{ filter_date_added }}" placeholder="{{ entry_date_added }}" data-date-format="YYYY-MM-DD" id="input-date-added" class="form-control" />
+                  <span class="input-group-btn">
+                  <button type="button" class="btn btn-default"><i class="fa fa-calendar"></i></button>
+                  </span>
+                </div>
+              </div>
+              <button type="button" id="button-filter" class="btn btn-primary pull-right"><i class="fa fa-filter"></i> {{ button_filter }}</button>
+            </div>
+          </div>
+        </div>
+        <form action="{{ delete }}" method="post" enctype="multipart/form-data" id="form-citemplate">
+          <span data-token="{{ user_token }}" id="token" class="hide"></span>
+          <div class="table-responsive">
+            <table class="table table-bordered table-hover">
+              <thead>
+                <tr>
+                  <td style="width: 1px;" class="text-center"><input type="checkbox" onclick="$('input[name*=\'selected\']').prop('checked', this.checked);" /></td>
+                  <td class="text-left">{% if sort == 'name' %}
+                    <a href="{{ sort_name }}" class="{{ order|lower }}">{{ column_name }}</a>
+                    {% else %}
+                    <a href="{{ sort_name }}">{{ column_name }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'email' %}
+                    <a href="{{ sort_email }}" class="{{ order|lower }}">{{ column_email }}</a>
+                    {% else %}
+                    <a href="{{ sort_email }}">{{ column_email }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'store_id' %}
+                    <a href="{{ sort_store_id }}" class="{{ order|lower }}">{{ column_store }}</a>
+                    {% else %}
+                    <a href="{{ sort_store_id }}">{{ column_store }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'account_register' %}
+                    <a href="{{ sort_account_register }}" class="{{ order|lower }}">{{ column_account }}</a>
+                    {% else %}
+                    <a href="{{ sort_account_register }}">{{ column_account }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'status' %}
+                    <a href="{{ sort_status }}" class="{{ order|lower }}">{{ column_status }}</a>
+                    {% else %}
+                    <a href="{{ sort_status }}">{{ column_status }}</a>
+                    {% endif %}</td>
+                    <td class="text-left">{% if sort == 'ip' %}
+                    <a href="{{ sort_ip }}" class="{{ order|lower }}">{{ column_ip }}</a>
+                    {% else %}
+                    <a href="{{ sort_ip }}">{{ column_ip }}</a>
+                    {% endif %}</td>
+                  <td class="text-left">{% if sort == 'date_added' %}
+                    <a href="{{ sort_date_added }}" class="{{ order|lower }}">{{ column_date_added }}</a>
+                    {% else %}
+                    <a href="{{ sort_date_added }}">{{ column_date_added }}</a>
+                    {% endif %}</td>
+                  <td class="text-right">{{ column_action }}</td>
+                </tr>
+              </thead>
+              <tbody>
+                {% if subscribers %}
+                {% for subscriber in subscribers %}
+                <tr>
+                  <td class="text-center">{% if subscriber.newsletter_id in selected %}
+                    <input type="checkbox" name="selected[]" value="{{ subscriber.newsletter_id }}" checked="checked" />
+                    {% else %}
+                    <input type="checkbox" name="selected[]" value="{{ subscriber.newsletter_id }}" />
+                    {% endif %}</td>
+                  <td class="text-left">{{ subscriber.name }}</td>
+                  <td class="text-left">{{ subscriber.email }}</td>
+                  <td class="text-left">{{ subscriber.store_name }}</td>
+                  <td class="text-left"><label class="label label-{{ subscriber.account_class }}">{{ subscriber.account_register }}</label></td>
+                  <td class="text-left" {% if subscriber.reason_message %} style="width: 20%;" {% endif %}><label class="label label-{{ subscriber.status_class }}">{{ subscriber.status }}</label>
+                    {% if subscriber.reason_message %}
+                    <br/><br/>{{ subscriber.reason_message }}
+                    {% endif %}
+                  </td>
+                  <td class="text-left">{{ subscriber.ip }}</td>
+                  <td class="text-left">{{ subscriber.date_added }}</td>
+                  <td class="text-right">
+                    <a data-id="{{ subscriber.newsletter_id }}" data-email="{{ subscriber.email }}" class="btn btn-primary button-usereditmodal button-usereditmodal-{{ subscriber.newsletter_id }}" data-toggle="tooltip" title="{{ button_edit }}"><i class="fa fa-pencil"></i></a>
+                    <button type="button" data-email="{{ subscriber.email }}" data-name="{{ subscriber.name }}" class="btn btn-primary button-useremailmodal" data-toggle="tooltip" title="{{ button_email_popup }}"><i class="fa fa-envelope"></i></button>
+                  </td>
+                </tr>
+                {% endfor %}
+                {% else %}
+                <tr>
+                  <td class="text-center" colspan="8">{{ text_no_results }}</td>
+                </tr>
+                {% endif %}
+              </tbody>
+            </table>
+          </div>
+        </form>
+        <div class="row">
+          <div class="col-sm-6 text-left">{{ pagination }}</div>
+          <div class="col-sm-6 text-right">{{ results }}</div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="modal fade" id="useremailmodal" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_send_email }} <span class="stringusername"></span> (<span class="stringuseremail"></span>)</h4>
+        </div>
+        <div class="modal-body form-horizontal">
+          <div class="row manual_row">
+            <div class="col-sm-12">
+              <input type="text" name="subject" class="form-control" value="" placeholder="{{ entry_subject }}" />
+            </div>
+          </div>
+          <br/>
+          <div class="row">
+            <div class="col-sm-12">
+              <textarea name="message" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" onclick="SendEmail.sendManualSubscriber(this);" id="send-useremailmodal" data-email="" data-name="">{{ button_send_email }}</button>
+          <button type="button" class="btn btn-info" data-toggle="modal" data-target="#UserShortCodes">{{ button_short_codes }}</button>
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_close }}</button>
+        </div>
+      </div>      
+    </div>
+  </div>
+  <div id="UserShortCodes" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <button type="button" class="close" data-dismiss="modal">&times;</button>
+          <h4 class="modal-title">{{ text_shortcodes }}</h4>
+        </div>
+        <div class="modal-body">
+          <div class="col-sm-12">
+            <br/>
+          <table class="table table-bordered">
+            <thead>
+              <tr><td>{{ const_names }}</td><td>{{ const_short_codes }}</td>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>{{ const_logo }}</td><td>{LOGO}</td>
+              </tr>
+              <tr>
+                <td>{{ const_store_name }}</td><td>{STORE_NAME}</td>
+              </tr>
+              <tr>
+                <td>{{ const_store_link }}</td><td>{STORE_LINK}</td>
+              </tr>
+              <tr>
+                <td>{{ const_name }}</td><td>{NAME}</td>
+              </tr>
+              <tr>
+                <td>{{ const_email }}</td><td>{EMAIL}</td>
+              </tr>
+              <tr>
+                <td>{{ const_link_confirm }}</td><td>{CONFIRMATION_LINK}</td>
+              </tr>
+              <tr>
+                <td>{{ const_link_unsubscribe }}</td><td>{UNSUBSCRIBE_LINK}</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-default" data-dismiss="modal">{{ button_close }}</button>
+        </div>
+      </div>
+
+    </div>
+  </div>
+  <link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+  <link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script> 
+  <script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+  <link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+  <script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script> 
+  <script type="text/javascript" src="view/javascript/summernote/opencart.js"></script> 
+  <script type="text/javascript">
+  $('#usereditmodal').on('hidden.bs.modal', function() {
+    $(this).remove();
+  });
+  </script>
+</div>
+{{ footer }}

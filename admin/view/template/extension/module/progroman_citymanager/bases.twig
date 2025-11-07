@@ -1,0 +1,58 @@
+<table class="table table-striped table-bordered">
+  <tbody>
+    <tr>
+      <td><b>{{ base_ip.getName() }}</b></td>
+      <td>{{ base_ip.getStatus() }}</td>
+      <td>
+        {% for action in base_ip.getActions() %}
+          <a class="{{ action.getCssClass() }} base-action btn" title="{{ action.getName() }}" data-action="{{ action.getActionId() }}"
+            data-text="{{ action.getLoadingText() }}...">
+            <i class="fa fa-{{ action.getIcon() }}"></i>
+          </a>
+        {% endfor %}
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<h4>{{ text_database_cities }}</h4>
+{% if is_loaded_fias is empty %}
+<p class="text-danger">{{ text_fias_not_loaded }}</p>
+{% endif %}
+<table class="table table-striped table-bordered">
+  <tbody>
+  {% for download_file in download_files %}
+    <tr>
+      <td><b>{{ download_file.getName() }}</b></td>
+      <td>{{ download_file.getStatus() }}</td>
+      <td>
+        {% for action in download_file.getActions() %}
+          <a class="{{ action.getCssClass() }} base-action btn" title="{{ action.getName() }}" data-action="{{ action.getActionId() }}"
+             data-text="{{ action.getLoadingText() }}...">
+            <i class="fa fa-{{ action.getIcon() }}"></i>
+          </a>
+        {% endfor %}
+      </td>
+    </tr>
+  {% endfor %}
+  </tbody>
+</table>
+
+{% if countries_not_found or zones_not_found %}
+  <div class="alert alert-warning col-xs-12">
+      {{ text_regions_info }}
+  </div>
+{% endif %}
+{% if countries_not_found %}
+  <h4>{{ text_no_relative_countries }}</h4>
+  {% for country in countries_not_found %}
+    <div class="col-sm-6 col-xs-12">{{ country['offname'] }}</div>
+  {% endfor %}
+  <br><br>
+{% endif %}
+{% if zones_not_found %}
+  <h4>{{ text_no_relative_zones }}</h4>
+  {% for zone in zones_not_found %}
+    <div class="col-sm-6 col-xs-12">{{ zone.offname }} {{ zone.shortname }},  {{ zone.parent_name }}</div>
+  {% endfor %}
+{% endif %}

@@ -1,0 +1,84 @@
+{{ header }} 
+<div class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a>
+    <img src="/catalog/view/theme/default/images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+  {{ column_left }}
+
+    <div id="content" class="article">
+      {{ content_top }}
+      {% if main_thumb and blogsetting_post_thumb %}
+      <div class="article__text"><img src="{{ blogsetting_post_thumb }}"></div>
+      {% endif %}
+      <div class="title"><h1>{{ heading_title }}</h1></div>
+      {% if description %}
+      <div class="article__text mh300">
+        {{ description }}
+      </div>
+      {% endif %}
+      {{ formcreator_id41 }}
+
+      {% if tags %}
+      <div class="prd-hashtag__list">
+        {% for tag in tags %}
+        <a href="{{ tag.href }}" class="prd-hashtag__item">#{{ tag.tag }}</a>       
+        {% endfor %}
+      </div>
+      {% endif %}
+      {{ content_bottom }}
+    </div>
+     
+    
+    {{ column_right }}
+</div>
+<script type="text/javascript">
+$('#comment').delegate('.pagination a', 'click', function(e) {
+  e.preventDefault();
+  $("html,body").animate({scrollTop:(($("#comment").offset().top)-50)},500);
+    $('#comment').fadeOut(50);
+    $('#comment').load(this.href);
+    $('#comment').fadeIn(500);
+});
+
+$('#comment').load('index.php?route=blog/blog/comment&blog_id={{ blog_id }}');
+</script>
+
+<script type="text/javascript">
+$('#button-comment').on('click', function() {
+  $.ajax({
+    url: 'index.php?route=blog/blog/write&blog_id={{ blog_id }}',
+    type: 'post',
+    dataType: 'json',
+    data: $("#comment_form").serialize(),
+    
+    complete: function() {
+      $('#button-comment').button('reset');
+    },
+    success: function(json) {
+      $('.alert-success, .alert-danger').remove();
+      
+      if (json['error']) {
+        $('#comment').after('<div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+      }
+      
+      if (json['success']) {
+        $('#comment').after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+        
+        $('input[name=\'name\']').val('');
+        $('input[name=\'email\']').val('');
+        $('textarea[name=\'comment\']').val('');
+        $('#input-captcha').val('');
+      }
+    }
+  });
+});    
+
+</script>
+{{ footer }}  

@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html dir="{{ direction }}" lang="{{ lang }}">
+<head>
+<meta charset="UTF-8" />
+<title>{{ title }}</title>
+<base href="{{ base }}" />
+{% if description %}
+<meta name="description" content="{{ description }}" />
+{% endif %}
+{% if keywords %}
+<meta name="keywords" content="{{ keywords }}" />
+{% endif %}
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0" />
+<script type="text/javascript" src="view/javascript/jquery/jquery-2.1.1.min.js"></script>
+
+					<script src="https://ajax.googleapis.com/ajax/libs/jqueryui/1.11.4/jquery-ui.min.js"></script>
+				
+<script type="text/javascript" src="view/javascript/bootstrap/js/bootstrap.min.js"></script>
+<link href="view/stylesheet/bootstrap.css" type="text/css" rel="stylesheet" />
+<link href="view/javascript/font-awesome/css/font-awesome.min.css" type="text/css" rel="stylesheet" />
+<script src="view/javascript/jquery/datetimepicker/moment/moment.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/moment/moment-with-locales.min.js" type="text/javascript"></script>
+<script src="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.js" type="text/javascript"></script>
+<link href="view/javascript/jquery/datetimepicker/bootstrap-datetimepicker.min.css" type="text/css" rel="stylesheet" media="screen" />
+<link type="text/css" href="view/stylesheet/stylesheet.css" rel="stylesheet" media="screen" />
+<link href="view/stylesheet/extended_reviews.css" type="text/css" rel="stylesheet" />
+{% for style in styles %}
+<link type="text/css" href="{{ style.href }}" rel="{{ style.rel }}" media="{{ style.media }}" />
+{% endfor %}
+
+		<script type="text/javascript" src="view/javascript/jquery/translit.js"></script>
+
+		<style>
+		@media (min-width: 768px){
+			#column-left {width: 260px !important;}
+			#column-left + #content {margin-left: 260px !important;}
+			.bimage {margin:0;}
+		}
+		</style>
+		
+{% for link in links %}
+<link href="{{ link.href }}" rel="{{ link.rel }}" />
+{% endfor %}
+<script src="view/javascript/common.js" type="text/javascript"></script>
+{% for script in scripts %}
+<script type="text/javascript" src="{{ script }}"></script>
+{% endfor %}
+</head>
+<body>
+<div id="container">
+<header id="header" class="navbar navbar-static-top">
+  <div class="container-fluid">
+    <div id="header-logo" class="navbar-header"><a href="{{ home }}" class="navbar-brand"><img src="view/image/logo.png" alt="{{ heading_title }}" title="{{ heading_title }}" /></a></div>
+    {% if logged %}<a href="#" id="button-menu" class="hidden-md hidden-lg"><span class="fa fa-bars"></span></a>
+    <ul class="nav navbar-nav navbar-right">
+
+        {% if (extended_review_settings is defined or extended_review_store_settings is defined) %}
+        <li class="dropdown"><a class="dropdown-toggle" data-toggle="dropdown"><span class="label label-danger pull-right">{{ reviews_count }}</span><i class="fa fa-comments-o fa-lg" aria-hidden="true"></i></a>
+          <ul class="dropdown-menu dropdown-menu-right">
+        {% if (extended_review_settings is defined) %}
+            <li class="dropdown-header">Расширенные отзывы</li>
+            <li><a href="{{ extended_review_settings }}">Настройки</a></li>
+    		<li class="divider"></li>
+    		<li class="dropdown-header">Отзывы</li>
+            <li><a href="{{ extended_review }}"><span class="label label-success pull-right">{{ all_review_total }}</span>Все отзывы</a></li>
+            <li><a href="{{ extended_review_off }}"><span class="label label-danger pull-right">{{ review_total }}</span>Новые отзывы</a></li>
+    		<li class="divider"></li>
+    		<li class="dropdown-header">Комментарии</li>
+            <li><a href="{{ extended_review_answer }}"><span class="label label-success pull-right">{{ all_answer_total }}</span>Все комментарии</a></li>
+            <li><a href="{{ extended_review_answer_off }}"><span class="label label-danger pull-right">{{ answer_total }}</span>Новые комментарии</a></li>
+            {% endif %}
+            {% if (extended_review_store_settings is defined) %}
+            <li class="divider"></li>
+            <li class="dropdown-header">Расширенные отзывы о магазине</li>
+            <li><a href="{{ extended_review_store_settings }}">Настройки</a></li>
+    		<li class="divider"></li>
+    		<li class="dropdown-header">Отзывы о магазине</li>
+            <li><a href="{{ extended_review_store }}"><span class="label label-success pull-right">{{ review_store_total }}</span>Все отзывы</a></li>
+            <li><a href="{{ extended_review_store_off }}"><span class="label label-danger pull-right">{{ review_store }}</span>Новые отзывы</a></li>
+            {% endif %}
+          </ul>
+        </li>
+        {% endif %}
+
+			<!-- AutoSearch3x -->
+			{% if as3x %}
+			<style type="text/css">
+			.info_table_line2::before,.info_table_line::after{content:"";border-bottom:1px dashed #d7dbe9;position:relative;top:.4rem}.info_table{width:100%;border-collapse:collapse;border-spacing:0;table-layout:fixed}.info_table_line::after{display:block;flex:1;margin:0 0 0 .5rem}.info_table_line{display:flex;align-items:center;font-weight:600}.info_table_line2{display:flex;align-items:center}.info_table_line2::before{flex:1;margin:0 .5rem 0 0}.acdn-toggle{outline:0!important}.panel-heading .acdn-toggle:after{content:"\f078";font-family:FontAwesome;float:right;color:grey}.panel-heading .acdn-toggle.collapsed:after{font-family:FontAwesome;float:right;color:grey;content:"\f054"}#as3x_widget .panel-heading a.acdn-toggle{color:inherit;line-height:20px}
+			</style>
+				<li class="dropdown autosearch" id="as3x"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search fa-lg"></i></a></li>
+			<script type="text/javascript"><!--
+			$('#as3x').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var as3x_widget = this.name;
+				$('#as3x_widget .eout').remove();
+
+				var $stats = $.ajax({
+					url : 'index.php?route=extension/module/autosearch/wstats&user_token=' + getURLVar('user_token'),
+					dataType: 'json',
+					async: false,
+					success : function (json) {
+						return json;
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				}).responseText;
+			var stats = JSON.parse($stats);
+
+				var $counters = $.ajax({
+					url : 'index.php?route=extension/module/autosearch/wcounters&user_token=' + getURLVar('user_token'),
+					dataType: 'json',
+					async: false,
+					success : function (json) {
+						return json;
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				}).responseText;
+			var counters = JSON.parse($counters);
+
+			var htm ='';
+			htm += '<div id="as3x_widget" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">';
+			htm += '<div class="modal-dialog"><div class="modal-content">';
+			htm += '	<div class="modal-header">{{ autosearch_widget }}';
+			htm += '		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+			htm += '	</div>';
+			htm += '	<div class="modal-body">';
+			htm += '<div class="row">';
+			htm += '<div class="col-sm-12">';
+
+			htm += '<div class="col-sm-12">';
+			htm += '<div class="panel panel-default">';
+			htm += '<div class="panel-heading">{{ text_info }}</div>';
+			htm += '<div class="panel-body">';
+			htm += '<table class="info_table counters">';
+			htm += '<tbody>';
+			for(var i in counters) {
+			htm += '<tr>';
+			htm += '<th><span class="info_table_line">' + (counters[i].name) + '</span></th>';
+			htm += '<td><span class="info_table_line2">' + (counters[i].val) + '</span></td>';
+			htm += '</tr>';
+			}
+			htm += '</tbody>';
+			htm += '</table>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div><br>';
+
+			htm += '<div class="col-sm-12">';
+			htm += '<div class="panel panel-default">';
+			htm += '<div class="panel-heading"><a class="acdn-toggle collapsed" data-toggle="collapse" href="#as3x_widget_stats">{{ cache_stat }}</a></div>';
+			htm += '<div id="as3x_widget_stats" class="panel-collapse collapse">';
+			htm += '<div class="panel-body">';
+			htm += '<table class="info_table stats">';
+			htm += '<tbody>';
+			for(var i in stats) {
+			htm += '<tr>';
+			htm += '<th><span class="info_table_line">' + (stats[i].keywords) + '</span></th>';
+			htm += '<td><span class="info_table_line2">' + (stats[i].freq) + '</span></td>';
+			htm += '</tr>';
+			}
+			htm += '</tbody>';
+			htm += '</table>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div>';
+
+			htm += '<div class="col-sm-12" id="zeout"></div>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '<div class="row" style="margin-top:10px;">';
+			htm += '<div class="col-sm-12 ck_buttons">';
+			htm += '	<div class="pull-left"><button class="btn btn-warning" id="as3x_dropcache">{{ dropcache }}</button></div><div class="pull-right"><button class="btn btn-primary" id="as3x_settings"><i class="fa fa-cogs"></i> {{ text_settings }}</button> <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ text_close }}</button></div>';
+			htm += '</div>';
+			htm += '</div>';
+
+			htm += '	</div>';
+			htm += '</div></div>';
+			htm += '</div>';
+			if (!$('#as3x_widget').length > 0) {
+				$('body').append(htm);
+				$('#as3x_widget').modal({show:true, keyboard:true, backdrop:true});
+
+				$('#as3x_settings').on('click', function(e) {
+					var url = 'index.php?route=extension/module/autosearch&user_token=' + getURLVar('user_token');
+					window.open(url);
+				});
+
+				$('#as3x_dropcache').on('click', function(e) {
+					e.preventDefault();
+					$('.eout').remove();
+					$.ajax({
+						url : 'index.php?route=extension/module/autosearch/dropcache&user_token=' + getURLVar('user_token'),
+						dataType: 'json',
+						beforeSend: function() {
+							$('#as3x_dropcache').prop('disabled', true);
+							$('.eout').remove();
+						},
+						complete: function() {
+							$('#as3x_dropcache').prop('disabled', false);
+						},
+						success : function (json) {
+							$('.eout').remove();
+							if (json['error']) {
+								html = '<div class="alert alert-warning eout">' + json['error']['warning'] + '</div>';
+								$('#zeout').append(html).hide().fadeIn(150);
+							}
+							if (json['success']) {
+								$('.stats').remove();
+								$('.info_table_line2').last().text('0.00 MB');
+								html = '<div class="alert alert-success eout">' + json['success'] + '</div>';
+								$('#zeout').append(html).hide().fadeIn(150);
+							}
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+				});
+			}
+				$("#as3x_widget").on('hidden.bs.modal', function(){
+					$('#as3x_widget').remove();
+				});
+			});
+			//--></script>
+			{% endif %}
+			<!-- AutoSearch3x -->
+			
+      <li class="dropdown"><a href="#" class="dropdown-toggle" data-toggle="dropdown"><img src="{{ image }}" alt="{{ firstname }} {{ lastname }}" title="{{ username }}" id="user-profile" class="img-circle" />{{ firstname }} {{ lastname }} <i class="fa fa-caret-down fa-fw"></i></a>
+        <ul class="dropdown-menu dropdown-menu-right">
+          <li><a href="{{ profile }}"><i class="fa fa-user-circle-o fa-fw"></i> {{ text_profile }}</a></li>
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_store }}</li>
+          {% for store in stores %}
+          <li><a href="{{ store.href }}" target="_blank">{{ store.name }}</a></li>
+          {% endfor %}
+          <li role="separator" class="divider"></li>
+          <li class="dropdown-header">{{ text_help }}</li>
+          
+		<li><a href="http://opencart-russia.ru/" target="_blank"><i class="fa fa-opencart fa-fw"></i> {{ text_homepage }}</a></li>
+		
+          
+		<li><a href="http://forum.opencart-russia.ru/threads/soderzhanie.6030/" target="_blank"><i class="fa fa-file-text-o fa-fw"></i> {{ text_documentation }}</a></li>
+		
+          
+		<li><a href="http://forum.opencart-russia.ru" target="_blank"><i class="fa fa-comments-o fa-fw"></i> {{ text_support }}</a></li>
+		
+        </ul>
+      </li>
+      <li><a href="{{ logout }}"><i class="fa fa-sign-out"></i> <span class="hidden-xs hidden-sm hidden-md">{{ text_logout }}</span></a></li>
+    </ul>
+    {% endif %} </div>
+</header>

@@ -1,0 +1,44 @@
+{{ header }}
+<div class="container">
+    <div class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        {% if loop.last %}
+        <span>{{ breadcrumb.text }}</span>
+        {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img
+            src="/catalog/view/theme/default/images/i-separator.svg">
+        {% endif %}
+        {% endfor %}
+    </div>
+
+    {{ column_left }}
+
+    <div id="content" class="stock">
+        <div class="title">
+            <h1>{{ heading_title }}</h1>
+        </div>
+
+        <div class="blog-category-description">{{ description }}</div>
+        
+
+        <div class="stock__content">
+            {% if blogs %}
+            {% for blog in blogs %}
+            <a href="{{ blog.href }}" class="stock__item">
+                <img src="{{ blog.image_special }}">
+                <b>{{ blog.title }}</b>
+                <span>{{ blog.short_description }}</span>
+            </a>
+            {% endfor %}
+            {% else %}
+            {{ text_no_results }}
+            {% endif %}
+        </div>
+        {{ paginatation }}
+    </div>
+
+    {{ content_bottom }}
+</div>
+{{ column_right }}
+</div>
+{{ footer }}

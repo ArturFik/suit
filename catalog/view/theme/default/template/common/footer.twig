@@ -1,0 +1,90 @@
+    </main>
+    <footer class="footer">
+      <div class="footer__bottom">
+        <div class="container">
+          <div class="footer__bottom-content">
+            <div class="footer__col">
+              <div class="footer__title">{{ title_about_us_footer }}</div>
+              <div class="footer__row">
+                <div class="footer__nav">
+                  {% for information in informations_about_us_footer %}
+                    <a href="{{ information.href }}">{{ information.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="footer__col">
+              <div class="footer__title">{{ title_catalog_footer }}</div>
+              <div class="footer__row">
+
+                {% for categories_row in categories|batch((categories|length / 2)|round(1, 'ceil')) %}
+                  <div class="footer__nav">
+                    {% for category in categories_row %}
+                      <a href="{{ category.href }}">{{ category.name }}</a>
+                    {% endfor %}
+                  </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="footer__col">
+              <div class="footer__title">{{ title_payment_footer }}</div>
+              <div class="footer__row">
+                <div class="footer__nav">
+                  {% for information in informations_payment_footer %}
+                    <a href="{{ information.href }}">{{ information.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="footer__col">
+              <div class="footer__title">{{ title_service_footer }}</div>
+              <div class="footer__row">
+                <div class="footer__nav">
+                  {% for information in informations_service_footer %}
+                    <a href="{{ information.href }}">{{ information.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="footer__col">
+              <div class="footer__title">{{ title_work_footer }}</div>
+              <div class="footer__row">
+                <div class="footer__nav">
+                  {% for information in informations_special_footer %}
+                    <a {% if loop.first %}class="footer__title"{% endif %} href="{{ information.href }}">{{ information.title }}</a>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+            <div class="footer__col">
+              {# <div class="footer__title">{{ title_soc_footer }}</div>
+              <div class="footer__soc">
+                <a href="{{ fb_link }}"><img src="images/i-fb.svg"></a>
+                <a href="{{ vk_link }}"><img src="images/i-vk.svg"></a>
+                <a href="{{ youtube_link }}"><img src="images/i-youtube.svg"></a>
+              </div> #}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="footer__copy">
+        <div class="container">
+          <div class="footer__copy-content">
+            <div class="footer__copy-left">{{ text_powered_footer_left }}</div>
+            <div class="footer__copy-right">{{ text_powered_footer_right }}</div>
+          </div>
+        </div>
+      </div>
+    </footer>
+
+
+    {% for style in styles %}
+    <link href="{{ style.href }}" type="text/css" rel="{{ style.rel }}" media="{{ style.media }}" />
+    {% endfor %}
+    {% for script in scripts %}
+    <script src="{{ script }}" type="text/javascript"></script>
+    {% endfor %}
+
+  </body>
+
+</html>

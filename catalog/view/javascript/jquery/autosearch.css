@@ -1,0 +1,100 @@
+@charset "utf-8";
+/* AutoSearch 3x by AlexDW */
+#autosearch_search_results {
+	padding: 5px;
+	position: absolute;
+	left: 0px; top: 40px;
+	background-color: #fff;
+	list-style-type: none;
+	z-index: 9999;
+	width:100%;
+	border: 1px solid #eee;
+	color: #fff;
+	border-radius: 0 0 5px 5px;
+	-moz-border-radius: 0 0 5px 5px;
+	-o-border-radius: 0 0 5px 5px;
+	-webkit-border-radius: 0 0 5px 5px;
+	box-shadow: 0px 2px 7px rgba(0, 0, 0, 0.2);
+	max-height: 250px;
+	overflow-y: auto;
+	font-size:13px;
+}
+
+#autosearch_search_results name {
+	font-weight: 400; color:#064a63;
+}
+#autosearch_search_results model {
+	padding-left: 5px; color:#8c8c8c;
+}
+#autosearch_search_results special-price {
+	padding: 0px 5px; border: 1px; font-weight: 400; background-color: #F46172; color: white; text-decoration: line-through;
+}
+#autosearch_search_results price {
+	line-height: 1.6; padding: 2px 7px; border: 1px; border-radius: 2px; font-weight: 400; background-color: #4C9ED9; color: white;
+}
+#autosearch_search_results stock {
+	font-size: 0.95em; color: #999999;
+}
+#autosearch_search_results viewall {
+	padding: 0 10px; font-size: 16px; color:#4C9ED9;  text-align: right; display: block;
+}
+#autosearch_search_results .asr {
+	padding: 5px; font-size: 16px; color:#4C9ED9;  text-align: center; display: block;
+	clear: both;
+}
+
+#autosearch_search_results .divasr {
+	float: left;
+}
+#autosearch_search_results .div2asr {
+	display:table-cell;
+}
+#autosearch_search_results img {
+	padding:0px 10px 0px 5px;
+	margin:5px;
+}
+#autosearch_search_results ul {
+	padding: 0;
+}
+#autosearch_search_results li {
+	padding: 2px 0px 2px 2px; width:100%; float: left; display:block; 
+	padding-left: 5px;
+}
+#autosearch_search_results li a {
+	display:block; outline: none; 
+}
+#autosearch_search_results li + li {
+	border-top: 1px solid #eee;
+}
+#autosearch_search_results a,
+#autosearch_search_results a:visited {
+	text-decoration: none;
+	outline: none;
+}
+#autosearch_search_results a:hover {
+	color: #333 !important;
+	outline: none;
+}
+#autosearch_search_results li:hover {
+	background-color: #f5f5f5;
+	color: #333 !important;
+}
+#autosearch_search_results li:hover a {
+	color: #333 !important;
+	outline: none;
+}
+#autosearch_search_results .highlighted {
+	background-color: #f5f5f5;
+	color: #333 !important;
+}
+
+/* scroll */
+#autosearch_search_results .mCSB_dragger .mCSB_dragger_bar{
+	background-color: #ccc;
+}
+#autosearch_search_results .mCSB_draggerRail{
+	/* background-color: #E2E2E2; */
+}
+#autosearch_search_results .mCSB_scrollTools{
+	width: 10px;
+}

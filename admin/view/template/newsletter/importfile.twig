@@ -1,0 +1,102 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a download href="{{ download_sample }}" data-toggle="tooltip" title="{{ button_download_sample }}" class="btn btn-default"><i class="fa fa-download"></i> {{ button_download_sample }}</a>
+      </div>
+      <h1>{{ heading_importfile }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check-circle"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-list"></i> {{ heading_importfile }}</h3>
+      </div>
+      <div class="panel-body">
+        <form id="form-importfile" class="form-horizontal">
+          <div class="form-group">
+            <label class="col-sm-2 control-label">{{ entry_file }}</label>
+            <div class="col-sm-10">
+              <button type="button" class="btn btn-primary importmyfile"><i class="fa fa-upload"></i> {{ button_import }}</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="text/javascript"><!--
+$('.importmyfile').click(function() {
+  $('#form-upload').remove();
+  
+  var $this = $(this);
+  
+  $('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="importfile" /></form>');
+  
+  $('#form-upload input[name=\'importfile\']').trigger('click');
+  
+  if (typeof timer != 'undefined') {
+    clearInterval(timer);
+  }
+  
+  timer = setInterval(function() {
+    if ($('#form-upload input[name=\'importfile\']').val() != '') {
+      clearInterval(timer);
+          
+      $.ajax({
+        url: 'index.php?route=newsletter/subscriber/importfileaction/&user_token={{ user_token }}',
+        type: 'post',
+        dataType: 'json',
+        data: new FormData($('#form-upload')[0]),
+        cache: false,
+        contentType: false,
+        processData: false,
+        beforeSend: function() {
+          $this.button('loading');
+        },
+        complete: function() {
+          $this.button('reset');
+        },
+        success: function(json) {
+          $('.alert').remove();
+          
+          if (json['error']) {
+            if (json['error']['warning']) {
+              $('.panel.panel-default').before('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error']['warning'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+            }
+          }
+          
+          if (json['success']) {
+            $('.panel.panel-default').before('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }
+
+          if (json['skip']) {
+            $('.panel.panel-default').before('<div class="alert alert-warning alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['skip'] + ' <button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+          }
+        },
+        error: function(xhr, ajaxOptions, thrownError) {
+          alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+      });
+    }
+  }, 500);
+});
+//--></script>
+{{ footer }}

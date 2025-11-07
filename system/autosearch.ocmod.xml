@@ -1,0 +1,201 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<modification>
+	<name>AutoSearch 3x</name>
+	<version>1.35</version>
+	<author>AlexDW</author>
+	<link>https://feofan.club</link>
+	<code>autosearch-adw</code>
+	<file path="catalog/controller/common/header.php">		
+		<operation error="skip">
+			<search><![CDATA[
+			public function index() {
+			]]></search>
+			<add position="after"><![CDATA[
+			// AutoSearch
+					if ($this->config->get('module_autosearch_status') && is_file(DIR_SYSTEM . 'library/adw/autosearch.php')) {
+						$this->registry->set('autosearch', new Adw\Autosearch($this->registry));
+						$x = $this->autosearch->mg();
+						if ($x) {
+							if (!empty($x[0])) $this->document->addStyle($x[0]);
+							if (!empty($x[1])) $this->document->addStyle($x[1]);
+							if (!empty($x[2])) $this->document->addScript($x[2]);
+							if (!empty($x[3])) $this->document->addScript($x[3]);
+						}
+					}
+			// AutoSearch
+			]]></add>
+		</operation>
+	</file>
+	<file path="admin/controller/common/header.php">		
+		<operation error="skip">
+			<search><![CDATA[
+			public function index() {
+			]]></search>
+			<add position="after"><![CDATA[
+			// AutoSearch
+					if ($this->config->get('module_autosearch_status') && $this->config->get('module_autosearch_widget')) {
+						$this->load->language('extension/module/autosearch');
+						$data['as3x']=!0;
+					}
+			// AutoSearch
+			]]></add>
+		</operation>
+	</file>
+
+	<file path="admin/view/template/common/header.twig">		
+		<operation error="skip">
+			<search index="0"><![CDATA[
+			<ul class="nav navbar-nav navbar-right">
+			]]></search>
+			<add position="after"><![CDATA[
+			<!-- AutoSearch3x -->
+			{% if as3x %}
+			<style type="text/css">
+			.info_table_line2::before,.info_table_line::after{content:"";border-bottom:1px dashed #d7dbe9;position:relative;top:.4rem}.info_table{width:100%;border-collapse:collapse;border-spacing:0;table-layout:fixed}.info_table_line::after{display:block;flex:1;margin:0 0 0 .5rem}.info_table_line{display:flex;align-items:center;font-weight:600}.info_table_line2{display:flex;align-items:center}.info_table_line2::before{flex:1;margin:0 .5rem 0 0}.acdn-toggle{outline:0!important}.panel-heading .acdn-toggle:after{content:"\f078";font-family:FontAwesome;float:right;color:grey}.panel-heading .acdn-toggle.collapsed:after{font-family:FontAwesome;float:right;color:grey;content:"\f054"}#as3x_widget .panel-heading a.acdn-toggle{color:inherit;line-height:20px}
+			</style>
+				<li class="dropdown autosearch" id="as3x"><a class="dropdown-toggle" data-toggle="dropdown"><i class="fa fa-search fa-lg"></i></a></li>
+			<script type="text/javascript"><!--
+			$('#as3x').on('click', function(e) {
+				e.preventDefault();
+				e.stopPropagation();
+				var as3x_widget = this.name;
+				$('#as3x_widget .eout').remove();
+
+				var $stats = $.ajax({
+					url : 'index.php?route=extension/module/autosearch/wstats&user_token=' + getURLVar('user_token'),
+					dataType: 'json',
+					async: false,
+					success : function (json) {
+						return json;
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				}).responseText;
+			var stats = JSON.parse($stats);
+
+				var $counters = $.ajax({
+					url : 'index.php?route=extension/module/autosearch/wcounters&user_token=' + getURLVar('user_token'),
+					dataType: 'json',
+					async: false,
+					success : function (json) {
+						return json;
+					},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+				}).responseText;
+			var counters = JSON.parse($counters);
+
+			var htm ='';
+			htm += '<div id="as3x_widget" class="modal" role="dialog" aria-labelledby="dataConfirmLabel" aria-hidden="true">';
+			htm += '<div class="modal-dialog"><div class="modal-content">';
+			htm += '	<div class="modal-header">{{ autosearch_widget }}';
+			htm += '		<button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>';
+			htm += '	</div>';
+			htm += '	<div class="modal-body">';
+			htm += '<div class="row">';
+			htm += '<div class="col-sm-12">';
+
+			htm += '<div class="col-sm-12">';
+			htm += '<div class="panel panel-default">';
+			htm += '<div class="panel-heading">{{ text_info }}</div>';
+			htm += '<div class="panel-body">';
+			htm += '<table class="info_table counters">';
+			htm += '<tbody>';
+			for(var i in counters) {
+			htm += '<tr>';
+			htm += '<th><span class="info_table_line">' + (counters[i].name) + '</span></th>';
+			htm += '<td><span class="info_table_line2">' + (counters[i].val) + '</span></td>';
+			htm += '</tr>';
+			}
+			htm += '</tbody>';
+			htm += '</table>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div><br>';
+
+			htm += '<div class="col-sm-12">';
+			htm += '<div class="panel panel-default">';
+			htm += '<div class="panel-heading"><a class="acdn-toggle collapsed" data-toggle="collapse" href="#as3x_widget_stats">{{ cache_stat }}</a></div>';
+			htm += '<div id="as3x_widget_stats" class="panel-collapse collapse">';
+			htm += '<div class="panel-body">';
+			htm += '<table class="info_table stats">';
+			htm += '<tbody>';
+			for(var i in stats) {
+			htm += '<tr>';
+			htm += '<th><span class="info_table_line">' + (stats[i].keywords) + '</span></th>';
+			htm += '<td><span class="info_table_line2">' + (stats[i].freq) + '</span></td>';
+			htm += '</tr>';
+			}
+			htm += '</tbody>';
+			htm += '</table>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '</div>';
+
+			htm += '<div class="col-sm-12" id="zeout"></div>';
+			htm += '</div>';
+			htm += '</div>';
+			htm += '<div class="row" style="margin-top:10px;">';
+			htm += '<div class="col-sm-12 ck_buttons">';
+			htm += '	<div class="pull-left"><button class="btn btn-warning" id="as3x_dropcache">{{ dropcache }}</button></div><div class="pull-right"><button class="btn btn-primary" id="as3x_settings"><i class="fa fa-cogs"></i> {{ text_settings }}</button> <button class="btn btn-default" data-dismiss="modal" aria-hidden="true">{{ text_close }}</button></div>';
+			htm += '</div>';
+			htm += '</div>';
+
+			htm += '	</div>';
+			htm += '</div></div>';
+			htm += '</div>';
+			if (!$('#as3x_widget').length > 0) {
+				$('body').append(htm);
+				$('#as3x_widget').modal({show:true, keyboard:true, backdrop:true});
+
+				$('#as3x_settings').on('click', function(e) {
+					var url = 'index.php?route=extension/module/autosearch&user_token=' + getURLVar('user_token');
+					window.open(url);
+				});
+
+				$('#as3x_dropcache').on('click', function(e) {
+					e.preventDefault();
+					$('.eout').remove();
+					$.ajax({
+						url : 'index.php?route=extension/module/autosearch/dropcache&user_token=' + getURLVar('user_token'),
+						dataType: 'json',
+						beforeSend: function() {
+							$('#as3x_dropcache').prop('disabled', true);
+							$('.eout').remove();
+						},
+						complete: function() {
+							$('#as3x_dropcache').prop('disabled', false);
+						},
+						success : function (json) {
+							$('.eout').remove();
+							if (json['error']) {
+								html = '<div class="alert alert-warning eout">' + json['error']['warning'] + '</div>';
+								$('#zeout').append(html).hide().fadeIn(150);
+							}
+							if (json['success']) {
+								$('.stats').remove();
+								$('.info_table_line2').last().text('0.00 MB');
+								html = '<div class="alert alert-success eout">' + json['success'] + '</div>';
+								$('#zeout').append(html).hide().fadeIn(150);
+							}
+						},
+					error: function(xhr, ajaxOptions, thrownError) {
+						alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+					}
+					});
+				});
+			}
+				$("#as3x_widget").on('hidden.bs.modal', function(){
+					$('#as3x_widget').remove();
+				});
+			});
+			//--></script>
+			{% endif %}
+			<!-- AutoSearch3x -->
+			]]></add>
+		</operation>
+	</file>
+</modification>

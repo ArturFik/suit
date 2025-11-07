@@ -1,0 +1,26 @@
+<div class="catalog-aside__nav categories-column-left">
+	<div class="header__catalog-title">{{ text_catalog_02_n}}</div>
+	<div class="header__catalog-nav bl_scroll">
+		<ul>
+      {% for category in categories %}
+        <li {% if category.category_id == category_id %}class="active"{% endif %}>
+          {% if category.children %}
+            <a href="#" onclick="return false;" class="have-submenu-category">
+              <span>{{ category.name }}</span>
+              {% if category.children %}
+                <img src="images/angl-right.svg">
+              {% endif %}
+            </a>
+            <ul class="sub-menu" style="display: flex;">
+              {% for child in category.children %}
+                <li {% if child.category_id == child_id %}class="active"{% endif %}><a href="{{ child.href }}">{{ child.name }}</a></li>
+              {% endfor %}
+            </ul>
+          {% else %}
+          <a href="{{ category.href }}"><span>{{ category.name }}</span></a>
+          {% endif %}
+        </li>
+      {% endfor %}
+		</ul>
+	</div>
+</div>

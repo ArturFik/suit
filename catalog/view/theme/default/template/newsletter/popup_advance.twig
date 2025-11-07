@@ -1,0 +1,156 @@
+<div id="popup-newsletter" class="modal fade popup-newsletter popup_advance form-horizontal envelope-wrap" role="dialog">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <button type="button" class="close_icon close" data-dismiss="modal">&times;</button>
+      <div class="modal-body">
+        <div class="row clearfix">
+          {% if bgimage %}
+            <div class="col-sm-5 hidden-xs">
+              <img class="img-responsive" src="{{ bgimage }}">
+            </div>
+          {% endif %}
+
+          {% if bgimage %}
+            {% set right_class = 'col-sm-7' %}
+          {% else %}
+            {% set right_class = 'col-sm-12' %}
+          {% endif %}
+
+          <div class="{{ right_class }}">
+            <div class="popup_content">
+              {% if display_title %}
+                <h4 class="modal-title">{{ heading_title }}</h4>
+              {% endif %}
+              <div class="logo">
+                {% if logo %}
+                <a href="{{ home }}"><img src="{{ logo }}" title="{{ name }}" alt="{{ name }}" class="img-responsive" /></a>
+                {% endif %}
+              </div>
+              <div class="dynamic-matter">
+                {% if text_description %}
+                <div class="description">{{ text_description }}</div>
+                {% endif %}
+
+                {% if display_name %}
+                <div class="form-group ci_edit_group">
+                    <input type="text"  name="name" value="" autocomplete="off" class="form-control" placeholder="{{ entry_name }}" />
+                </div>
+                {% endif %}
+                <div class="input-group">
+                  <input type="text" name="email" value="" autocomplete="off" class="form-control" placeholder="{{ entry_email }}">
+                  <span class="input-group-btn">
+                    <button type="button" class="btn btn-primary button" id="btn_popup_subscribe">{{ button_subscribe }}</button>
+                  </span>
+                </div>
+
+                {% if social_links %}
+                <div class="social_icons">
+                  {% for social_link in social_links %}
+                  <a href="{{ social_link['link'] }}" target="_blank" title="{{ social_link['title'] }}"><i class="fa {{ social_link['icon'] }}"></i></a>
+                  {% endfor %}
+                </div>
+                {% endif %}
+
+              </div>
+            </div>
+          </div>
+      </div>
+      {% if cinewsletter_popupnoagain %}
+      <label class="hide-action-popup">
+        <input type="checkbox" name="popupnoagain" value="1" /> <span>{{ text_donotshow }}</span>
+      </label>
+      {% endif %}
+    </div>
+  </div>
+</div>
+<script type="text/javascript"><!--
+$(document).ready(function(){
+  $('#popup-newsletter').modal('show');
+});
+
+$('#popup-newsletter #btn_popup_subscribe').click(function() {
+  $.ajax({
+    url: 'index.php?route=newsletter/popup/addSubscriber',
+    dataType: 'json',
+    data: $('#popup-newsletter input[name="name"], #popup-newsletter input[name="email"]'),
+    type: 'post',
+    beforeSend: function() {
+      $('#popup-newsletter #btn_popup_subscribe').button('loading');
+    },
+    complete: function() {
+      $('#popup-newsletter #btn_popup_subscribe').button('reset');
+    },
+    success: function(json) {
+      $('#popup-newsletter .text-danger, #popup-newsletter .alert').remove();
+      $('#popup-newsletter .form-group').find('label').removeClass('has-errors');
+
+      if(json['error_name']) {
+        $('#popup-newsletter input[name="name"]').after('<div class="text-danger"><i class="fa fa-exclamation-circle"></i> '+ json['error_name'] +'</div>');
+
+        $('.text-danger').parent().find('label').addClass('has-errors');
+      }
+
+      if(json['error_email']) {
+        $('#popup-newsletter input[name="email"]').parent().after('<div class="text-danger"><i class="fa fa-exclamation-circle"></i> '+ json['error_email'] +'</div>');
+
+        $('.text-danger').parent().find('label').addClass('has-errors');
+      }
+
+      if(json['success']) {
+        $('#popup-newsletter input[name="email"]').parent().after('<div class="alert alert-success"><i class="fa fa-check-circle"></i> '+ json['success'] + '</div>');
+
+        setTimeout(function() {
+          $('#popup-newsletter').modal('hide');
+        }, 8000);
+      }
+    }
+  });
+});
+
+{% if cinewsletter_popupnoagain %}
+$('#popup-newsletter input[name="popupnoagain"]').click(function() {
+  $.ajax({
+    url: 'index.php?route=newsletter/popup/popupnoagain',
+    dataType: 'json',
+    data: $('#popup-newsletter input[name="popupnoagain"]:checked'),
+    type: 'post',
+    beforeSend: function() {
+    },
+    complete: function() {
+    },
+    success: function(json) {
+
+    }
+  });
+});
+{% endif %}
+//--></script>
+<script src="catalog/view/javascript/jquery/input/js/classie.js"></script>
+<script type="text/javascript"><!--
+  (function() {
+    if (!String.prototype.trim) {
+      (function() {
+      var rtrim = /^[\s\uFEFF\xA0]+|[\s\uFEFF\xA0]+$/g;
+      String.prototype.trim = function() {
+        return this.replace(rtrim, '');
+      };
+    })();
+  }
+  [].slice.call( document.querySelectorAll( 'input.ci_form_control' ) ).forEach( function( inputEl ) {
+    if( inputEl.value.trim() !== '' ) {
+      classie.add( inputEl.parentNode, 'ci_edit_input_filled' );
+    }
+    inputEl.addEventListener( 'focus', onInputFocus );
+    inputEl.addEventListener( 'blur', onInputBlur );
+  } );
+  function onInputFocus( ev ) {
+    classie.add( ev.target.parentNode, 'ci_edit_input_filled' );
+  }
+  function onInputBlur( ev ) {
+    if( ev.target.value.trim() === '' ) {
+      classie.remove( ev.target.parentNode, 'ci_edit_input_filled' );
+    }
+  }
+})();
+</script>
+</div>

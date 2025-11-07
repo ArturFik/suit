@@ -1,0 +1,1199 @@
+{{ header }}{{ column_left }}
+<div id="content">
+  <div class="page-header">
+    <div class="container-fluid">
+      <div class="pull-right">
+        <a href="{{ template_list }}" data-toggle="tooltip" title="{{ button_html }}" class="btn btn-info"><i class="fa fa-desktop"></i> {{ button_html }}</a>
+        <a href="{{ quicksendemail }}" data-toggle="tooltip" title="{{ button_quicksendemail }}" class="btn btn-primary"><i class="fa fa-envelope"></i></a>
+        <a href="{{ subscriber_list }}" data-toggle="tooltip" title="{{ button_list }}" class="btn btn-primary"><i class="fa fa-list"></i> </a>
+        <button type="submit" form="form-module" data-toggle="tooltip" title="{{ button_save_stay }}" class="btn btn-success"><i class="fa fa-refresh"></i></button>
+        <button type="submit" name="change" value="close" form="form-module" data-toggle="tooltip" title="{{ button_save }}" class="btn btn-success"><i class="fa fa-save"></i></button>
+        <a href="{{ cancel }}" data-toggle="tooltip" title="{{ button_cancel }}" class="btn btn-default"><i class="fa fa-reply"></i></a></div>
+      <h1>{{ heading_title }}</h1>
+      <ul class="breadcrumb">
+        {% for breadcrumb in breadcrumbs %}
+        <li><a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a></li>
+        {% endfor %}
+      </ul>
+    </div>
+  </div>
+  <div class="container-fluid">
+    {% if success %}
+    <div class="alert alert-success"><i class="fa fa-check"></i> {{ success }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    {% if error_warning %}
+    <div class="alert alert-danger"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}
+      <button type="button" class="close" data-dismiss="alert">&times;</button>
+    </div>
+    {% endif %}
+    <div class="panel panel-default">
+      <div class="panel-heading">
+        <h3 class="panel-title"><i class="fa fa-pencil"></i> {{ text_edit }}</h3>
+        <div class="pull-right">
+          <select name="store_id" onchange="window.location = 'index.php?route=extension/module/cinewsletter&token={{ token }}&store_id='+ this.value;">
+            <option value="0">{{ text_default }}</option>
+            {% for store in stores %}
+            <option value="{{ store.store_id }}" {{ store.store_id == store_id ? 'selected="selected"' : '' }}>{{ store.name }}</option>
+            {% endfor %}
+          </select>
+        </div>
+      </div>
+      <div class="panel-body">
+        <form action="{{ action }}" method="post" enctype="multipart/form-data" id="form-module" class="form-horizontal">
+          <ul class="nav nav-tabs">
+            <li class="active"><a href="#tab-general" data-toggle="tab">{{ tab_general }}</a></li>
+            <li><a href="#tab-layout" data-toggle="tab">{{ tab_layout }}</a></li>
+            <li><a href="#tab-footer" data-toggle="tab">{{ tab_footer }}</a></li>
+            <li><a href="#tab-popup" data-toggle="tab">{{ tab_popup }}</a></li>
+            <li><a href="#tab-verify" data-toggle="tab">{{ tab_verify }}</a></li>
+            <li><a href="#tab-unsubscribe" data-toggle="tab">{{ tab_unsubscribe }}</a></li></li>
+            <li><a href="#tab-css" data-toggle="tab">{{ tab_css }}</a></li></li>
+            <li><a href="#tab-social-links" data-toggle="tab">{{ tab_social }}</a></li></li>
+          </ul>
+          <div class="tab-content">
+            <div class="tab-pane active" id="tab-general">
+                <fieldset>
+                  <legend>{{ legend_general }}</legend>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-status">{{ entry_status }}</label>
+                    <div class="col-sm-10">
+                      <select name="module_cinewsletter_status" id="input-status" class="form-control">
+                        {% if module_cinewsletter_status %}
+                        <option value="1" selected="selected">{{ text_enabled }}</option>
+                        <option value="0">{{ text_disabled }}</option>
+                        {% else %}
+                        <option value="1">{{ text_enabled }}</option>
+                        <option value="0" selected="selected">{{ text_disabled }}</option>
+                        {% endif %}
+                      </select>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>{{ legend_verify_email }}</legend>
+                   <div class="form-group">
+                    <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_verify_required }}">{{ entry_verify_required }}</span></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                        <input type="radio" name="module_cinewsletter_verify_required" value="1"
+                        {{ module_cinewsletter_verify_required ? 'checked="checked"' : '' }} />
+                        {{ text_yes }}
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="module_cinewsletter_verify_required" value="0" {{ not module_cinewsletter_verify_required ? 'checked="checked"' : '' }} />
+                        {{ text_no }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="verify_required_message {{ module_cinewsletter_verify_required ? '' : 'hide' }}">
+                    <ul class="nav nav-tabs" id="language">
+                      {% for language in languages %}
+                      <li><a href="#language{{ language.language_id }}" data-toggle="tab">
+                          <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content col-sm-9">
+                      {% for language in languages %}
+                      <div class="tab-pane" id="language{{ language.language_id }}">
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-subject{{ language.language_id }}">{{ entry_subject }}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="module_cinewsletter_verify_required_message[{{ language.language_id }}][subject]" value="{{ module_cinewsletter_verify_required_message[language.language_id] ? module_cinewsletter_verify_required_message[language.language_id].subject }}" placeholder="{{ entry_subject }}" id="input-subject{{ language.language_id }}" class="form-control" />
+                            {% if error_subject[language.language_id] %}
+                            <div class="text-danger">{{ error_subject[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label" for="input-message{{ language.language_id }}">{{ entry_message }}</label>
+                          <div class="col-sm-10">
+                            <textarea name="module_cinewsletter_verify_required_message[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-message{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_verify_required_message[language.language_id] ? module_cinewsletter_verify_required_message[language.language_id].message }}</textarea>
+                            {% if error_message[language.language_id] %}
+                            <div class="text-danger">{{ error_message[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div class="col-sm-3">
+                      <br/>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr><td>{{ const_names }}</td><td>{{ const_short_codes }}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ const_logo }}</td><td>{LOGO}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_store_name }}</td><td>{STORE_NAME}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_store_link }}</td><td>{STORE_LINK}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_name }}</td><td>{NAME}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_email }}</td><td>{EMAIL}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_link_confirm }}</td><td>{CONFIRMATION_LINK}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_link_unsubscribe }}</td><td>{UNSUBSCRIBE_LINK}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </fieldset>
+                <fieldset>
+                  <legend>{{ legend_confirm_email }}</legend>
+                   <div class="form-group">
+                    <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_confirm_required }}">{{ entry_confirm_required }}</span></label>
+                    <div class="col-sm-10">
+                      <label class="radio-inline">
+                        <input type="radio" name="module_cinewsletter_confirm_required" value="1"
+                        {{ module_cinewsletter_confirm_required ? 'checked="checked"' : '' }} />
+                        {{ text_yes }}
+                      </label>
+                      <label class="radio-inline">
+                        <input type="radio" name="module_cinewsletter_confirm_required" value="0" {{ not module_cinewsletter_confirm_required ? 'checked="checked"' : '' }} />
+                        {{ text_no }}
+                      </label>
+                    </div>
+                  </div>
+                  <div class="confirm_required_message {{ module_cinewsletter_confirm_required ? '' : 'hide' }}">
+                    <ul class="nav nav-tabs" id="confirm-language">
+                      {% for language in languages %}
+                      <li><a href="#confirm-language{{ language.language_id }}" data-toggle="tab">
+                          <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                      {% endfor %}
+                    </ul>
+                    <div class="tab-content col-sm-9">
+                      {% for language in languages %}
+                      <div class="tab-pane" id="confirm-language{{ language.language_id }}">
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label">{{ entry_subject }}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="module_cinewsletter_confirm_required_message[{{ language.language_id }}][subject]" value="{{ module_cinewsletter_confirm_required_message[language.language_id] ? module_cinewsletter_confirm_required_message[language.language_id].subject }}" placeholder="{{ entry_subject }}" id="input-subject{{ language.language_id }}" class="form-control" />
+                            {% if error_confirm_subject[language.language_id] %}
+                            <div class="text-danger">{{ error_confirm_subject[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group required">
+                          <label class="col-sm-2 control-label">{{ entry_message }}</label>
+                          <div class="col-sm-10">
+                            <textarea name="module_cinewsletter_confirm_required_message[{{ language.language_id }}][message]" placeholder="{{ entry_message }}" id="input-confirm-message{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_confirm_required_message[language.language_id] ? module_cinewsletter_confirm_required_message[language.language_id].message }}</textarea>
+                            {% if error_confirm_message[language.language_id] %}
+                            <div class="text-danger">{{ error_confirm_message[language.language_id] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                      </div>
+                      {% endfor %}
+                    </div>
+                    <div class="col-sm-3">
+                      <br/>
+                      <table class="table table-bordered">
+                        <thead>
+                          <tr><td>{{ const_names }}</td><td>{{ const_short_codes }}</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          <tr>
+                            <td>{{ const_logo }}</td><td>{LOGO}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_store_name }}</td><td>{STORE_NAME}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_store_link }}</td><td>{STORE_LINK}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_name }}</td><td>{NAME}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_email }}</td><td>{EMAIL}</td>
+                          </tr>
+                          <tr>
+                            <td>{{ const_link_unsubscribe }}</td><td>{UNSUBSCRIBE_LINK}</td>
+                          </tr>
+                        </tbody>
+                      </table>
+                    </div>
+                  </div>
+                </fieldset>
+            </div>
+            <div class="tab-pane" id="tab-layout">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-layout-status">{{ entry_layout_status }}</label>
+                <div class="col-sm-10">
+                  <select name="module_cinewsletter_layout_status" id="input-layout-status" class="form-control">
+                    {% if module_cinewsletter_layout_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-layout-display-title">{{ entry_layout_display_title }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_title" value="1"
+                    {{ module_cinewsletter_layout_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_title" value="0" {{ not module_cinewsletter_layout_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-layout-display-name">{{ entry_layout_display_name }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_name" value="1"
+                    {{ module_cinewsletter_layout_display_name == '1' ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_name" value="2"
+                    {{ module_cinewsletter_layout_display_name == '2' ? 'checked="checked"' : '' }} />
+                    {{ text_yes_req }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_name" value="0" {{ not module_cinewsletter_layout_display_name ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-layout-display-icon">{{ entry_layout_display_icon }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_icon" value="1"
+                    {{ module_cinewsletter_layout_display_icon ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_layout_display_icon" value="0" {{ not module_cinewsletter_layout_display_icon ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group iconclass-group">
+                <label class="col-sm-2 control-label" for="input-layout-display-iconclass">{{ entry_layout_display_iconclass }}</label>
+                <div class="col-sm-10">
+                    <input type="text" name="module_cinewsletter_layout_display_iconclass" value="{{ module_cinewsletter_layout_display_iconclass }}" class="form-control" />
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="layout-language">
+                {% for language in languages %}
+                <li><a href="#layout-language{{ language.language_id }}" data-toggle="tab">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="layout-language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-layout-title{{ language.language_id }}">{{ entry_layout_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_layout_message[{{ language.language_id }}][title]" value="{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].title }}" placeholder="{{ entry_layout_title }}" id="input-layout-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-layout-desc{{ language.language_id }}">{{ entry_layout_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_layout_message[{{ language.language_id }}][description]" placeholder="{{ entry_layout_description }}" id="input-layout-desc{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-layout-success{{ language.language_id }}">{{ entry_layout_success }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_layout_message[{{ language.language_id }}][success]" value="{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].success }}" placeholder="{{ entry_layout_success }}" id="input-layout-success{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-layout-name{{ language.language_id }}">{{ entry_layout_name }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_layout_message[{{ language.language_id }}][name]" value="{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].name }}" placeholder="{{ entry_layout_name }}" id="input-layout-name{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-layout-email{{ language.language_id }}">{{ entry_layout_email }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_layout_message[{{ language.language_id }}][email]" value="{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].email }}" placeholder="{{ entry_layout_email }}" id="input-layout-email{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-layout-button{{ language.language_id }}">{{ entry_layout_button }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_layout_message[{{ language.language_id }}][button]" value="{{ module_cinewsletter_layout_message[language.language_id] ? module_cinewsletter_layout_message[language.language_id].button }}" placeholder="{{ entry_layout_button }}" id="input-layout-button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-footer">
+            	<div class="form-group">
+                <label class="col-sm-2 control-label" for="input-footer-status">{{ entry_footer_status }}</label>
+                <div class="col-sm-10">
+                  <select name="module_cinewsletter_footer_status" id="input-footer-status" class="form-control">
+                    {% if module_cinewsletter_footer_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label"><span data-toggle="tooltip" title="{{ help_footer_layout }}">{{ entry_footer_layout }}</span></label>
+                <div class="col-sm-10">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for layout in layouts %}
+                    <div class="checkbox">
+                      <label>
+                        {% if layout.layout_id in module_cinewsletter_footer_layout %}
+                        <input type="checkbox" name="module_cinewsletter_footer_layout[]" value="{{ layout.layout_id }}" checked="checked" />
+                        {{ layout.name }}
+                        {% else %}
+                        <input type="checkbox" name="module_cinewsletter_footer_layout[]" value="{{ layout.layout_id }}" />
+                        {{ layout.name }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+            	<div class="form-group">
+                <label class="col-sm-2 control-label" for="input-footer-display-title">{{ entry_footer_display_title }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_footer_display_title" value="1"
+                    {{ module_cinewsletter_footer_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_footer_display_title" value="0" {{ not module_cinewsletter_footer_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-footer-display-name">{{ entry_footer_display_name }}</label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_footer_display_name" value="1"
+                    {{ module_cinewsletter_footer_display_name == '1' ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_footer_display_name" value="2"
+                    {{ module_cinewsletter_footer_display_name == '2' ? 'checked="checked"' : '' }} />
+                    {{ text_yes_req }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_footer_display_name" value="0" {{ not module_cinewsletter_footer_display_name ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-footer-bgcolor">{{ entry_footer_bgcolor }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="module_cinewsletter_footer_bgcolor" value="{{ module_cinewsletter_footer_bgcolor }}" class="form-control color-picker" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-footer-fontcolor">{{ entry_footer_fontcolor }}</label>
+                <div class="col-sm-10">
+                  <input type="text" name="module_cinewsletter_footer_fontcolor" value="{{ module_cinewsletter_footer_fontcolor }}" class="form-control color-picker" />
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="footer-language">
+                {% for language in languages %}
+                <li><a href="#footer-language{{ language.language_id }}" data-toggle="tab">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="footer-language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-footer-title{{ language.language_id }}">{{ entry_footer_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_footer_message[{{ language.language_id }}][title]" value="{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].title }}" placeholder="{{ entry_footer_title }}" id="input-footer-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-footer-desc{{ language.language_id }}">{{ entry_footer_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_footer_message[{{ language.language_id }}][description]" placeholder="{{ entry_footer_description }}" id="input-footer-desc{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-footer-success{{ language.language_id }}">{{ entry_footer_success }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_footer_message[{{ language.language_id }}][success]" value="{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].success }}" placeholder="{{ entry_footer_success }}" id="input-footer-success{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-footer-name{{ language.language_id }}">{{ entry_footer_name }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_footer_message[{{ language.language_id }}][name]" value="{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].name }}" placeholder="{{ entry_footer_name }}" id="input-footer-name{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-footer-email{{ language.language_id }}">{{ entry_footer_email }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_footer_message[{{ language.language_id }}][email]" value="{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].email }}" placeholder="{{ entry_footer_email }}" id="input-footer-email{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-footer-button{{ language.language_id }}">{{ entry_footer_button }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_footer_message[{{ language.language_id }}][button]" value="{{ module_cinewsletter_footer_message[language.language_id] ? module_cinewsletter_footer_message[language.language_id].button }}" placeholder="{{ entry_footer_button }}" id="input-footer-button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-popup">
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-popup-status">{{ entry_popup_status }}</label>
+                <div class="col-sm-9">
+                  <select name="module_cinewsletter_popup_status" id="input-popup-status" class="form-control">
+                    {% if module_cinewsletter_popup_status %}
+                    <option value="1" selected="selected">{{ text_enabled }}</option>
+                    <option value="0">{{ text_disabled }}</option>
+                    {% else %}
+                    <option value="1">{{ text_enabled }}</option>
+                    <option value="0" selected="selected">{{ text_disabled }}</option>
+                    {% endif %}
+                  </select>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label"><span data-toggle="tooltip" title="{{ help_layout }}">{{ entry_layout }}</span></label>
+                <div class="col-sm-9">
+                  <div class="well well-sm" style="height: 150px; overflow: auto;">
+                    {% for layout in layouts %}
+                    <div class="checkbox">
+                      <label>
+                        {% if layout.layout_id in module_cinewsletter_popup_layout %}
+                        <input type="checkbox" name="module_cinewsletter_popup_layout[]" value="{{ layout.layout_id }}" checked="checked" />
+                        {{ layout.name }}
+                        {% else %}
+                        <input type="checkbox" name="module_cinewsletter_popup_layout[]" value="{{ layout.layout_id }}" />
+                        {{ layout.name }}
+                        {% endif %}
+                      </label>
+                    </div>
+                    {% endfor %}
+                  </div>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-logo">{{ entry_logo }}</label>
+                <div class="col-sm-9"><a href="" id="thumb-logo" data-toggle="image" class="img-thumbnail"><img src="{{ logo }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                  <input type="hidden" name="module_cinewsletter_popup_logo" value="{{ module_cinewsletter_popup_logo }}" id="input-logo" />
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-bgimage">{{ entry_bgimage }}</label>
+                <div class="col-sm-9"><a href="" id="thumb-bgimage" data-toggle="image" class="img-thumbnail"><img src="{{ bgimage }}" alt="" title="" data-placeholder="{{ placeholder }}" /></a>
+                  <input type="hidden" name="module_cinewsletter_popup_bgimage" value="{{ module_cinewsletter_popup_bgimage }}" id="input-bgimage" />
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label">{{ entry_checkbox_hidepopup }}</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popupnoagain" value="1" {{ module_cinewsletter_popupnoagain  ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popupnoagain" value="0" {{ not module_cinewsletter_popupnoagain ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-popup-display-title">{{ entry_popup_display_title }}</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popup_display_title" value="1"
+                    {{ module_cinewsletter_popup_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popup_display_title" value="0" {{ not module_cinewsletter_popup_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-popup-display-name">{{ entry_popup_display_name }}</label>
+                <div class="col-sm-9">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popup_display_name" value="1"
+                    {{ module_cinewsletter_popup_display_name == '1' ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popup_display_name" value="2"
+                    {{ module_cinewsletter_popup_display_name == '2' ? 'checked="checked"' : '' }} />
+                    {{ text_yes_req }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_popup_display_name" value="0" {{ not module_cinewsletter_popup_display_name ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label"><span data-toggle="tooltip" title="{{ help_popup_reopen }}">{{ entry_popup_reopen }}</span></label>
+                <div class="col-sm-9">
+                  <label class="radio-inline">
+                    {% if module_cinewsletter_popup_reopen %}
+                    <input type="radio" name="module_cinewsletter_popup_reopen" value="1" checked="checked" />
+                    {{ text_yes }}
+                    {% else %}
+                    <input type="radio" name="module_cinewsletter_popup_reopen" value="1" />
+                    {{ text_yes }}
+                    {% endif %}
+                  </label>
+                  <label class="radio-inline">
+                    {% if not module_cinewsletter_popup_reopen %}
+                    <input type="radio" name="module_cinewsletter_popup_reopen" value="0" checked="checked" />
+                    {{ text_no }}
+                    {% else %}
+                    <input type="radio" name="module_cinewsletter_popup_reopen" value="0" />
+                    {{ text_no }}
+                    {% endif %}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group required minutes-group">
+                <label class="col-sm-3 control-label"><span data-toggle="tooltip" title="{{ help_minutes }}">{{ entry_minutes }}</span></label>
+                <div class="col-sm-3">
+                  <div class="input-group">
+                    <input type="text" name="module_cinewsletter_popup_minutes" class="form-control" value="{{ module_cinewsletter_popup_minutes }}" />
+                    <span class="input-group-addon">{{ text_minutes }}</span>
+                  </div>
+                  {% if error_popup_minutes %}
+                  <div class="text-danger">{{ error_popup_minutes }}</div>
+                  {% endif %}
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-3 control-label" for="input-popup-html">{{ entry_popup_html }}</label>
+                <div class="col-sm-3">
+                  <select name="module_cinewsletter_popup_html" class="form-control">
+                    {% for popup_html in popup_htmls %}
+                    {% if popup_html.filename == module_cinewsletter_popup_html %}
+                      {% set sel = 'selected="selected"' %}
+                    {% else %}
+                      {% set sel = '' %}
+                    {% endif %}
+                    <option {{ sel }} value="{{ popup_html.filename }}">{{ popup_html.title }}</option>
+                    {% endfor %}
+                    </select>
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="popup-language">
+                {% for language in languages %}
+                <li><a href="#popup-language{{ language.language_id }}" data-toggle="tab">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="popup-language{{ language.language_id }}">
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-popup-title{{ language.language_id }}">{{ entry_popup_title }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_popup_message[{{ language.language_id }}][title]" value="{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].title }}" placeholder="{{ entry_popup_title }}" id="input-popup-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-popup-desc{{ language.language_id }}">{{ entry_popup_description }}</label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_popup_message[{{ language.language_id }}][description]" placeholder="{{ entry_popup_description }}" id="input-popup-desc{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-popup-success{{ language.language_id }}">{{ entry_popup_success }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_popup_message[{{ language.language_id }}][success]" value="{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].success }}" placeholder="{{ entry_popup_success }}" id="input-popup-success{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-popup-name{{ language.language_id }}">{{ entry_popup_name }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_popup_message[{{ language.language_id }}][name]" value="{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].name }}" placeholder="{{ entry_popup_name }}" id="input-popup-name{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-popup-email{{ language.language_id }}">{{ entry_popup_email }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_popup_message[{{ language.language_id }}][email]" value="{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].email }}" placeholder="{{ entry_popup_email }}" id="input-popup-email{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group required">
+                    <label class="col-sm-2 control-label" for="input-popup-button{{ language.language_id }}">{{ entry_popup_button }}</label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_popup_message[{{ language.language_id }}][button]" value="{{ module_cinewsletter_popup_message[language.language_id] ? module_cinewsletter_popup_message[language.language_id].button }}" placeholder="{{ entry_popup_button }}" id="input-popup-button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-verify">
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-verify-display-title"><span data-toggle="tooltip" title="{{ help_verify_display_title }}">{{ entry_verify_display_title }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_title" value="1"
+                    {{ module_cinewsletter_verify_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_title" value="0" {{ not module_cinewsletter_verify_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-verify-display-description"><span data-toggle="tooltip" title="{{ help_verify_display_description }}">{{ entry_verify_display_description }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_description" value="1"
+                    {{ module_cinewsletter_verify_display_description ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_description" value="0" {{ not module_cinewsletter_verify_display_description ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-verify-display-logo"><span data-toggle="tooltip" title="{{ help_verify_display_logo }}">{{ entry_verify_display_logo }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_logo" value="1"
+                    {{ module_cinewsletter_verify_display_logo ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_logo" value="0" {{ not module_cinewsletter_verify_display_logo ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-verify-display-decline"><span data-toggle="tooltip" title="{{ help_verify_display_decline }}">{{ entry_verify_display_decline }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_decline" value="1"
+                    {{ module_cinewsletter_verify_display_decline ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_verify_display_decline" value="0" {{ not module_cinewsletter_verify_display_decline ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="verify-language">
+                {% for language in languages %}
+                <li><a href="#verify-language{{ language.language_id }}" data-toggle="tab">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="verify-language{{ language.language_id }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-title{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_title_lang }}">{{ entry_verify_title_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][title]" value="{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].title }}" placeholder="{{ entry_verify_title_lang }}" id="input-verify-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-desc{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_description_lang }}">{{ entry_verify_description_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_verify_message[{{ language.language_id }}][description]" placeholder="{{ entry_verify_description_lang }}" id="input-verify-desc{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-success_lang{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_success_lang }}">{{ entry_verify_success_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][success_lang]" placeholder="{{ entry_verify_success_lang }}" id="input-verify-success_lang{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].success_lang }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-decline_lang{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_decline_success_lang }}">{{ entry_verify_decline_success_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][decline_lang]" placeholder="{{ entry_verify_decline_success_lang }}" id="input-verify-decline_lang{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].decline_lang }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-invalid_lang{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_invalid_lang }}">{{ entry_verify_invalid_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][invalid_lang]" value="{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].invalid_lang }}" placeholder="{{ entry_verify_invalid_lang }}" id="input-verify-invalid_lang{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-confirm_button{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_confirm_lang }}">{{ entry_verify_confirm_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][confirm_button]" value="{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].confirm_button }}" placeholder="{{ entry_verify_confirm_lang }}" id="input-verify-confirm_button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-verify-decline_button{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_verify_decline_lang }}">{{ entry_verify_decline_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_verify_message[{{ language.language_id }}][decline_button]" value="{{ module_cinewsletter_verify_message[language.language_id] ? module_cinewsletter_verify_message[language.language_id].decline_button }}" placeholder="{{ entry_verify_decline_lang }}" id="input-verify-decline_button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-unsubscribe">
+              <fieldset>
+                <legend>{{ legend_unsubscribe_reasons }}</legend>
+              <div class="table-responsive">
+                <table id="reasons" class="table table-striped table-bordered table-hover">
+                  <thead>
+                    <tr>
+                      <td class="text-left">{{ entry_title }}</td>
+                      <td class="text-right">{{ entry_custom_field }}</td>
+                      <td></td>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    {% set reason_row = 0 %}
+                    {% for module_cinewsletter_unsubscribe_reason in module_cinewsletter_unsubscribe_reasons %}
+                    <tr id="reason-row{{ reason_row }}">
+                      <td class="text-right">{% for language in languages %}
+                        <div class="input-group"><span class="input-group-addon"><img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /></span>
+                          <input type="text" name="module_cinewsletter_unsubscribe_reason[{{ reason_row }}][description][{{ language.language_id }}][title]" value="{{ module_cinewsletter_unsubscribe_reason.description[ language.language_id] ? module_cinewsletter_unsubscribe_reason.description[language.language_id].title }}" placeholder="{{ entry_title }}" class="form-control" />
+                        </div>
+                        {% endfor %}
+                      </td>
+                      <td class="text-right">
+                        <label class="radio-inline"><input type="radio" name="module_cinewsletter_unsubscribe_reason[{{ reason_row }}][custom_field]" value="1" {{ module_cinewsletter_unsubscribe_reason.custom_field == '1' ? 'checked="checked"' : '' }} /> {{ text_yes }}</label>
+                        <label class="radio-inline"><input type="radio" name="module_cinewsletter_unsubscribe_reason[{{ reason_row }}][custom_field]" value="0" {{ module_cinewsletter_unsubscribe_reason.custom_field == '0' ? 'checked="checked"' : '' }}/> {{ text_no }}</label>
+                      </td>
+                      <td class="text-left"><button type="button" onclick="$('#reason-row{{ reason_row }}').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>
+                    </tr>
+                    {% set reason_row = reason_row + 1 %}
+                    {% endfor %}
+                  </tbody>
+                  <tfoot>
+                    <tr>
+                      <td colspan="2"></td>
+                      <td class="text-left"><button type="button" onclick="addReason();" data-toggle="tooltip" title="{{ button_reason_add }}" class="btn btn-primary"><i class="fa fa-plus-circle"></i></button></td>
+                    </tr>
+                  </tfoot>
+                </table>
+              </div>
+              </fieldset>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-unsubscribe-display-title"><span data-toggle="tooltip" title="{{ help_unsubscribe_display_title }}">{{ entry_unsubscribe_display_title }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_title" value="1"
+                    {{ module_cinewsletter_unsubscribe_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_title" value="0" {{ not module_cinewsletter_unsubscribe_display_title ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-unsubscribe-display-description"><span data-toggle="tooltip" title="{{ help_unsubscribe_display_description }}">{{ entry_unsubscribe_display_description }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_description" value="1"
+                    {{ module_cinewsletter_unsubscribe_display_description ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_description" value="0" {{ not module_cinewsletter_unsubscribe_display_description ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <div class="form-group">
+                <label class="col-sm-2 control-label" for="input-unsubscribe-display-logo"><span data-toggle="tooltip" title="{{ help_unsubscribe_display_logo }}">{{ entry_unsubscribe_display_logo }}</span></label>
+                <div class="col-sm-10">
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_logo" value="1"
+                    {{ module_cinewsletter_unsubscribe_display_logo ? 'checked="checked"' : '' }} />
+                    {{ text_yes }}
+                  </label>
+                  <label class="radio-inline">
+                    <input type="radio" name="module_cinewsletter_unsubscribe_display_logo" value="0" {{ not module_cinewsletter_unsubscribe_display_logo ? 'checked="checked"' : '' }} />
+                    {{ text_no }}
+                  </label>
+                </div>
+              </div>
+              <ul class="nav nav-tabs" id="unsubscribe-language">
+                {% for language in languages %}
+                <li><a href="#unsubscribe-language{{ language.language_id }}" data-toggle="tab">
+                    <img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> {{ language.name }}</a></li>
+                {% endfor %}
+              </ul>
+              <div class="tab-content">
+                {% for language in languages %}
+                <div class="tab-pane" id="unsubscribe-language{{ language.language_id }}">
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsubscribe-title{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_unsubscribe_title_lang }}">{{ entry_unsubscribe_title_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_unsubscribe_message[{{ language.language_id }}][title]" value="{{ module_cinewsletter_unsubscribe_message[language.language_id] ? module_cinewsletter_unsubscribe_message[language.language_id].title }}" placeholder="{{ entry_unsubscribe_title_lang }}" id="input-unsubscribe-title{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsubscribe-desc{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_unsubscribe_description_lang }}">{{ entry_unsubscribe_description_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_unsubscribe_message[{{ language.language_id }}][description]" placeholder="{{ entry_unsubscribe_description_lang }}" id="input-unsubscribe-desc{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_unsubscribe_message[language.language_id] ? module_cinewsletter_unsubscribe_message[language.language_id].description }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsubscribe-success_lang{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_unsubscribe_success_lang }}">{{ entry_unsubscribe_success_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <textarea name="module_cinewsletter_unsubscribe_message[{{ language.language_id }}][success_lang]" placeholder="{{ entry_unsubscribe_success_lang }}" id="input-unsubscribe-success_lang{{ language.language_id }}" data-toggle="summernote" data-lang="{{ summernote }}" class="form-control">{{ module_cinewsletter_unsubscribe_message[language.language_id] ? module_cinewsletter_unsubscribe_message[language.language_id].success_lang }}</textarea>
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsubscribe-invalid_lang{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_unsubscribe_invalid_lang }}">{{ entry_unsubscribe_invalid_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_unsubscribe_message[{{ language.language_id }}][invalid_lang]" value="{{ module_cinewsletter_unsubscribe_message[language.language_id] ? module_cinewsletter_unsubscribe_message[language.language_id].invalid_lang }}" placeholder="{{ entry_unsubscribe_invalid_lang }}" id="input-unsubscribe-invalid_lang{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                  <div class="form-group">
+                    <label class="col-sm-2 control-label" for="input-unsubscribe-submit_button{{ language.language_id }}"><span data-toggle="tooltip" title="{{ help_unsubscribe_submit_lang }}">{{ entry_unsubscribe_submit_lang }}</span></label>
+                    <div class="col-sm-10">
+                      <input type="text" name="module_cinewsletter_unsubscribe_message[{{ language.language_id }}][submit_button]" value="{{ module_cinewsletter_unsubscribe_message[language.language_id] ? module_cinewsletter_unsubscribe_message[language.language_id].submit_button }}" placeholder="{{ entry_unsubscribe_submit_lang }}" id="input-unsubscribe-submit_button{{ language.language_id }}" class="form-control" />
+                    </div>
+                  </div>
+                </div>
+                {% endfor %}
+              </div>
+            </div>
+            <div class="tab-pane" id="tab-css">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_css }}</label>
+                <div class="col-sm-10">
+                    <textarea name="module_cinewsletter_css" rows="9" class="form-control">{{ module_cinewsletter_css }}</textarea>
+                </div>
+              </div>
+            </div>
+
+            <div class="tab-pane" id="tab-social-links">
+              <div class="form-group">
+                <label class="col-sm-2 control-label">{{ entry_social_status }}</label>
+                <div class="col-sm-10">
+                  <div class="btn-group" data-toggle="buttons">
+                    <label class="btn btn-default {{ 'popup' in module_cinewsletter_social_status ? 'active' : '' }}">
+                      <input type="checkbox" name="module_cinewsletter_social_status[]" autocomplete="off" value="popup" {{ 'popup' in module_cinewsletter_social_status ? 'checked="checked"' : '' }}>{{ text_social_popup}}
+                    </label>
+                    <label class="btn btn-default {{ 'popup' in module_cinewsletter_social_status ? 'active' : '' }}">
+                      <input type="checkbox" name="module_cinewsletter_social_status[]" autocomplete="off" value="footer" {{ 'popup' in module_cinewsletter_social_status ? 'checked="checked"' : '' }}>{{ text_social_footer}}
+                    </label>
+                  </div>
+                </div>
+              </div>
+
+              <div class="row">
+                <div class="col-sm-4 col-xs-12 col-md-3">
+                  <ul class="nav nav-pills nav-stacked" id="social-links">
+                  {% set social_link_row = 0 %}
+                    {% for social_link in social_links %}
+                    <li class="links-li"><a href="#tab-social-link{{ social_link_row }}" data-toggle="tab"><i class="fa fa-minus-circle" onclick="$('a[href=\'#tab-social-link{{ social_link_row }}\']').parent().remove(); $('#tab-social-link{{ social_link_row }}').remove(); $('#social-links a:first').tab('show');"></i> {{ social_link['description'][config_language_id]['title'] ? social_link['description'][config_language_id]['title'] : tab_link ~'-'~ social_link_row + 1 }} <i class="fa fa-arrows pull-right" aria-hidden="true"></i></a></li>
+                    {% set social_link_row = social_link_row + 1 %}
+                    {% endfor %}
+                  </ul>
+                  <ul class="nav nav-pills nav-stacked addlinkbutton">
+                    <li><button type="button" class="btn btn-default btn-block" onclick="addSocialLink();"><i class="fa fa-plus-circle" aria-hidden="true"></i> {{ button_add_social_link }}</button></li>
+                  </ul>
+                </div>
+                <div class="col-sm-8 col-xs-12 col-md-9">
+                  <div class="tab-content" id="tab-content">
+                  {% set social_link_row = 0 %}
+                    {% for social_link_key, social_link in social_links %}
+                    <div class="tab-pane" id="tab-social-link{{ social_link_row }}">
+                        <div class="link-group">
+                          <ul class="nav nav-tabs" id="social-link-language{{ social_link_row }}">
+                            {% for language in languages %}
+                            <li><a href="#social-link-language{{ social_link_row}}-{{ language['language_id'] }}" data-toggle="tab">
+                            <img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" /> {{ language['name'] }}</a></li>
+                            {% endfor %}
+                          </ul>
+                          <div class="tab-content">
+                            {% for language in languages %}
+                            <div class="tab-pane" id="social-link-language{{ social_link_row}}-{{ language['language_id']}}">
+                              <div class="form-group required">
+                                <label class="col-sm-2 control-label">{{ entry_title}}</label>
+                                <div class="col-sm-10">
+                                  <input type="text" name="module_cinewsletter_social_link[{{ social_link_row}}][description][{{ language['language_id'] }}][title]" value="{{ social_link['description'][language['language_id']]['title'] ? social_link['description'][language['language_id']]['title'] : '' }}" placeholder="{{ entry_title }}" class="form-control" />
+                                  {% if error_social_title[social_link_key][language['language_id']] %}
+                                    <div class="text-danger">{{ error_social_title[social_link_key][language['language_id']] }}</div>
+                                  {% endif %}
+                                </div>
+                              </div>
+                            </div>
+                            {% endfor %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">{{ entry_link}}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="module_cinewsletter_social_link[{{ social_link_row}}][link]" class="form-control" value="{{ social_link['link'] }}" />
+                            {% if error_social_link[social_link_key] %}
+                              <div class="text-danger">{{ error_social_link[social_link_key] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">{{ entry_icon_class}}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="module_cinewsletter_social_link[{{ social_link_row}}][icon_class]" class="form-control" value="{{ social_link['icon_class']}}" />
+                            {% if error_social_icon_class[social_link_key] %}
+                              <div class="text-danger">{{ error_social_icon_class[social_link_key] }}</div>
+                            {% endif %}
+                          </div>
+                        </div>
+                        <div class="form-group">
+                          <label class="col-sm-2 control-label">{{ entry_sort_order }}</label>
+                          <div class="col-sm-10">
+                            <input type="text" name="module_cinewsletter_social_link[{{ social_link_row }}][sort_order]"  value="{{ social_link['sort_order'] }}" class="form-control" />
+                          </div>
+                        </div>
+                    </div>
+                    {% set social_link_row = social_link_row + 1 %}
+                  {% endfor %}
+                  </div>
+                </div>
+              </div>
+            </div>
+
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+<link href="view/javascript/codemirror/lib/codemirror.css" rel="stylesheet" />
+<link href="view/javascript/codemirror/theme/monokai.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/codemirror/lib/codemirror.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/xml.js"></script>
+<script type="text/javascript" src="view/javascript/codemirror/lib/formatting.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/summernote.js"></script>
+<link href="view/javascript/summernote/summernote.css" rel="stylesheet" />
+<script type="text/javascript" src="view/javascript/summernote/summernote-image-attributes.js"></script>
+<script type="text/javascript" src="view/javascript/summernote/opencart.js"></script>
+
+<script type="text/javascript"><!--
+$('#language a:first').tab('show');
+$('#confirm-language a:first').tab('show');
+$('#layout-language a:first').tab('show');
+$('#footer-language a:first').tab('show');
+$('#popup-language a:first').tab('show');
+$('#verify-language a:first').tab('show');
+$('#unsubscribe-language a:first').tab('show');
+
+$('input[name="module_cinewsletter_verify_required"]').click(function() {
+  if($('input[name="module_cinewsletter_verify_required"]:checked').val() == 1) {
+    $('.verify_required_message').removeClass('hide');
+  } else{
+    $('.verify_required_message').addClass('hide');
+  }
+});
+
+$('input[name="module_cinewsletter_confirm_required"]').click(function() {
+  if($('input[name="module_cinewsletter_confirm_required"]:checked').val() == 1) {
+    $('.confirm_required_message').removeClass('hide');
+  } else{
+    $('.confirm_required_message').addClass('hide');
+  }
+});
+
+$('input[name=\'module_cinewsletter_popup_reopen\']').click(function() {
+  if($('input[name=\'module_cinewsletter_popup_reopen\']:checked').val() == 1) {
+    $('.minutes-group').show('slow');
+  }else{
+    $('.minutes-group').hide('slow');
+  }
+});
+$('input[name=\'module_cinewsletter_popup_reopen\']:checked').trigger('click');
+//--></script>
+<script type="text/javascript"><!--
+var reason_row = {{ reason_row }};
+
+function addReason() {
+  html  = '<tr id="reason-row' + reason_row + '">';
+  html += '  <td class="text-right">';
+  {% for language in languages %}
+  html += '<div class="input-group"><span class="input-group-addon">';
+  html += '<img src="language/{{ language.code }}/{{ language.code }}.png" title="{{ language.name }}" /> ';
+  html += '</span> <input type="text" name="module_cinewsletter_unsubscribe_reason[' + reason_row + '][description][{{ language.language_id }}][title]" value="" placeholder="{{ entry_title }}" class="form-control" /></div>';
+  {% endfor %}
+  html += '</td>';
+  html += '  <td class="text-right"><label class="radio-inline"><input type="radio" name="module_cinewsletter_unsubscribe_reason[' + reason_row + '][custom_field]" value="1" /> {{ text_yes }}</label><label class="radio-inline"><input type="radio" name="module_cinewsletter_unsubscribe_reason[' + reason_row + '][custom_field]" value="0" checked="checked" /> {{ text_no }}</label></td>';
+  html += '  <td class="text-left"><button type="button" onclick="$(\'#reason-row' + reason_row  + '\').remove();" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-danger"><i class="fa fa-minus-circle"></i></button></td>';
+  html += '</tr>';
+
+  $('#reasons tbody').append(html);
+
+  reason_row++;
+}
+
+$('input[name=\'module_cinewsletter_layout_display_icon\']').click(function() {
+  if($('input[name=\'module_cinewsletter_layout_display_icon\']:checked').val() == 1) {
+    $('.iconclass-group').show('slow');
+  }else{
+    $('.iconclass-group').hide('slow');
+  }
+});
+$('input[name=\'module_cinewsletter_layout_display_icon\']:checked').trigger('click');
+//--></script>
+
+<script type="text/javascript">
+  var element = null;
+  $('.color-picker').ColorPicker({
+    curr : '',
+    onShow: function (colpkr) {
+      $(colpkr).fadeIn(500);
+      return false;
+    },
+    onHide: function (colpkr) {
+      $(colpkr).fadeOut(500);
+    return false;
+    },
+    onSubmit: function(hsb, hex, rgb, el) {
+      $(el).val('#'+hex);
+      $(el).ColorPickerHide();
+    },
+    onBeforeShow: function () {
+      $(this).ColorPickerSetColor(this.value);
+    },
+    onChange: function (hsb, hex, rgb) {
+      element.curr.parent().next().find('.preview').css('background', '#' + hex);
+      element.curr.val('#'+hex);
+    }
+  }).bind('keyup', function(){
+    $(this).ColorPickerSetColor(this.value);
+  }).click(function(){
+    element = this;
+    element.curr = $(this);
+  });
+
+  $.each($('.color-picker'),function(key,value) {
+    $(this).parent().next().find('.preview').css({'background': $(this).val()});
+  });
+</script>
+
+
+<script type="text/javascript"><!--
+$('#social-links li:first-child a').tab('show');
+{% set j = 0 %}
+{% for key, social_link in social_links %}
+$('#social-link-language{{ j }} li:first-child a').tab('show');
+{% set j = j + 1 %}
+{% endfor %}
+$('#social-links a:first').tab('show');
+
+var social_link_row = {{ social_link_row }};
+
+function addSocialLink() {
+  html = '<div class="tab-pane" id="tab-social-link' + social_link_row + '">';
+
+      html += '<div class="link-group">';
+        html += '<ul class="nav nav-tabs" id="social-link-language' + social_link_row + '">';
+          {% for language in languages %}
+          html += '<li><a href="#social-link-language' + social_link_row + '-{{ language['language_id'] }}" data-toggle="tab">';
+          html += '<img src="language/{{ language['code'] }}/{{ language['code'] }}.png" title="{{ language['name'] }}" />';
+          html += ' {{ language['name'] }}</a></li>';
+          {% endfor %}
+        html += '</ul>';
+        html += '<div class="tab-content">';
+          {% for language in languages %}
+          html += '<div class="tab-pane" id="social-link-language' + social_link_row + '-{{ language['language_id'] }}">';
+            html += '<div class="form-group required">';
+              html += '<label class="col-sm-2 control-label">{{ entry_title }}</label>';
+              html += '<div class="col-sm-10">';
+                html += '<input type="text" name="module_cinewsletter_social_link[' + social_link_row + '][description][{{ language['language_id'] }}][title]" value="" placeholder="{{ entry_title }}" class="form-control" />';
+              html += '</div>';
+            html += '</div>';
+           html += '</div>';
+          {% endfor %}
+        html += '</div>';
+      html += '</div>';
+
+      html += '<div class="form-group">';
+          html += '<label class="col-sm-2 control-label">{{ entry_link }}</label>';
+          html += '<div class="col-sm-10">';
+            html += '<input type="text" name="module_cinewsletter_social_link[' + social_link_row + '][link]" class="form-control" value="" />';
+          html += '</div>';
+        html += '</div>';
+
+      html += '<div class="form-group">';
+          html += '<label class="col-sm-2 control-label">{{ entry_icon_class }}</label>';
+          html += '<div class="col-sm-10">';
+            html += '<input type="text" name="module_cinewsletter_social_link[' + social_link_row + '][icon_class]" class="form-control" value="" />';
+          html += '</div>';
+        html += '</div>';
+          html += '<div class="form-group">';
+            html += '<label class="col-sm-2 control-label">{{ entry_sort_order }}</label>';
+            html += '<div class="col-sm-10">';
+              html += '<input type="text" name="module_cinewsletter_social_link[' + social_link_row + '][sort_order]"  value="' + (social_link_row + 1) + '" class="form-control" />';
+            html += '</div>';
+          html += '</div>';
+    html += '</fieldset>';
+  html += '</div>';
+
+  $('#tab-social-links #tab-content').append(html);
+
+  $('#social-links').append('<li class="links-li"><a href="#tab-social-link' + social_link_row + '" data-toggle="tab"><i class="fa fa-minus-circle" onclick=" $(\'#social-links a:first\').tab(\'show\');$(\'a[href=\\\'#tab-social-link' + social_link_row + '\\\']\').parent().remove(); $(\'#tab-social-link' + social_link_row + '\').remove();"></i> {{ tab_social_link }}-'+ (social_link_row + 1)  +' <i class="fa fa-arrows pull-right" aria-hidden="true"></i></a></li>');
+
+  $('#social-links a[href=\'#tab-social-link' + social_link_row + '\']').tab('show');
+
+  $('#social-link-language'+ social_link_row +' a:first').tab('show');
+
+  $('[data-toggle=\'tooltip\']').tooltip({
+    container: 'body',
+    html: true
+  });
+
+  social_link_row++;
+}
+//--></script>
+</div>
+{{ footer }}

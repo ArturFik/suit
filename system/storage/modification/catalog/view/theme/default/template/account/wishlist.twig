@@ -1,0 +1,161 @@
+{{ header }}
+<div id="account-wishlist" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+    {% if loop.last %}
+    <span>{{ breadcrumb.text }}</span>
+    {% else %}
+    <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+    {% endif %}
+    {% endfor %}
+  </div>
+  {% if success %}
+  <div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> {{ success }}
+    <button type="button" class="close" data-dismiss="alert">&times;</button>
+  </div>
+  {% endif %}
+
+  {{ column_left }}
+
+
+
+  <div id="content" class="lk">
+
+    <div class="title"><h1>{{ heading_title }}</h1></div>
+
+    <div class="lk__content">
+      <div class="prd-tab">
+        <div class="prd-tab__bl">
+
+          {{ content_top }}
+  
+          <div class="prd-tab__content">
+            <div class="prd-tab__item">
+
+              <div class="catalog__prod">
+                {% if products %}
+              <div class="prod__list">
+                {% for product in products %}
+                  <div class="prod__item" itemscope itemtype="https://schema.org/Product">
+                    <div class="prod__item-top">
+                      <a onclick="compare.add('{{ product.product_id }}'); return false;" href="#"><img src="images/i-graph.svg"></a>
+                      <a onclick="wishlist.add('{{ product.product_id }}'); return false;" href="#"><img src="images/i-bookmark.svg"></a>
+                    </div>
+                    <div class="prod__item-img">
+                      <a href="{{ product.href }}"><img src="{{ product.thumb }}"></a>
+                    </div>
+                    <div class="prod__item-bottom">
+                      <div class="prod__item-title">
+                        <a href="{{ product.href }}"><b itemprop="name">{{ product.name }}</b></a>
+                        <span class="hidden" itemprop="description"></span>
+                      </div>
+                      <div class="prod__item-footer">
+                        <div class="prod__item-price">
+                                  {% if not product.special %}
+                            <span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                              {{ text_from_n }} <span itemprop="price">{{ product.price_orig }}</span> {{ symbol_right }}
+                              <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+                            </span>
+                          {% else %}
+                            <span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                              {{ text_from_n }} <span itemprop="price">{{ product.special_orig }}</span>{{ symbol_right }}
+                              <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+                            </span>
+                          {% endif %}
+                        </div>
+
+                        <div class="item-add-to-cart">
+                          <div class="item-add-to-cart__input-block {% if not product.product_info_in_cart %}hidden{% endif %}">
+                            <div class="item-add-to-cart__input-block_minus" {% if product.product_info_in_cart %}onclick="cart.update('{{ product.product_info_in_cart.cart_id }}', '{{ product.product_info_in_cart.quantity - 1 }}');"{% endif %}>-</div>
+                            <input disabled="disabled" class="item-add-to-cart__input-block_input" data-product-id="{{ product.product_id }}" value="{% if product.product_info_in_cart %}{{ product.product_info_in_cart.quantity }}{% else %}1{% endif %}" />
+                            <div class="item-add-to-cart__input-block_plus" {% if product.product_info_in_cart %}onclick="cart.update('{{ product.product_info_in_cart.cart_id }}', '{{ product.product_info_in_cart.quantity + 1 }}');"{% endif %}>+</div>
+                          </div>
+                          <a onclick="cart.add('{{ product.product_id }}'); return false;" class="prod__item-link" href="#" itemprop="url">
+                            <img src="images/i-bag.svg"><span {% if product.product_info_in_cart %}class="hidden"{% endif %}>{{ button_cart_n }}</span>
+                          </a>
+                        </div>
+
+                      </div>
+                    </div>
+                  </div>
+                {% endfor %}
+              </div>
+            {% endif %}
+              </div>
+
+            </div>
+          </div>
+          {{ content_bottom }}
+        </div>
+      </div>
+    </div>
+
+    <!-- <div class="buttons clearfix">
+      <div class="pull-left"><a href="{{ add }}" class="btn btn-blue">{{ button_new_address }}</a></div>
+    </div> -->
+
+  </div>
+
+
+
+
+  <!-- <div id="content" class="lk">
+    {{ content_top }}
+
+    <div class="title"><h1>{{ heading_title }}</h1></div>
+
+    {% if products %}
+    <div class="table-responsive">
+      <table class="table table-bordered table-hover">
+        <thead>
+          <tr>
+            <td class="text-center">{{ column_image }}</td>
+            <td class="text-left">{{ column_name }}</td>
+            <td class="text-left">{{ column_model }}</td>
+            <td class="text-right">{{ column_stock }}</td>
+            <td class="text-right">{{ column_price }}</td>
+            <td class="text-right">{{ column_action }}</td>
+          </tr>
+        </thead>
+        <tbody>
+
+          {% for product in products %}
+          <tr>
+            <td class="text-center">{% if product.thumb %}<a href="{{ product.href }}"><img src="{{ product.thumb }}"
+                  alt="{{ product.name }}" title="{{ product.name }}" /></a>{% endif %}</td>
+            <td class="text-left"><a href="{{ product.href }}">{{ product.name }}</a></td>
+            <td class="text-left">{{ product.model }}</td>
+            <td class="text-right">{{ product.stock }}</td>
+            <td class="text-right">{% if product.price %}
+              <div class="price"> {% if not product.special %}
+                {{ product.price }}
+                {% else %} <b>{{ product.special }}</b> <s>{{ product.price }}</s> {% endif %} </div>
+              {% endif %}
+            </td>
+            <td class="text-right">
+              <button type="button" onclick="cart.add('{{ product.product_id }}');" data-toggle="tooltip" title="{{ button_cart }}" class="btn btn-blue">
+                <i class="fa fa-shopping-cart"></i>
+              </button>
+              <a href="{{ product.remove }}" data-toggle="tooltip" title="{{ button_remove }}" class="btn btn-red">
+                <i class="fa fa-times"></i>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+
+      </table>
+    </div>
+    {% else %}
+    <p>{{ text_empty }}</p>
+    {% endif %}
+
+    <div class="buttons clearfix">
+      <div class="pull-left"><a href="{{ continue }}" class="btn btn-blue">{{ button_continue }}</a></div>
+    </div>
+    {{ content_bottom }}
+  </div> -->
+
+  {{ column_right }}
+</div>
+{{ footer }}

@@ -1,0 +1,472 @@
+{{ header }}
+
+{# Фен строительный Энкор ПТЭ-2000/3 50310 #}
+
+<div id="product-product" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      {% if loop.last %}
+        <span>{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="/catalog/view/theme/default/images/i-separator.svg">
+      {% endif %}
+    {% endfor %}
+  </div>
+  
+  <div class="prd-card">
+    <div class="prd-card__content">
+      {% if thumb or images %}
+        <div class="prd-card__img">
+          <a class="compare-link" onclick="compare.add('{{ product_id }}'); return false;" href="#"><img src="/catalog/view/theme/default/images/i-graph.svg"></a>
+          <a class="wishlist-link" onclick="wishlist.add('{{ product_id }}'); return false;" href="#"><img src="/catalog/view/theme/default/images/i-bookmark.svg"></a>
+          <div class="prd-card__img-big owl-carousel">
+            {% if popup %}
+              <div class="prd-card__big-item"><img src="{{ popup }}"></div>
+            {% endif %}
+            {% if images %}
+              {% for image in images %}
+                <div class="prd-card__big-item"><img src="{{ image.popup }}"></div>
+              {% endfor %}
+            {% endif %}
+          </div>
+
+          <div class="prd-card__img-thumbs">
+            <button class="thumb-nav thumb-prev"><img src="/catalog/view/theme/default/images/angl-top.svg"></button>
+            <div class="prd-card__img-thumb owl-carousel">
+              {% if thumb %}
+                <div class="prd-card__thumb" data-slide="0"><img src="{{ thumb }}"></div>
+              {% endif %}
+              {% if images %}
+                {% for image in images %}
+                  <div class="prd-card__thumb" data-slide="{{ loop.index }}"><img src="{{ image.thumb }}"></div>
+                {% endfor %}
+              {% endif %}
+            </div>
+            <button class="thumb-nav thumb-next"><img src="/catalog/view/theme/default/images/angl-bottom.svg"></button>
+          </div>
+        </div>
+      {% endif %}
+
+      <div class="prd-card__info" id="product">
+        <div class="prd-card__title">{{ heading_title }}</div>
+        {# <div class="prd-card__storage-city">Нет на складе в вашем городе</div> #}
+        {# <div class="prd-card__storage">Есть на складе 7 шт.</div> #}
+
+        {% if attribute_groups %}
+          <div class="prd-card__description">
+          {% set loop_index0 = 0 %}
+          {% for attribute_group in attribute_groups %}
+            {% for attribute in attribute_group.attribute %}
+              {% set loop_index0 = loop_index0 + 1 %}
+              {% if loop_index0 < 6 %}
+                <span>{{ attribute.name }}: {{ attribute.text }}</span>
+              {% endif %}
+            {% endfor %}
+          {% endfor %}
+          </div>
+        {% endif %}
+        
+        {# {% if options %}
+          {% for option in options %}
+            <div class="prd-card__type"><b>Номинальный ток</b>
+              <div class="prd-card__type-list">
+                <div class="prd-card__type-item">16 А</div>
+                <div class="prd-card__type-item">25 А</div>
+                <div class="prd-card__type-item">32 А</div>
+                <div class="prd-card__type-item">40 А</div>
+                <div class="prd-card__type-item">50 А</div>
+                <div class="prd-card__type-item">63 А</div>
+              </div>
+            </div>
+            <div class="prd-card__type"><b>Ток утечки</b>
+              <div class="prd-card__type-list">
+                <div class="prd-card__type-item">100 мА</div>
+                <div class="prd-card__type-item">30 мА</div>
+                <div class="prd-card__type-item">300 мА</div>
+              </div>
+            </div>
+          {% endfor %}
+        {% endif %} #}
+
+        <input type="hidden" name="quantity" value="{{ minimum }}" id="input-quantity" />
+        <input type="hidden" name="product_id" value="{{ product_id }}" />
+      </div>
+
+      <div class="prd-card__price-bl">
+        <div class="prd-card__title">{{ heading_title }}</div>
+        <div class="prd-card__price_block">
+          {% if not special %}
+            <div class="prd-card__price">{{ price }}</div>
+          {% else %}
+            <div class="prd-card__price">{{ special }}</div>
+            <div class="prd-card__price old_price">{{ price }}</div>
+          {% endif %}
+        </div>
+
+        <div class="item-add-to-cart dpp">
+          <div class="item-add-to-cart__input-block dpp">
+            <div class="item-add-to-cart__input-block_minus dpp">-</div>
+              <input class="item-add-to-cart__input-block_input dpp" data-product-id="{{ product_id }}" value="1">
+            <div class="item-add-to-cart__input-block_plus dpp">+</div>
+          </div>
+        </div>
+        <button id="button-cart" class="btn btn-blue">
+          <img src="/catalog/view/theme/default/images/i-bag.svg">
+          <span>{{ button_cart_n }}</span>
+        </button>
+
+        
+
+        {# <div class="prd-card__price-ship"><a href="#">Самовывоз:</a><span>завтра, из 2 магазинов</span></div> #}
+        {# <div class="prd-card__price-ship"><a href="#">Поставка:</a><span>12 декабря, от 150 руб.</span></div> #}
+        {# <div class="prd-card__price-link">
+          <a href="#">Сертификат дилера</a>
+          <a href="#">Сертификат соответствия</a>
+          <a href="#">Скачать всю документацию</a>
+        </div> #}
+      </div>
+
+    </div>
+    {% if description %}
+      <div class="prd-card__text">{{ description }}</div>
+    {% endif %}
+  </div>
+  <div class="prd-tab">
+    <div class="prd-tab__bl">
+      <div class="bl-h-scroll">
+        <div class="prd-tab__header">
+          {% if description %}<div class="prd-tab__header-item">{{ tab_description }}</div>{% endif %}
+          {% if attribute_groups %}<div class="prd-tab__header-item">{{ tab_attribute }}</div>{% endif %}
+          {% if review_status %}<div class="prd-tab__header-item">{{ tab_review }}</div>{% endif %}
+          {# <div class="prd-tab__header-item">Аналоги</div> #}
+          {# <div class="prd-tab__header-item">Расходные материалы</div> #}
+          {# <div class="prd-tab__header-item">Вопросы</div> #}
+        </div>
+      </div>
+      <div class="prd-tab__content">
+        {% if description %}
+        <div class="prd-tab__item">
+          <div class="prd-tab__item-text">{{ description }}</div>
+        </div>
+        {% endif %}
+
+        {% if attribute_groups %}
+        <div class="prd-tab__item">
+          <table class="prd-tab__item-table" cellpadding="0" cellspacing="0">
+            {% for attribute_group in attribute_groups %}
+            {# <thead>
+                <tr>
+                  <td colspan="2"><strong>{{ attribute_group.name }}</strong></td>
+                </tr>
+            </thead> #}
+            <tbody>
+              {% for attribute in attribute_group.attribute %}
+              <tr>
+                <th>{{ attribute.name }}</th>
+                <td>{{ attribute.text }}</td>
+              </tr>
+              {% endfor %}
+            </tbody>
+            {% endfor %}
+          </table>
+        </div>
+        {% endif %}
+
+        {% if review_status %}
+        <div class="prd-tab__item" id="tab-review">
+
+          <div class="rating">
+            <p>{% for i in 1..5 %}
+              {% if rating < i %}<span class="fa fa-stack"><i class="fa fa-star-o fa-stack-1x"></i></span>{% else %}<span class="fa fa-stack"><i class="fa fa-star fa-stack-1x"></i><i class="fa fa-star-o fa-stack-1x"></i></span>{% endif %}
+              {% endfor %} <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); return false;">{{ reviews }}</a> / <a href="" onclick="$('a[href=\'#tab-review\']').trigger('click'); $('html,body').animate({scrollTop: $('#form-review').offset().top}, 500); return false;">{{ text_write }}</a></p>
+            <hr>
+            <div class="addthis_toolbox addthis_default_style" data-url="{{ share }}"><a class="addthis_button_facebook_like" fb:like:layout="button_count"></a> <a class="addthis_button_tweet"></a> <a class="addthis_button_pinterest_pinit"></a> <a class="addthis_counter addthis_pill_style"></a></div>
+            {# <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=ra-515eeaf54693130e"></script> #}
+          </div>
+        </div>
+        {% endif %}
+
+        {# <div class="prd-tab__item">
+          <div class="prd-tab__item-text">Значимость этих проблем настолько очевидна, что дальнейшее развитие различных форм деятельности представляет собой интересный эксперимент проверки дальнейших направлений развития. Задача организации, в особенности же сложившаяся структура организации в значительной степени обуславливает создание систем массового участия. Разнообразный и богатый опыт консультация</div>
+        </div> #}
+
+      </div>
+    </div>
+  </div>
+
+  {% if tags %}
+  <div class="prd-hashtag">
+    <div class="title">
+      <h2>{{ title_product_tags_n }}</h2>
+    </div>
+    <div class="prd-hashtag__list">
+      {% for tag in tags %}
+      <a class="prd-hashtag__item" href="{{ tag.href }}">{{ tag.tag }}</a>
+      {% endfor %}
+    </div>
+  </div>
+  {% endif %}
+
+  {{ content_top }}
+
+  {% if products %}
+  <div class="prod">
+    <div class="prod__content">
+      <div class="title">
+        <h2>{{ title_related_product_n }}</h2>
+      </div>
+      <div class="prod__list">
+        {% for product in products %}
+        {% if loop.index0 < 4 %}
+        <div class="prod__item" itemscope itemtype="https://schema.org/Product">
+          <div class="prod__item-top">
+            <a onclick="compare.add('{{ product.product_id }}'); return false;" href="#"><img src="/catalog/view/theme/default/images/i-graph.svg"></a>
+            <a onclick="wishlist.add('{{ product.product_id }}'); return false;" href="#"><img src="/catalog/view/theme/default/images/i-bookmark.svg"></a>
+          </div>
+          <div class="prod__item-img">
+            <a href="{{ product.href }}"><img src="{{ product.thumb }}"></a>
+          </div>
+          <div class="prod__item-bottom">
+            <div class="prod__item-title">
+              <a href="{{ product.href }}"><b itemprop="name">{{ product.name }}</b></a>
+              <span class="hidden" itemprop="description"></span>
+            </div>
+            <div class="prod__item-footer">
+              <div class="prod__item-price">
+                        {% if not product.special %}
+                  <span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    {{ text_from_n }} <span itemprop="price">{{ product.price_orig }}</span> {{ symbol_right }}
+                    <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+                  </span>
+                {% else %}
+                  <span itemprop="offers" itemscope itemtype="https://schema.org/Offer">
+                    {{ text_from_n }} <span itemprop="price">{{ product.special_orig }}</span>{{ symbol_right }}
+                    <span itemprop="priceCurrency" content="{{ currency }}">{{ text_sht_n }}</span>
+                  </span>
+                {% endif %}
+              </div>
+
+              <div class="item-add-to-cart">
+                <div class="item-add-to-cart__input-block">
+                  <div class="item-add-to-cart__input-block_minus">-</div>
+                  <input class="item-add-to-cart__input-block_input" data-product-id="{{ product.product_id }}" value="1" />
+                  <div class="item-add-to-cart__input-block_plus">+</div>
+                </div>
+                <a onclick="cart.add('{{ product.product_id }}'); return false;" class="prod__item-link" href="#" itemprop="url">
+                  <img src="images/i-bag.svg"><span>{{ button_cart_n }}</span>
+                </a>
+              </div>
+
+            </div>
+          </div>
+        </div>
+        {% endif %}
+        {% endfor %}
+      </div>
+    </div>
+  </div>
+  {% endif %}
+
+  {{ content_bottom }}
+
+</div>
+
+
+<script type="text/javascript"><!--
+$('select[name=\'recurring_id\'], input[name="quantity"]').change(function(){
+	$.ajax({
+		url: 'index.php?route=product/product/getRecurringDescription',
+		type: 'post',
+		data: $('input[name=\'product_id\'], input[name=\'quantity\'], select[name=\'recurring_id\']'),
+		dataType: 'json',
+		beforeSend: function() {
+			$('#recurring-description').html('');
+		},
+		success: function(json) {
+			$('.alert-dismissible, .text-danger').remove();
+
+			if (json['success']) {
+				$('#recurring-description').html(json['success']);
+			}
+		}
+	});
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('#button-cart').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=checkout/cart/add',
+		type: 'post',
+		data: $('#product input[type=\'text\'], #product input[type=\'hidden\'], #product input[type=\'radio\']:checked, #product input[type=\'checkbox\']:checked, #product select, #product textarea'),
+		dataType: 'json',
+		success: function(json) {
+			$('.alert-dismissible, .text-danger').remove();
+			$('.form-group').removeClass('has-error');
+
+			if (json['error']) {
+				if (json['error']['option']) {
+					for (i in json['error']['option']) {
+						var element = $('#input-option' + i.replace('_', '-'));
+
+						if (element.parent().hasClass('input-group')) {
+							element.parent().after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						} else {
+							element.after('<div class="text-danger">' + json['error']['option'][i] + '</div>');
+						}
+					}
+				}
+
+				if (json['error']['recurring']) {
+					$('select[name=\'recurring_id\']').after('<div class="text-danger">' + json['error']['recurring'] + '</div>');
+				}
+
+				// Highlight any found errors
+				$('.text-danger').parent().addClass('has-error');
+			}
+
+			if (json['success']) {
+				$('.breadcrumb').after('<div class="alert alert-success alert-dismissible">' + json['success'] + '<button type="button" class="close" data-dismiss="alert">&times;</button></div>');
+				$('#cart > button').html('<span id="cart-total"><i class="fa fa-shopping-cart"></i> ' + json['total'] + '</span>');
+				$('#cart').load('index.php?route=common/cart/info');
+
+        $('.item-add-to-cart__input-block_input[data-product-id="' + product_id + '"]').closest('.item-add-to-cart').find('.item-add-to-cart__input-block').removeClass('hidden');
+				$('.item-add-to-cart__input-block_input[data-product-id="' + product_id + '"]').closest('.item-add-to-cart').find('.prod__item-link span').addClass('hidden');
+
+        if(json['product_id']){
+          $('.item-add-to-cart__input-block_input[data-product-id="' + json['product_id'] + '"]').closest('.item-add-to-cart').find('.item-add-to-cart__input-block_minus').attr('onclick', "cart.update('" + json['cart_id'] + "', '" + Number(Number(json['quantity']) - 1) + "');");
+          $('.item-add-to-cart__input-block_input[data-product-id="' + json['product_id'] + '"]').closest('.item-add-to-cart').find('.item-add-to-cart__input-block_plus').attr('onclick', "cart.update('" + json['cart_id'] + "', '" + Number(Number(json['quantity']) + 1) + "');");
+
+          $('.item-add-to-cart__input-block_input[data-product-id="' + product_id + '"]').val(Number(json['quantity']));
+          $('.item-add-to-cart__input-block_input[data-product-id="' + product_id + '"]').attr('value', Number(json['quantity']));
+        }
+			}
+		},
+        error: function(xhr, ajaxOptions, thrownError) {
+            alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+        }
+	});
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('.date').datetimepicker({
+	language: '{{ datepicker }}',
+	pickTime: false
+});
+
+$('.datetime').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: true,
+	pickTime: true
+});
+
+$('.time').datetimepicker({
+	language: '{{ datepicker }}',
+	pickDate: false
+});
+
+$('button[id^=\'button-upload\']').on('click', function() {
+	var node = this;
+
+	$('#form-upload').remove();
+
+	$('body').prepend('<form enctype="multipart/form-data" id="form-upload" style="display: none;"><input type="file" name="file" /></form>');
+
+	$('#form-upload input[name=\'file\']').trigger('click');
+
+	if (typeof timer != 'undefined') {
+    	clearInterval(timer);
+	}
+
+	timer = setInterval(function() {
+		if ($('#form-upload input[name=\'file\']').val() != '') {
+			clearInterval(timer);
+
+			$.ajax({
+				url: 'index.php?route=tool/upload',
+				type: 'post',
+				dataType: 'json',
+				data: new FormData($('#form-upload')[0]),
+				cache: false,
+				contentType: false,
+				processData: false,
+				beforeSend: function() {
+					$(node).button('loading');
+				},
+				complete: function() {
+					$(node).button('reset');
+				},
+				success: function(json) {
+					$('.text-danger').remove();
+
+					if (json['error']) {
+						$(node).parent().find('input').after('<div class="text-danger">' + json['error'] + '</div>');
+					}
+
+					if (json['success']) {
+						alert(json['success']);
+
+						$(node).parent().find('input').val(json['code']);
+					}
+				},
+				error: function(xhr, ajaxOptions, thrownError) {
+					alert(thrownError + "\r\n" + xhr.statusText + "\r\n" + xhr.responseText);
+				}
+			});
+		}
+	}, 500);
+});
+//--></script> 
+<script type="text/javascript"><!--
+$('#review').delegate('.pagination a', 'click', function(e) {
+    e.preventDefault();
+
+    $('#review').fadeOut('slow');
+
+    $('#review').load(this.href);
+
+    $('#review').fadeIn('slow');
+});
+
+$('#review').load('index.php?route=product/product/review&product_id={{ product_id }}');
+
+$('#button-review').on('click', function() {
+	$.ajax({
+		url: 'index.php?route=product/product/write&product_id={{ product_id }}',
+		type: 'post',
+		dataType: 'json',
+		data: $("#form-review").serialize(),
+		beforeSend: function() {
+			$('#button-review').button('loading');
+		},
+		complete: function() {
+			$('#button-review').button('reset');
+		},
+		success: function(json) {
+			$('.alert-dismissible').remove();
+
+			if (json['error']) {
+				$('#review').after('<div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> ' + json['error'] + '</div>');
+			}
+
+			if (json['success']) {
+				$('#review').after('<div class="alert alert-success alert-dismissible"><i class="fa fa-check-circle"></i> ' + json['success'] + '</div>');
+
+				$('input[name=\'name\']').val('');
+				$('textarea[name=\'text\']').val('');
+				$('input[name=\'rating\']:checked').prop('checked', false);
+			}
+		}
+	});
+});
+
+$(document).ready(function() {
+	$('.thumbnails').magnificPopup({
+		type:'image',
+		delegate: 'a',
+		gallery: {
+			enabled: true
+		}
+	});
+});
+//--></script> 
+{{ footer }} 

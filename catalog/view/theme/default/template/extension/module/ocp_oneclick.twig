@@ -1,0 +1,374 @@
+<div class="ocpoc{{ window_design == 1 ? ' ocpoc-hor' : ' ocpoc-vert' }}{{ btn_in_footer == 1 ? ' ocpoc-without-footer' : '' }}">
+    {# <div class="ocpoc-head">{{ heading }}</div> #}
+    <div class="ocpoc-body modal__content">
+        <div class="ocpoc-close modal__close"><img src="/catalog/view/theme/default/images/close.svg"></div>
+        <h3 class="ocpoc-pname">{{ name }}</h3>
+        {% if not stock_checkout  and  quantity <= 0%}
+        <p>
+            <span class="ocpoc-stock">{{ no_in_stock_text }}</span>
+        </p>
+        {% endif %}
+        {% if show_description%}
+        <div>
+        <a onclick="ocpoc_descr();return true;" class="ocpoc-show-descr">{{ description_show_text }}</a>
+        <div class="ocpoc-description">
+            <ul class="list-unstyled">
+                {% if manufacturer %}
+                <li>{{ text_manufacturer }} <a href="{{ manufacturers }}">{{ manufacturer }}</a></li>
+                {% endif %}
+                <li>{{ text_model }} {{ model }}</li>
+                {% if reward %}
+                <li>{{ text_reward }} {{ reward }}</li>
+                {% endif %}
+                <li>{{ text_stock }} {{ stock }}</li>
+            </ul>
+            <div>
+                {{ description }}
+            </div>
+        </div>
+        </div>
+        {% endif %}
+        {% if show_images %}
+        <div class="ocpoc-images{{ window_design == 0 ? ' ocpoc-clearfix' : '' }}">
+            <div class="ocpoc-main-image">
+                <img src="{{ thumb }}" alt="" />
+            </div>
+            {% if images %}
+            <div class="ocpoc-thumbs">
+            {% for image in images %}<img src="{{ image.thumb }}" alt="" title="" onclick="ocpoc_set_main_image('{{ image.popup }}', $(this)); return true;"{% if loop.index ==  1%} class="active"{% endif %} />{% endfor %}
+            </div>
+            {% endif %}
+        </div>
+    {% endif %}
+        <div class="ocpoc-right">
+        {% if show_options  and  options %}
+            <div class="ocpoc-options">
+                <h3 class="ocpoc-options-title">{{ options_title }}</h3>
+                {% for option in options %}
+                    {% if option.type  ==  'select'%}
+                        <div id="ocpoc-option-{{ option.product_option_id}}" class="ocpoc-option">
+                            <select onchange="ocpoc_update();" name="option[{{ option.product_option_id }}]" class="ocpoc-control">
+                                <option value="">{{ option.required ? '* ' : '' }}{{ option.name }}</option>
+                                {% for option_value in option.product_option_value %}
+                                    <option value="{{ option_value.product_option_value_id }}">{{ option_value.name }}
+                                        {% if option_value.price %}
+                                            ({{ option_value.price_prefix }}{{ option_value.price }})
+                                        {% endif %} </option>
+                                {% endfor %}
+                            </select>
+                        </div>
+                    {% endif %}
+
+                    {% if option.type  ==  'text' %}
+                        <div id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <label for="" class="ocpoc-option-title">{{ option.required ? '<span class="required">*</span>' : '' }}{{ option.name }}</label>
+                            <input type="text" name="option[{{ option.product_option_id }}]" value="{{ option.value }}" placeholder="{{ option.required ? '* ' : '' }}{{ option.name }}" class="ocpoc-control" />
+                        </div>
+                    {% endif %}
+                    {% if option.type  ==  'textarea' %}
+                        <div id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <label for="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option-title">{{ option.required ? '<span class="required">*</span>' : '' }}{{ option.name }}</label>
+                            <textarea name="option[{{ option.product_option_id }}]" placeholder="{{ option.required ? '* ' : '' }}{{ option.name }}" class="ocpoc-control" id="ocpoc-option-{{ option.product_option_id }}">{{ option.value }}</textarea>
+                        </div>
+                    {% endif %}
+                    {% if option.type  ==  'radio' %}
+                        <label class="ocpoc-option-title">{% if option.required %}<span class="required">*</span>{% endif %}{{ option.name }}</label>
+                        <table id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <tbody>
+                            {% for option_value in option.product_option_value %}
+                                <tr>
+                                    <td class="input-td">
+                                        <input onchange="ocpoc_update();" type="radio" name="option[{{ option.product_option_id }}]" value="{{ option_value.product_option_value_id }}" id="ocpoc-option-value-{{ option_value.product_option_value_id }}" />
+                                    </td>
+                                    <td>
+                                        <label for="ocpoc-option-value-{{ option_value.product_option_value_id }}">
+                                            {{ option_value.name }}
+                                        </label>
+                                    </td>
+                                    <td class="ocpoc-text-right">
+                                        {% if option_value.price  %}
+                                            {{ option_value.price_prefix }}{{ option_value.price }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if option.type  ==  'checkbox' %}
+                        <label class="ocpoc-option-title">{% if option.required  %}<span class="required">*</span>{% endif %}{{ option.name }}</label>
+                        <table id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <tbody>
+                            {% for option_value in option.product_option_value %}
+                                <tr>
+                                    <td class="input-td">
+                                        <input
+                                                onchange="ocpoc_update();"
+                                                type="checkbox"
+                                                name="option[{{ option.product_option_id }}][]"
+                                                value="{{ option_value.product_option_value_id }}"
+                                                id="ocpoc-option-value-{{ option_value.product_option_value_id }}"
+                                        />
+                                    </td>
+                                    <td>
+                                        <label for="ocpoc-option-value-{{ option_value.product_option_value_id }}">
+                                            {{ option_value.name }}
+                                        </label>
+                                    </td>
+                                    <td class="ocpoc-text-right">
+                                        {% if option_value.price  %}
+                                            {{ option_value.price_prefix }}{{ option_value.price }}
+                                        {% endif %}
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if option.type  ==  'image' %}
+                        <label class="ocpoc-option-title">{% if option.required  %}<span class="required">*</span>{% endif %}{{ option.name }}</label>
+                        <table id="ocpoc-option-{{ option.product_option_id }}">
+                            <tbody>
+                            {% for option_value in option %}
+                                <tr>
+                                    <td class="input-td">
+                                        <input
+                                                onchange="ocpoc_update();"
+                                                type="radio"
+                                                name="option[{{ option.product_option_id }}]"
+                                                value="{{ option_value.product_option_value_id }}"
+                                                id="ocpoc-option-value-{{ option_value.product_option_value_id }}"
+                                        />
+                                    </td>
+                                    <td style="width:{{ option_images_width ? option_images_width : '50px' }};">
+                                        <label for="ocpoc-option-value-{{ option_value.product_option_value_id }}">
+                                            <img src="{{ option_value.image }}" alt="{{ option_value.name ~ option_value.price ? ' ' ~ option_value.price_prefix ~ option_value.price : '' }}" />
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label for="ocpoc-option-value-{{ option_value.product_option_value_id }}" style="float: left;">
+                                            {{ option_value.name }}
+                                        </label>
+                                    </td>
+                                    <td>
+                                        <label for="ocpoc-option-value-{{ option_value.product_option_value_id }}" style="float: right;">
+                                            {% if option_value.price  %}
+                                                {{ option_value.price_prefix }}{{ option_value.price }}
+                                            {% endif %}
+                                        </label>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+
+                            </tbody>
+                        </table>
+                    {% endif %}
+                    {% if option.type  ==  'date' %}
+                        <label class="ocpoc-option-title">{{ option.required ? '<span class="required">*</span>' : '' }}{{ option.name }}</label>
+                        <div id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <input
+                                    type="text"
+                                    name="option[{{ option.product_option_id }}]"
+                                    value="{{ option.value }}"
+                                    class="date_input ocpoc-control"
+                                    data-date-format="YYYY-MM-DD"
+                                    placeholder="{{ option.required ? '* ' : '' }}{{ option.name }}"
+                                    onfocus="$(this).datetimepicker( { pickTime: false } );"
+                            />
+                        </div>
+                    {% endif %}
+                    {% if option.type  ==  'datetime' %}
+                        <label class="ocpoc-option-title">{{ option.required ? '<span class="required">*</span>' : '' }}{{ option.name }}</label>
+                        <div id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <input
+                                    type="text"
+                                    name="option[{{ option.product_option_id }}]"
+                                    value="{{ option.value }}"
+                                    class="datetime_input ocpoc-control"
+                                    data-date-format="YYYY-MM-DD HH:mm"
+                                    placeholder="{{ option.required ? '* ' : '' }}{{ option.name }}"
+                                    onfocus="$(this).datetimepicker( { pickDate: true, pickTime: true } );"
+                            />
+                        </div>
+                    {% endif %}
+                    {% if option.type  ==  'time' %}
+                        <label class="ocpoc-option-title">{{ option.required ? '<span class="required">*</span>' : '' }}{{ option.name }}</label>
+                        <div id="ocpoc-option-{{ option.product_option_id }}" class="ocpoc-option">
+                            <input
+                                    type="text"
+                                    name="option[{{ option.product_option_id }}]"
+                                    value="{{ option.value }}"
+                                    class="time_input ocpoc-control"
+                                    data-date-format="HH:mm"
+                                    placeholder="{{ option.required ? '* ' : '' }}{{ option.name }}"
+                                    onfocus="$(this).datetimepicker( { pickDate: false } );"
+                            />
+                        </div>
+                    {% endif %}
+                {% endfor %}
+
+            </div>
+        {% endif %}
+        {% if price %}
+          {% if special %}
+          <div class="ocpoc-special">{{ price }}</div>
+          {% endif %}
+          <div class="ocpoc-price-wrap clearfix">
+            <div class="ocpoc-price{{ show_qty == 0 ? ' without-qty' : '' }}">
+                {% if not special %}
+                <span>{{ price }}</span>
+                {% else %}
+                <span>{{ special }}</span>
+                {% endif %}
+                {% if show_qty %}
+                    <label class="ocpoc-hint">{{ price_title }}</label>
+
+                {% endif %}
+            </div>
+              {% if show_qty %}
+              <div class="ocpoc-group ocpoc-qty">
+                <div class="quantity">
+                    <button type="button" class="minus" onclick="ocpoc_update_qty('-');">-</button>
+                    <input type="text" name="quantity" value="1" class="qty">
+                    <button type="button" class="plus" onclick="ocpoc_update_qty('+');">+</button>
+                </div>
+
+                {# <label class="ocpoc-hint">{{ qty_title }}</label> #}
+              </div>
+            <div class="ocpoc-total">
+                <span>
+                {% if not special %}
+                    {{ price }}
+                   {% else %}
+                          {{ special }}
+                {% endif %}
+                </span>
+                <label class="ocpoc-hint">{{ total_title }}</label>
+            </div>
+              {% endif %}
+          </div>
+            {% if discounts %}
+                <ul class="ocpoc-discounts">
+                    {% for discount in discounts %}
+                        <li>
+                            {{ discount.quantity }}{{ text_discount }}{{ discount.price }}
+                        </li>
+                    {% endfor %}
+                </ul>
+            {% endif %}
+            {% endif %}
+            {% if form_title %}
+            <div class="ocpoc-h4">{{ form_title }}</div>
+            {% endif %}
+
+
+            <div class="modal__form">
+                {% if fields.firstname.status%}
+                <div class="ocpoc-form-group ocpoc-firstname{% if fields.firstname.required %} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-firstname" class="ocp-control-label">{{ fields[lang_code]['firstname_title']?fields[lang_code]['firstname_title']: '' }}</label>{% endif %}
+                    <input type="text" name="firstname" value="" placeholder="{{ fields[lang_code]['firstname_placeholder']?fields[lang_code]['firstname_placeholder'] : '' }}" class="ocpoc-control" id="control-firstname" />
+                </div>
+                {% endif %}
+                {% if fields.lastname.status%}
+                <div class="ocpoc-form-group ocpoc-lastname{% if fields.lastname.required%} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-lastname" class="ocp-control-label">{{ fields[lang_code]['lastname_title'] ?fields[lang_code]['lastname_title'] : '' }}</label>{% endif %}
+                    <input type="text" name="lastname" value="" placeholder="{{ fields[lang_code]['lastname_placeholder'] ?fields[lang_code]['lastname_placeholder'] : '' }}" class="ocpoc-control" id="control-lastname" />
+                </div>
+                {% endif %}
+                {% if fields.email.status%}
+                <div class="ocpoc-form-group ocpoc-email{% if fields.email.required%} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-email" class="ocp-control-label">{{ fields[lang_code]['email_title'] ?fields[lang_code]['email_title'] : '' }}</label>{% endif %}
+                    <input type="text" name="email" value="" placeholder="{{ fields[lang_code]['email_placeholder'] ?fields[lang_code]['email_placeholder'] : '' }}" class="ocpoc-control" id="control-email" />
+                </div>
+                {% endif %}
+        
+                {% if fields.telephone.status%}
+                <div class="ocpoc-form-group ocpoc-telephone{% if fields.telephone.required%} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-telephone" class="ocp-control-label">{{ fields[lang_code]['telephone_title']?fields[lang_code]['telephone_title']: '' }}</label>{% endif %}
+                    <input type="text" name="telephone" value="" placeholder="{{ fields[lang_code]['telephone_placeholder']?fields[lang_code]['telephone_placeholder']: '' }}" class="ocpoc-control" id="control-telephone" />
+                </div>
+                {% endif %}
+        
+                {% if fields.address_1.status%}
+                <div class="ocpoc-form-group ocpoc-address_1{% if fields.address_1.required%} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-address_1" class="ocp-control-label">{{ fields[lang_code]['address_1_title']?fields[lang_code]['address_1_title']: '' }}</label>{% endif %}
+                    <input type="text" name="address_1" value="" placeholder="{{ fields[lang_code]['address_1_placeholder']?fields[lang_code]['address_1_placeholder']: '' }}" class="ocpoc-control" id="control-address_1" />
+                </div>
+                {% endif %}
+                {% if fields.comment.status%}
+                <div class="ocpoc-form-group ocpoc-comment{% if fields.comment.required %} ocpoc-required{% endif %}">
+                    {% if show_field_title%}<label for="control-comment" class="ocp-control-label">{{ fields[lang_code]['comment_title']?fields[lang_code]['comment_title']: '' }}</label>{% endif %}
+                    <textarea name="comment" placeholder="{{ fields[lang_code]['comment_placeholder']?fields[lang_code]['comment_placeholder']: '' }}" class="ocpoc-control" rows="3" id="control-comment"></textarea>
+                </div>
+                {% endif %}
+            </div>
+
+        
+
+
+        {% if btn_in_footer == 1 and stock_checkout and quantity > 0 %}
+        <div class="ocpoc-btn-under-fields">
+            {% if agree and agree_type %}
+                <p><label><input type="checkbox" name="agree" value="1" /> {{ agree }}</label></p>
+            {% endif %}
+            <button id="ocpoc_submit" class="btn btn-blue" onclick="ocpoc_submit();">{{ order_button_text }}</button>
+            {% if agree and agree_type == 0 %}
+                <p class="ocpoc-agree-btn">{{ agree }}</p>
+            {% endif %}
+        </div>
+        {% endif %}
+        <input type="hidden" name="product_id" value="{{ product_id }}" />
+        {% if btn_in_footer == 0 %}
+        <div class="ocpoc-buttons">
+            {% if stock_checkout  and  quantity > 0 %}
+    
+            {% if agree and agree_type %}
+                <p><label><input type="checkbox" name="agree" value="1" /> {{ agree }}</label></p>
+            {% endif %}
+            <button id="ocpoc_submit" class="btn btn-blue" onclick="ocpoc_submit();">{{ order_button_text }}</button>
+            {% if agree and agree_type == 0 %}
+                <p class="ocpoc-agree-btn">{{ agree }}</p>
+            {% endif %}
+            {% endif %}
+        </div>
+        {% endif %}
+        </div>
+        <div class="ocpoc-clearfix"></div>
+    </div>
+    {# {% if btn_in_footer == 0 %}
+    <div class="ocpoc-footer">
+        {% if stock_checkout  and  quantity > 0 %}
+
+        {% if agree and agree_type %}
+            <p><label><input type="checkbox" name="agree" value="1" /> {{ agree }}</label></p>
+        {% endif %}
+        <button id="ocpoc_submit" class="btn btn-blue" onclick="ocpoc_submit();">{{ order_button_text }}</button>
+        {% if agree and agree_type == 0 %}
+            <p class="ocpoc-agree-btn">{{ agree }}</p>
+        {% endif %}
+        {% endif %}
+    </div>
+    {% endif %} #}
+    {% if fields.telephone.status and telephone_mask %}
+    <script type="text/javascript">
+        $(".ocpoc input[name='telephone']").mask('{{ telephone_mask }}');
+    </script>
+    {% endif %}
+
+    <script>
+        $('.ocpoc-close.modal__close').on('click', function(){
+            console.log('asdasd');
+            $('.ocpoc.ocpoc-vert .mfpocp-close').trigger('click');
+        });
+    </script>
+
+    {% if window_design == 1 %}
+    <style>
+        @media and(min-width: 768px) {
+            .ocpoc-images {
+                min-height: {{ min_height }}px;
+            }
+        }
+    </style>
+    {% endif %}
+</div>

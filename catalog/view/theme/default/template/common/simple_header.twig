@@ -1,0 +1,21 @@
+{{ header }}
+<div id="content" class="container">
+  <div class="breadcrumb">
+    {% for breadcrumb in breadcrumbs %}
+      {% if loop.last %}
+        <span>{{ breadcrumb.text }}</span>
+      {% else %}
+        <a href="{{ breadcrumb.href }}">{{ breadcrumb.text }}</a><img src="images/i-separator.svg">
+      {% endif %}
+    {% endfor %}
+  </div>
+
+  {% if error_warning %}
+  <div class="alert alert-danger alert-dismissible"><i class="fa fa-exclamation-circle"></i> {{ error_warning }}</div>
+  {% endif %}
+  {{ column_left }}
+
+  {{ content_top }} 
+    <h1>{{ heading_title }}</h1>
+      
+      
