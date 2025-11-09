@@ -1006,7 +1006,7 @@ class __TwigTemplate_04f339b9b21a49d2a8b236a272d1872e958ccc2c57018bb610240ac13bb
                 if (data['email_error']) {
                     warningText += ' Причина: ' + data['email_error'];
                 }
-                warningText += ' Вы можете получить расчет по ссылке выше.';
+                warningText += ' Вы можете получить расчет по ссылке ниже.';
                 var \$warn = \$('<div class=\"alert alert-warning\" role=\"alert\"></div>').text(warningText);
                 \$modalBody.prepend(\$warn);
             } else if (channel !== 'telegram' && !data['recipient_email']) {

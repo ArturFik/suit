@@ -327,7 +327,7 @@ $('#form-formcreator{{ module_id }}').on('submit', function (e) {
 
             if (data['telegram_link']) {
                 $successBox.append('<p>Ваш расчет готов. Получите его в Telegram:</p>');
-                var $tgLink = $('<a class="btn btn-primary" target="_blank" rel="noopener noreferrer">Получить расчет в Telegram</a>');
+                var $tgLink = $('<a class="btn btn-primary modal__tg-link" target="_blank" rel="noopener noreferrer">Получить расчет в Telegram</a>');
                 $tgLink.attr('href', data['telegram_link']);
                 $successBox.append($tgLink);
                 if (data['ttl_seconds']) {
@@ -358,7 +358,7 @@ $('#form-formcreator{{ module_id }}').on('submit', function (e) {
                 if (data['email_error']) {
                     warningText += ' Причина: ' + data['email_error'];
                 }
-                warningText += ' Вы можете получить расчет по ссылке выше.';
+                warningText += ' Вы можете получить расчет по ссылке ниже.';
                 var $warn = $('<div class="alert alert-warning" role="alert"></div>').text(warningText);
                 $modalBody.prepend($warn);
             } else if (channel !== 'telegram' && !data['recipient_email']) {
